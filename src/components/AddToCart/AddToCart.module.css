@@ -1,0 +1,40 @@
+.addToCart {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 83px;
+    background: linear-gradient(to bottom, #ffffff, #f1f1f1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+.addToCart_infoProduct {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addToCart_img {
+    width: 65px;
+    height: 65px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+.addToCart_quantity{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.addToCart_quantity-paragraph{
+    margin: 0;
+}
+.addToCart_infoProduct-paragraph{
+    font-weight: bold;
+}

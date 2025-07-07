@@ -1,0 +1,15 @@
+/* .card {
+    height: 350px;
+} */
+
+.card_img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card_title {
+    margin: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
