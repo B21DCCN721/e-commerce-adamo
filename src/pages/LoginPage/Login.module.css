@@ -1,0 +1,19 @@
+.box_decor{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #ffffff 100%);
+}
+.box_decor-img{
+    width: 80%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.box_form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box_form-card{
+    min-width: 50%;
+}

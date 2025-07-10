@@ -1,0 +1,12 @@
+.header {
+    padding-left: 8px;
+    background-color: white;
+    position: fixed;
+    top: 0px;
+    height: 70px;
+    width: 100%;
+    z-index: 1000;
+}
+.content{
+    margin:64px 16px 16px;
+}

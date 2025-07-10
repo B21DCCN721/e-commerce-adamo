@@ -1,0 +1,11 @@
+.card{
+    width: 250px;
+    height: 360px;
+    display: flex;
+    flex-direction: column; 
+}
+.card_img{
+    max-height: 140px;
+    min-height: 140px;
+    object-fit: cover;
+}

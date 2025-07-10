@@ -1,37 +1,34 @@
-import DefaultLayout from "../../layouts/DefaultLayout";
 import anhNen from "../../assets/imgs/nenProfile.png";
 import { Flex, Avatar, Button, Typography, Row, Col, Form, Input, DatePicker, Upload, Select } from "antd";
 import { AntDesignOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import avatar from "../../assets/imgs/avatar.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from 'dayjs';
+import type { User } from "../../schemas/user";
 
-type User = {
-  avatar: string;
-  name: string;
-  gender: string;
-  email: string;
-  phone: string;
-  birthday: Date;
-}
 const ProfilePage = () => {
+  const [form] = Form.useForm();
   const [canEdit, setCanEdit] = useState<boolean>(false);
   const handleEdit = (): void => {
     setCanEdit(true);
   }
   const handleSubmit = (): void => {
-    console.log('Lỗi không nhận enter ở profile');
-
+    console.log('Lỗi không nhận enter ở profile', form.getFieldsValue());
     setCanEdit(false);
   }
   const [infoUser] = useState<User>({
+    id:1,
     avatar,
     name: 'Đào Xuân Trí',
     gender: 'Nam',
     email: 'abc@gmail.com',
     phone: '123456789',
+    address: 'Yên Phương-Yên Lạc-Vĩnh Phúc',
     birthday: new Date('1990-01-01'),
   });
+  useEffect(()=>{
+    form.setFieldsValue({...infoUser, birthday: dayjs(infoUser.birthday)});
+  }, [form, infoUser]);
   const normFile = (e: unknown) => {
     if (Array.isArray(e)) {
       return e;
@@ -42,7 +39,7 @@ const ProfilePage = () => {
     return [];
   };
   return (
-    <DefaultLayout>
+    <>
       <img src={anhNen} alt="Nền trang cá nhân" width="100%" style={{ marginBottom: "16px", minHeight: '90px' }} />
       <Flex justify="space-between" align="center" style={{ marginBottom: 32 }}>
         <Flex gap={20} align="center">
@@ -58,7 +55,7 @@ const ProfilePage = () => {
         </Flex>
         <Button type="primary" icon={<EditOutlined />} onClick={handleEdit}>Chỉnh sửa</Button>
       </Flex>
-      <Form disabled={!canEdit} layout="vertical" name="Thông tin cá nhân" autoComplete="off" onFinish={handleSubmit} initialValues={{ ...infoUser, birthday: dayjs(infoUser.birthday) }}>
+      <Form form={form} disabled={!canEdit} layout="vertical" name="Thông tin cá nhân" autoComplete="off" onFinish={handleSubmit}>
         <Form.Item label="Tải ảnh" valuePropName="fileList" getValueFromEvent={normFile}>
           <Upload action="/upload.do" listType="picture-card">
             <button
@@ -81,7 +78,6 @@ const ProfilePage = () => {
             <Form.Item name='gender' label='Giới tính'>
               <Select
                 defaultValue="male"
-                style={{ width: 120 }}
                 onChange={(value: string) => { console.log("Giới tính:", value); }}
                 options={[
                   { value: 'male', label: 'Nam' },
@@ -112,6 +108,12 @@ const ProfilePage = () => {
             ]}>
               <Input />
             </Form.Item>
+             <Form.Item name='address' label='Địa chỉ' rules={[
+              { required: true, message: 'Vui lòng nhập địa chỉ của bạn!' },
+              { type: 'string', message: 'Địa chỉ không hợp lệ!' }
+            ]}>
+              <Input />
+            </Form.Item>
           </Col>
         </Row>
         <Form.Item name='btnsubmit'>
@@ -120,7 +122,7 @@ const ProfilePage = () => {
           </Button>
         </Form.Item>
       </Form>
-    </DefaultLayout>
+    </>
   );
 }
 

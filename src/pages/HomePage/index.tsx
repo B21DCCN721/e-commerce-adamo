@@ -1,49 +1,60 @@
-import { Typography, Card, Flex, Carousel } from "antd";
-import DefaultLayout from "../../layouts/DefaultLayout";
+import { Typography, Flex, Carousel, Button, Breadcrumb } from "antd";
 import styles from "./HomePage.module.css";
-import anh1 from "../../assets/imgs/anh1.jpg";
-import anh2 from "../../assets/imgs/anh2.jpg";
-import anh3 from "../../assets/imgs/anh3.jpg";
-import demoHome from "../../assets/imgs/demoHome.png";
-const data = [
-  {
-    id: 1,
-    name: "Áo thun nam",
-    price: 250000,
-    image: anh1,
-    description: "Áo thun nam chất liệu cotton, thoáng mát, phù hợp cho mùa hè.",
-    category: "Thời trang nam"
-  },
-  {
-    id: 2,
-    name: "Giày thể thao nữ",
-    price: 450000,
-    image: anh2,
-    description: "Giày thể thao nữ thiết kế năng động, thoải mái khi vận động.",
-    category: "Giày dép"
-  },
-  {
-    id: 3,
-    name: "Balo học sinh",
-    price: 300000,
-    image: anh3,
-    description: "Balo học sinh đa năng, có ngăn đựng laptop tiện lợi.",
-    category: "Phụ kiện"
-  }
-]
+import thumbNail1 from "../../assets/imgs/thumbNail1.png";
+import thumbNail2 from "../../assets/imgs/thumbNail2.webp";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import ProductCard from "../../components/ProductCard";
+import { mockClothingProducts } from "./data";
+import imgClothing from "../../assets/imgs/shrit.png"
+import { HomeOutlined } from "@ant-design/icons";
+
+
 const HomePage = () => {
+  const [dataSlide] = useState([
+    {
+      id: 1,
+      name: "Áo thun nam",
+      image: thumbNail1,
+      description: "Áo thun nam chất liệu cotton, thoáng mát, phù hợp cho mùa hè.",
+    },
+    {
+      id: 2,
+      name: "Giày thể thao",
+      image: thumbNail2,
+      description: "Giày thể thao thiết kế năng động, thoải mái khi vận động.",
+    },
+    {
+      id: 3,
+      name: "Balo học sinh",
+      image: thumbNail2,
+      description: "Balo học sinh đa năng, có ngăn đựng laptop tiện lợi.",
+    }
+  ])
+  const navigate = useNavigate();
   return (
-    <DefaultLayout>
-      <Typography.Title level={3}>Trang chủ</Typography.Title>
-      <div style={{marginBottom: "16px"}}>
-        <Carousel autoplay>
-          {data.map((item) => (
+    <>
+      <Breadcrumb
+        items={[
+          {
+            title: (
+              <Link to="/">
+                <HomeOutlined/>
+                <Typography.Text strong>Trang chủ</Typography.Text>
+              </Link>
+            )
+          }
+        ]}
+      />
+      <div>
+        <Carousel autoplay autoplaySpeed={2000}>
+          {dataSlide.map((item) => (
             <div key={item.id}>
               <div className={styles['boxSlide']}>
-                <img className={styles['boxSlide_img']} alt={item.description} src={demoHome}/>
+                <img className={styles['boxSlide_img']} alt={item.description} src={item.image} />
                 <div className={styles['boxSlideInfo']}>
-                  <h1>Thong tin san pham</h1>
-                  <p>Thoong tin ve web bla bla...</p>
+                  <Typography.Title level={3}>{item.name}</Typography.Title>
+                  <Typography.Text>{item.description}</Typography.Text>
                 </div>
               </div>
             </div>
@@ -51,17 +62,25 @@ const HomePage = () => {
         </Carousel>
       </div>
       <Typography.Title level={3}>Danh sách sản phẩm nổi bật</Typography.Title>
-      <Flex wrap={true} gap="middle">
-        {data.map((item) => (
-          <Card key={item.id} style={{ width: '300px' }} hoverable variant="borderless"
-          cover={<img alt={item.description} src={item.image} style={{ height: 200, objectFit: 'cover' }} />}
-          onClick={() => console.log('click')}
-          >
-            <Card.Meta title={item.name} description={item.description} />
-          </Card>
+      <Flex wrap={true} gap="large">
+        {mockClothingProducts.map((item) => (
+          <ProductCard
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            category={item.category}
+            price={item.price}
+            oldPrice={500000}
+            image={imgClothing}
+            inStock={true}
+            rating={4.5}
+            tags={item.tags}
+          />
+
         ))}
       </Flex>
-    </DefaultLayout>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/catogory')}>Xem Thêm</Button></div>
+    </>
   );
 };
 export default HomePage;

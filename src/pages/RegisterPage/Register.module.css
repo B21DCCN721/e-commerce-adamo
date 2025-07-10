@@ -1,0 +1,18 @@
+.box_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box_form-card {
+    min-width: 50%;
+}
+
+.box_decor {
+    background: linear-gradient(135deg,
+            #a1c4fd,
+            #c2e9fb,
+            #fbc2eb,
+            #fcb69f);
+
+}

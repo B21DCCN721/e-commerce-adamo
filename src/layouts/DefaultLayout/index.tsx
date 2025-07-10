@@ -1,61 +1,86 @@
-import { Input, Layout, Menu, Row, Col } from 'antd';
+import { Layout, Menu, } from 'antd';
 import {
   HomeOutlined,
   UnorderedListOutlined,
-  ShoppingCartOutlined,
   UserOutlined,
+  HistoryOutlined,
+  ShoppingCartOutlined,
+  EditOutlined,
+  LockOutlined,
+  LoginOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
-import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import type { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import styles from "./DefaultLayout.module.css";
 
 const { Header, Content, Footer } = Layout;
 
-
-interface DefaultLayoutProps {
-  children?: React.ReactNode;
-}
 // ecommerce
-const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
+const DefaultLayout: React.FC = () => {
   const location = useLocation();
-  const [searchParams,setSearchParams] = useSearchParams();
   const cart = useSelector((state: RootState) => state.cart.items);
   const quantity: number = useMemo(() => cart.reduce((sum, value) => sum += value.quantity, 0), [cart]);
+  // const content = (
+  //   <div style={{ width: 320 }}>
+  //     <List
+  //       itemLayout="horizontal"
+  //       dataSource={cart.slice(0, 3)}
+  //       renderItem={(item) => (
+  //         <List.Item>
+  //           <List.Item.Meta
+  //             avatar={<Avatar shape="square" size={48} src={item.image} />}
+  //             title={<span>{item.name}</span>}
+  //             description={`Size: ${item.size}`}
+  //           />
+  //           <div style={{ color: '#d0011b' }}>{item.price.toLocaleString()}₫</div>
+  //         </List.Item>
+  //       )}
+  //     />
+  //     <Link to="/cart">
+  //       <Button type="primary" block style={{ marginTop: 8 }}>
+  //         Xem Giỏ Hàng
+  //       </Button>
+  //     </Link>
+  //   </div>
+  // );
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ background: '#fff', paddingLeft: '8px' }}>
-        <Row gutter={16}>
-          <Col span={15}>
-            <Menu
-              theme="light"
-              mode="horizontal"
-              selectedKeys={[location.pathname]}
-            >
-              <Menu.Item key='/' icon={<HomeOutlined />}><Link to='/'>Trang chủ</Link></Menu.Item>
-              <Menu.Item key='/catogory' icon={<UnorderedListOutlined />}><Link to='/catogory'>Danh mục</Link></Menu.Item>
-              <Menu.Item key='/cart' icon={<ShoppingCartOutlined />}><Link to='/cart'>Giỏ hàng <span style={{fontWeight: 'bold'}}>{quantity}</span></Link></Menu.Item>
-              {/* <Menu.Item key='/login' icon={<LoginOutlined/>}><Link to='/login'>Đăng nhập</Link></Menu.Item> */}
-              <Menu.Item key='/profile' icon={<UserOutlined />}><Link to='/profile'>Thông tin cá nhân</Link></Menu.Item>
-            </Menu>
-          </Col>
-          <Col span={9} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Input.Search
-              placeholder="Tìm kiếm sản phẩm"
-              allowClear
-              enterButton="Tìm kiếm"
-              size="large"
-              value={searchParams.get('filter') || ''}
-              style={{ display: "inline-block" }}
-              onSearch={(value) => setSearchParams({filter: value})}
-            />
-          </Col>
-        </Row>
+      <Header className={styles.header}>
+        <Menu
+          theme="light"
+          mode="horizontal"
+          selectedKeys={[location.pathname]}
+        >
+          <Menu.Item key='/' icon={<HomeOutlined />}><Link to='/'>Trang chủ</Link></Menu.Item>
+          <Menu.Item key='/catogory' icon={<UnorderedListOutlined />}><Link to='/catogory'>Danh mục</Link></Menu.Item>
+          <Menu.Item key='/cart' icon={<ShoppingCartOutlined />}>
+            <Link to='/cart'>Giỏ hàng {quantity}</Link>
+          </Menu.Item>
+          <Menu.Item key='/history' icon={<HistoryOutlined />}><Link to='/history'>Lịch sử đơn hàng</Link></Menu.Item>
+          {/* <Menu.Item key='/login' icon={<LoginOutlined/>}><Link to='/login'>Đăng nhập</Link></Menu.Item> */}
+          <Menu.SubMenu key="profile" icon={<UserOutlined />} title="Tài khoản">
+            <Menu.Item key="/profile/info" icon={<EditOutlined />}>
+              <Link to="/profile/info">Chỉnh sửa thông tin</Link>
+            </Menu.Item>
+            <Menu.Item key="/profile/password" icon={<LockOutlined />}>
+              <Link to="/profile/password">Đổi mật khẩu</Link>
+            </Menu.Item>
+            <Menu.Item key="/logout" icon={<LogoutOutlined />}>
+                  <Link to="/login">Đăng xuất</Link>
+                </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.Item key="/login" icon={<LoginOutlined />}>
+            <Link to="/login">Đăng nhập</Link>
+          </Menu.Item>
+        </Menu>
       </Header>
 
-      <Content style={{ margin: '16px' }}>
+      <Content className={styles.content}>
         <div style={{ padding: 24, background: '#fff', minHeight: '100vh', position: 'relative' }}>
-          {children || <Outlet />}
+          <Outlet />
         </div>
       </Content>
 

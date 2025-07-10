@@ -2,6 +2,8 @@
     border: 1px solid #fff;
     border-radius: 10px;
     position: relative;
+    margin-top: 16px;
+    margin-bottom: 32px;
 }
 .boxSlide_img{
     width: 100%;
