@@ -1,6 +1,6 @@
 import { Avatar, Rate, Typography, Image, Space, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import type { Review } from "../../schemas/review";
+import type { Review } from "../../types/review";
 
 
 type ReviewCardProps = {

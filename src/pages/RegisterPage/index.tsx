@@ -12,9 +12,9 @@ const RegisterPage = () => {
 
   return (
     <Row style={{ height: '100vh' }}>
-      <Col span={10} className={styles['box_decor']}>
+      <Col span={12} className={styles['box_decor']}>
       </Col>
-      <Col span={14} className={styles['box_form']}>
+      <Col span={12} className={styles['box_form']}>
         <Card title="Đăng ký tài khoản" className={styles['box_form-card']}>
           <Form form={form} onFinish={handleRegister} layout="vertical">
             <Form.Item

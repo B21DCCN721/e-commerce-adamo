@@ -1,14 +1,17 @@
 import anhNen from "../../assets/imgs/nenProfile.png";
-import { Flex, Avatar, Button, Typography, Row, Col, Form, Input, DatePicker, Upload, Select } from "antd";
-import { AntDesignOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { Flex, Avatar, Button, Typography, Row, Col, Form, Input, DatePicker, Upload, Select, type UploadProps, type GetProp,} from "antd";
+import { AntDesignOutlined, EditOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import avatar from "../../assets/imgs/avatar.jpg";
 import { useEffect, useState } from "react";
 import dayjs from 'dayjs';
-import type { User } from "../../schemas/user";
-
+import type { User } from "../../types/user";
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+import { getBase64, beforeUpload } from "../../helper/handleUploadImg";
 const ProfilePage = () => {
   const [form] = Form.useForm();
   const [canEdit, setCanEdit] = useState<boolean>(false);
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>();
   const handleEdit = (): void => {
     setCanEdit(true);
   }
@@ -17,7 +20,7 @@ const ProfilePage = () => {
     setCanEdit(false);
   }
   const [infoUser] = useState<User>({
-    id:1,
+    id: 1,
     avatar,
     name: 'Đào Xuân Trí',
     gender: 'Nam',
@@ -26,18 +29,28 @@ const ProfilePage = () => {
     address: 'Yên Phương-Yên Lạc-Vĩnh Phúc',
     birthday: new Date('1990-01-01'),
   });
-  useEffect(()=>{
-    form.setFieldsValue({...infoUser, birthday: dayjs(infoUser.birthday)});
+  useEffect(() => {
+    form.setFieldsValue({ ...infoUser, birthday: dayjs(infoUser.birthday) });
   }, [form, infoUser]);
-  const normFile = (e: unknown) => {
-    if (Array.isArray(e)) {
-      return e;
+
+  const handleChangeAvatar: UploadProps['onChange'] = (info) => {
+    if (info.file.status === 'uploading') {
+      getBase64(info.file.originFileObj as FileType, (url) => {
+        setLoadingAvatar(false);
+        setImageUrl(url);
+        // Gán avatar base64 vào form
+        form.setFieldsValue({ avatar: url });
+      });
     }
-    if (e && typeof e === 'object' && 'fileList' in e) {
-      return (e as { fileList: unknown }).fileList;
-    }
-    return [];
   };
+
+
+  const uploadButton = (
+    <button style={{ border: 0, background: 'none' }} type="button">
+      {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </button>
+  );
   return (
     <>
       <img src={anhNen} alt="Nền trang cá nhân" width="100%" style={{ marginBottom: "16px", minHeight: '90px' }} />
@@ -56,17 +69,27 @@ const ProfilePage = () => {
         <Button type="primary" icon={<EditOutlined />} onClick={handleEdit}>Chỉnh sửa</Button>
       </Flex>
       <Form form={form} disabled={!canEdit} layout="vertical" name="Thông tin cá nhân" autoComplete="off" onFinish={handleSubmit}>
-        <Form.Item label="Tải ảnh" valuePropName="fileList" getValueFromEvent={normFile}>
-          <Upload action="/upload.do" listType="picture-card">
-            <button
-              style={{ color: 'inherit', cursor: 'inherit', border: 0, background: 'none' }}
-              type="button"
-            >
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
+        <Form.Item name="avatar" label="Tải ảnh">
+          <Upload
+            name="avatar"
+            listType="picture-circle"
+            showUploadList={false}
+            beforeUpload={beforeUpload}
+            onChange={handleChangeAvatar}
+          >
+            {imageUrl ? <img
+              src={imageUrl}
+              alt="avatar"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            /> : uploadButton}
           </Upload>
         </Form.Item>
+
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item name='name' label='Họ và tên' rules={[
@@ -108,7 +131,7 @@ const ProfilePage = () => {
             ]}>
               <Input />
             </Form.Item>
-             <Form.Item name='address' label='Địa chỉ' rules={[
+            <Form.Item name='address' label='Địa chỉ' rules={[
               { required: true, message: 'Vui lòng nhập địa chỉ của bạn!' },
               { type: 'string', message: 'Địa chỉ không hợp lệ!' }
             ]}>

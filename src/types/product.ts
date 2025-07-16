@@ -1,8 +1,5 @@
 import {z} from "zod";
-
-// Size enum
-export const SizeEnum = z.enum(["S", "M", "L", "XL"]);
-export type Size = z.infer<typeof SizeEnum>;
+import { SizeEnum } from "./size";
 
 // Product schema
 export const ProductSchema = z.object({
@@ -18,13 +15,17 @@ export const ProductSchema = z.object({
   tags: z.array(z.string()),
 });
 
-// ProductWithSizes schema
-export const ProductWithSizesSchema = ProductSchema.extend({
-  sizes: z.array(z.object({
-    size: SizeEnum,
-    quantity: z.number().int().positive(),
+// ProductWithVariants schema
+export const ProductWithVariantsSchema = ProductSchema.extend({
+  variants: z.array(z.object({
+    color: z.string(), // có thể là tên hoặc mã hex (#fff)
+    sizes: z.array(z.object({
+      size: SizeEnum,
+      quantity: z.number().int().nonnegative(),
+    })),
   })),
 });
 
 export type Product = z.infer<typeof ProductSchema>;
-export type ProductWithSizes = z.infer<typeof ProductWithSizesSchema>;
+export type ProductWithVariants = z.infer<typeof ProductWithVariantsSchema>;
+

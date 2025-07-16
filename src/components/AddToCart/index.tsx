@@ -51,9 +51,9 @@
 // export default AddToCart;
 
 import { Button, InputNumber, Typography, Space, Row, Col, Divider, Flex } from 'antd';
-import type { Size } from '../../schemas/product';
+import type { Size } from '../../types/size';
 import { ShoppingCartOutlined, ShoppingOutlined } from '@ant-design/icons';
-import type { CartItem } from '../../schemas/cart';
+import type { CartItem } from '../../types/cart';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../features/cart/cartSlice';
 

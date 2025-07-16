@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Typography, Empty, Menu, Layout, Flex } from "antd";
-import type { Product } from "../../schemas/product";
+import { Typography, Empty, Menu, Layout, Flex, Pagination } from "antd";
+import type { Product } from "../../types/product";
 import { mockClothingProducts } from "./data";
 import ProductCard from "../../components/ProductCard";
 import imgClothing from "../../assets/imgs/shrit.png"
@@ -57,8 +57,10 @@ const CatogoryPage = () => {
             }))}
           />
         </Sider>
-        <Layout style={{ padding: "0 24px", background: "#fff" }}>
+        <Layout style={{ padding: "0 24px", }}>
           <Content>{renderProducts()}</Content>
+          <Pagination style={{ marginTop: "8px" }} align="center" defaultCurrent={1} total={100} pageSize={20} showSizeChanger={false} onChange={(page) => console.log("category pagination", page)
+          } />
         </Layout>
       </Layout>
     </>

@@ -4,7 +4,7 @@ import { clearCart } from "../../features/cart/cartSlice";
 import type { AppDispatch, RootState } from "../../store";
 import ModalConfirm from "../../components/ModalConfirm";
 import CartTable from "../../components/CartTable";
-import type { CartItem } from "../../schemas/cart";
+import type { CartItem } from "../../types/cart";
 
 
 const CartPage = () => {

@@ -6,9 +6,9 @@ import { changeQuantityItem, changeSizeItem, removeFromCart, selectItem } from '
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../../store';
 import { useNavigate } from 'react-router-dom';
-import type { CartItem } from '../../schemas/cart';
+import type { CartItem } from '../../types/cart';
 import styles from "./CartTable.module.css";
-import type { Size } from '../../schemas/product';
+import type { Size } from '../../types/size';
 interface CartTableProps {
   items: CartItem[];
 }
@@ -106,6 +106,12 @@ const CartTable: React.FC<CartTableProps> = ({ items }) => {
           ]}
         />
       )
+    },
+     {
+      title: 'Màu sắc',
+      key: 'color',
+      render: (_value, record) =>
+        `${(record.color)}`,
     },
     {
       title: 'Số tiền',

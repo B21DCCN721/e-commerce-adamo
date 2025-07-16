@@ -10,11 +10,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.5,
     tags: ["Best Seller", "-39%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -28,11 +42,34 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.6,
     tags: ["Flash Sale"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
+       {
+        color: "Vàng",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 0 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -46,11 +83,25 @@ export const mockClothingProducts = [
     inStock: false,
     rating: 4.4,
     tags: ["Hết hàng", "-23%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -65,11 +116,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.3,
     tags: ["Rẻ Vô Địch"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -83,11 +148,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.7,
     tags: ["-20%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -101,11 +180,25 @@ export const mockClothingProducts = [
     inStock: false,
     rating: 4.5,
     tags: ["Hết hàng"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -119,11 +212,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.2,
     tags: ["Flash Sale"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -137,11 +244,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.4,
     tags: ["-23%", "Best Seller"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -155,11 +276,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.6,
     tags: ["Trendy"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -173,11 +308,25 @@ export const mockClothingProducts = [
     inStock: false,
     rating: 4.3,
     tags: ["Out of Stock", "-20%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -191,11 +340,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.1,
     tags: ["Classic", "-18%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -209,11 +372,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.8,
     tags: ["Hot", "-17%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -227,11 +404,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.5,
     tags: ["Kháng nước", "-23%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -245,11 +436,25 @@ export const mockClothingProducts = [
     inStock: false,
     rating: 4.2,
     tags: ["Mùa đông", "Sold out"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -264,11 +469,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.6,
     tags: ["Gym", "-23%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -282,11 +501,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.4,
     tags: ["Canvas", "-17%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -300,11 +533,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.2,
     tags: ["Trendy"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -318,11 +565,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.3,
     tags: ["Giảm giá", "-31%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -336,11 +597,25 @@ export const mockClothingProducts = [
     inStock: false,
     rating: 4.0,
     tags: ["Sale", "Out of Stock"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
   {
@@ -354,11 +629,25 @@ export const mockClothingProducts = [
     inStock: true,
     rating: 4.6,
     tags: ["Mới về", "-19%"],
-    sizes: [
-      { size: "S", quantity: 12 },
-      { size: "M", quantity: 30 },
-      { size: "L", quantity: 18 },
-      { size: "XL", quantity: 0 },
+    variants: [
+      {
+        color: "Trắng",
+        sizes: [
+          { size: "S", quantity: 12 },
+          { size: "M", quantity: 30 },
+          { size: "L", quantity: 18 },
+          { size: "XL", quantity: 0 },
+        ],
+      },
+      {
+        color: "Đen",
+        sizes: [
+          { size: "S", quantity: 5 },
+          { size: "M", quantity: 20 },
+          { size: "L", quantity: 10 },
+          { size: "XL", quantity: 2 },
+        ],
+      },
     ],
   },
 ];

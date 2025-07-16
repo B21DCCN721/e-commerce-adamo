@@ -1,6 +1,6 @@
 import { Card, Tag, Image, Typography, Button, Flex } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import type { Product } from '../../schemas/product';
+import type { Product } from '../../types/product';
 import styles from "./ProductCard.module.css";
 import { useNavigate } from 'react-router-dom';
 

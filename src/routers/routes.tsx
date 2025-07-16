@@ -11,6 +11,14 @@ import PaymentPage from "../pages/PaymentPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
+import AdminManamentProductPage from "../pages/admin/AdminManagementProductPage";
+import AdminDetailProductPage from "../pages/admin/AdminDetailProductPage";
+import IntroPage from "../pages/admin/IntroPage";
+import AdminOrderListPage from "../pages/admin/AdminOrderListPage";
+import AdminDetailOrderPage from "../pages/admin/AdminDetailOrderPage";
+import AdminImportProductPage from "../pages/admin/AdminImportProductPage";
 // import ProtectedRoute from "./ProtectedRoute";
 
 const publicRoutes: RouteObject[] = [
@@ -47,4 +55,19 @@ const privateRoutes: RouteObject[] = [
     //     ],
     // },
 ]
-export { publicRoutes, privateRoutes };
+const adminRoutes: RouteObject[] = [
+    {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+            {path: "", element: <IntroPage/>},
+            {path: "dashboard", element: <AdminDashboardPage/>},
+            {path: "management/product", element: <AdminManamentProductPage/>},
+            {path: "management/product/:id", element: <AdminDetailProductPage/>},
+            {path: "management/order", element: <AdminOrderListPage/>},
+            {path: "management/order/:id", element: <AdminDetailOrderPage/>},
+            {path: "management/import", element: <AdminImportProductPage/>},
+        ],
+    },
+]
+export { publicRoutes, privateRoutes, adminRoutes };

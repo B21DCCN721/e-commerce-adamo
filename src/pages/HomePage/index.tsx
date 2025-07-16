@@ -35,6 +35,7 @@ const HomePage = () => {
   return (
     <>
       <Breadcrumb
+        style={{marginTop:'8px', marginLeft:'8px'}}
         items={[
           {
             title: (
@@ -62,23 +63,25 @@ const HomePage = () => {
         </Carousel>
       </div>
       <Typography.Title level={3}>Danh sách sản phẩm nổi bật</Typography.Title>
-      <Flex wrap={true} gap="large">
-        {mockClothingProducts.map((item) => (
-          <ProductCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            category={item.category}
-            price={item.price}
-            oldPrice={500000}
-            image={imgClothing}
-            inStock={true}
-            rating={4.5}
-            tags={item.tags}
-          />
-
-        ))}
-      </Flex>
+      <div style={{marginLeft:"50px"}}>
+        <Flex wrap={true} gap="large">
+          {mockClothingProducts.map((item) => (
+            <ProductCard
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              category={item.category}
+              price={item.price}
+              oldPrice={500000}
+              image={imgClothing}
+              inStock={true}
+              rating={4.5}
+              tags={item.tags}
+            />
+  
+          ))}
+        </Flex>
+      </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/catogory')}>Xem Thêm</Button></div>
     </>
   );

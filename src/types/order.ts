@@ -1,28 +1,33 @@
 import { z } from "zod";
 
 // Định nghĩa enum trạng thái đơn hàng
-export const OrderStatusEnum = z.enum(["pending", "shipping", "delivered", "canceled"]);
+export const OrderStatusEnum = z.enum([
+  "pending",
+  "shipped",
+  "delivered",
+  "canceled",
+]);
 
 // Thông tin từng sản phẩm trong đơn hàng
 export const OrderItemSchema = z.object({
-  id: z.number(),
+  productId: z.number(),
   productName: z.string(),
   productImage: z.string(),
   productCategory: z.string(),
-  quantity: z.number().int().positive(),       
-  price: z.number().nonnegative(),            
-  originalPrice: z.number().nonnegative().optional(),
+  quantity: z.number().int().positive(),
+  price: z.number().nonnegative(),
+  oldPrice: z.number().nonnegative().optional(),
 });
 
 // Đơn hàng tổng thể
 export const OrderSchema = z.object({
   id: z.number(),
   customerId: z.number(),
-  paymentMethod: z.enum(['cash', 'banking']),
+  paymentMethod: z.string(),
   customerAddress: z.string(),
   customerPhone: z.string(),
   status: OrderStatusEnum,
-  statusLabel: z.string(),
+  isPaid: z.boolean(),
   deliverySuccessAt: z.string().optional(),
   totalAmount: z.number().nonnegative(),
   items: z.array(OrderItemSchema),

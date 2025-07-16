@@ -1,33 +1,47 @@
-import {
-    Button,
-    Card,
-    Divider,
-    Flex,
-    Form,
-    Input,
-    message,
-    Modal,
-    QRCode,
-    Select,
-    Space,
-    Typography,
-} from "antd";
-import React, { useState } from "react";
-import type { CartItem } from "../../schemas/cart";
+import { Button, Card, Divider, Flex, Form, Input, message, Modal, QRCode, Select, Space, Typography, } from "antd";
+import React, { useCallback, useState } from "react";
+import type { CartItem } from "../../types/cart";
 import { useDispatch } from "react-redux";
+import { addOrder } from "../../features/order/orderSlice";
+import type { AppDispatch } from "../../store";
 
 interface PaymentFormProps {
     selectedItems: CartItem[];
+    paymentUrl?: string;
     totalPrice: number;
+    paymentMethod: string;
+    setPaymentMethod: (value: string) => void;
     onSuccess: () => void;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, onSuccess }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, onSuccess, paymentUrl, paymentMethod, setPaymentMethod }) => {
     const [form] = Form.useForm();
-    const [paymentMethod, setPaymentMethod] = useState("cash");
     const [qrVisible, setQrVisible] = useState(false);
-    const [paymentUrl, setPaymentUrl] = useState("");
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
+    const createOrder = useCallback(
+        (isPaid: boolean) => {
+            dispatch(addOrder({
+                id: Math.random(),
+                customerId: 1,
+                paymentMethod,
+                customerAddress: form.getFieldValue("address"),
+                customerPhone: form.getFieldValue("phone"),
+                status: "pending",
+                isPaid,
+                totalAmount: totalPrice,
+                items: selectedItems.map((item) => ({
+                    productId: item.id,
+                    productName: item.name,
+                    productImage: item.image,
+                    productCategory: item.category,
+                    quantity: item.quantity,
+                    price: item.price,
+                    oldPrice: 1000000,
+                })),
+            }));
+        },
+        [dispatch, form, paymentMethod, selectedItems, totalPrice]
+    );
 
     const handleFinish = () => {
         if (selectedItems.length === 0) {
@@ -36,23 +50,24 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, on
         }
 
         if (paymentMethod === "banking") {
-            // Tạo URL thanh toán giả lập (hoặc call backend để lấy paymentUrl)
-            const fakeUrl = `https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?amount=${totalPrice}`;
-            setPaymentUrl(fakeUrl);
             setQrVisible(true);
             return;
         }
+        if (paymentMethod === "cash") {
+            createOrder(false);
 
-        // Thanh toán COD
-        message.success("Đặt hàng thành công!");
-        onSuccess();
-        form.resetFields();
+            // Thanh toán COD
+            message.success("Đặt hàng thành công!");
+            onSuccess();
+            form.resetFields();
+        }
     };
     const handleConfirmPayment = async () => {
         try {
-            const isPaid = true; // Giả lập call api thành công
+            const isPaid = true;
 
             if (isPaid) {
+                createOrder(true);
                 message.success("Thanh toán thành công!");
                 setQrVisible(false);
                 onSuccess();
@@ -86,6 +101,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, on
                             rules={[{ required: true, message: "Vui lòng chọn phương thức" }]}
                         >
                             <Select
+                                defaultValue={paymentMethod}
                                 options={[
                                     { value: "cash", label: "Thanh toán khi nhận hàng" },
                                     { value: "banking", label: "Chuyển khoản qua QR (VNPay)" },
@@ -156,7 +172,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, on
                 centered
             >
                 <Flex wrap vertical align="center">
-                    <QRCode value={paymentUrl} size={200} />
+                    <QRCode value={paymentUrl || ""} size={200} />
                     <p style={{ marginTop: 16 }}>
                         Vui lòng dùng App ngân hàng hoặc VNPAY để quét mã và thanh toán
                     </p>
