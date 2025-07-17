@@ -1,101 +1,76 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { type AxiosRequestConfig, AxiosError, type AxiosResponse } from "axios";
+import axios from "axios";
+import { logout } from "../services/authenticated";
 
-// Custom type để thêm _retry flag vào config
-interface CustomAxiosRequestConfig extends AxiosRequestConfig {
-  _retry?: boolean;
-}
-
-// Kiểu của request bị queue lại nếu đang refresh token
-type FailedRequest = {
-  resolve: (value?: AxiosResponse) => void;
-  reject: (error: any) => void;
-};
+const axiosClient = axios.create({
+  baseURL: `${import.meta.env.VITE_BASE_URL}`,
+});
 
 let isRefreshing = false;
-let failedQueue: FailedRequest[] = [];
+let failedQueue: any[] = [];
 
-const processQueue = (error: any, tokenRefreshed = false) => {
-  failedQueue.forEach(({ resolve, reject }) => {
-    if (tokenRefreshed) resolve(); else reject(error);
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
   });
   failedQueue = [];
 };
 
-// axios chính để gọi API (gửi kèm cookies)
-const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
-});
-
-// axios raw chỉ dùng để gọi refresh hoặc logout riêng biệt
-const rawAxios = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
-});
-
-// Logout user và redirect về login
-const handleLogout = async () => {
-  try {
-    await rawAxios.post("/api/auth/logout");
-  } catch (error) {
-    console.error("Logout error:", error);
-  } finally {
-    localStorage.clear();
-    sessionStorage.clear();
-    window.location.replace("/login");
+// Gắn token vào mọi request
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-};
+  return config;
+});
 
-// Interceptor xử lý lỗi response
+// Tự động refresh token khi lỗi 401
 axiosClient.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError) => {
-    const originalRequest = error.config as CustomAxiosRequestConfig;
+  async (error) => {
+    const originalRequest = error.config;
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url?.includes("/auth/refresh-token")
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        // Nếu đang refresh thì chờ kết quả
-        return new Promise((resolve, reject) => {
+        return new Promise(function (resolve, reject) {
           failedQueue.push({ resolve, reject });
-        })
-          .then(() => axiosClient(originalRequest)) // gọi lại request
-          .catch((err) => Promise.reject(err));
+        }).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return axiosClient(originalRequest);
+        });
       }
 
       originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        await rawAxios.post("/api/auth/refresh-token");
+        const res = await axios.post(
+          "https://api.example.com/auth/refresh-token",
+          {
+            refreshToken: localStorage.getItem("refreshToken"),
+          }
+        );
 
-        processQueue(null, true); // resolve các request đang chờ
-        return axiosClient(originalRequest); // gọi lại request ban đầu
-      } catch (refreshErr) {
-        processQueue(refreshErr, false);
-        await handleLogout(); // chuyển về login nếu refresh fail
-        return Promise.reject(refreshErr);
+        const newAccessToken = res.data.accessToken;
+        localStorage.setItem("accessToken", newAccessToken);
+
+        axiosClient.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+        processQueue(null, newAccessToken);
+
+        return axiosClient(originalRequest);
+      } catch (err) {
+        processQueue(err, null);
+        // Xử lý logout nếu refresh token cũng hết hạn
+        await logout();
+        return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
-    }
-
-    // Nếu là lỗi refresh-token → logout luôn
-    if (
-      error.response?.status === 403 &&
-      originalRequest.url?.includes("/auth/refresh-token")
-    ) {
-      await handleLogout();
     }
 
     return Promise.reject(error);

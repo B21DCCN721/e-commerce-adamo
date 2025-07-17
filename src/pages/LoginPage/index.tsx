@@ -1,28 +1,39 @@
-import { Form, Input, Button, Card, Row, Col, Divider, Flex } from 'antd';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Form, Input, Button, Card, Row, Col, Divider, Flex, message } from 'antd';
 import imgLogin from "../../assets/imgs/imgLogin.jpg";
 import styles from "./Login.module.css";
 import { GoogleLogin } from '@react-oauth/google';
 import type { CredentialResponse } from '@react-oauth/google';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../services/authenticated';
 import { jwtDecode } from 'jwt-decode';
-import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [form] = Form.useForm();
-
-  const handleLogin = (values: unknown) => {
-    console.log('Đăng nhập với:', values);
-    // TODO: Gọi API đăng nhập
+  const navigate = useNavigate();
+  const handleLogin = async (values: { email: string; password: string }) => {
+    try {
+      await login(values.email, values.password);
+      message.success("Đăng nhập thành công");
+      navigate("/");
+    } catch (error: any) {
+      message.error("Đăng nhập thất bại");
+      console.error('Đăng nhập thất bại:', error.message);
+    }
   };
 
-  const handleGoogleLoginSuccess = (credentialResponse: CredentialResponse ) => {
+
+ const handleGoogleLoginSuccess = (credentialResponse: CredentialResponse ) => {
     const token = credentialResponse.credential;
     if (token) {
       const decoded: unknown = jwtDecode(token);
       console.log('Đăng nhập bằng Google:', decoded);
-      // TODO: Gửi token hoặc decoded về backend để xác thực
+      message.success("Đăng nhập thành công");
+      navigate("/");
+    } else{
+      message.error("Đăng nhập thất bại");
     }
   };
-
   return (
     <Row style={{ height: '100vh' }}>
       <Col span={12} className={styles['box_decor']}>

@@ -655,6 +655,7 @@ export const mockClothingProducts = [
 export const mockReview = [
   {
     id: 1,
+    productId: 1,
     username: "Nguyễn Văn A",
     avatarUrl: "https://i.pravatar.cc/150?img=3",
     rating: 4,

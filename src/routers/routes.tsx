@@ -19,6 +19,7 @@ import IntroPage from "../pages/admin/IntroPage";
 import AdminOrderListPage from "../pages/admin/AdminOrderListPage";
 import AdminDetailOrderPage from "../pages/admin/AdminDetailOrderPage";
 import AdminImportProductPage from "../pages/admin/AdminImportProductPage";
+import ProtectedRoute from "./ProtectedRoute";
 // import ProtectedRoute from "./ProtectedRoute";
 
 const publicRoutes: RouteObject[] = [
@@ -29,11 +30,7 @@ const publicRoutes: RouteObject[] = [
             { path: "/", element: <HomePage /> },
             { path: "/cart", element: <CartPage /> },
             { path: "/catogory", element: <CatogoryPage /> },
-            { path: "/history", element: <OrderHistoryPage /> },
-            { path: "/profile/info", element: <ProfilePage /> },
-            { path: "/profile/password", element: <ChangePasswordPage /> },
             { path: "/product/detail/:id", element: <DetailProductPage /> },
-            { path: "/payment", element: <PaymentPage /> },
         ],
     },
     { path: "/login", element: <LoginPage /> },
@@ -42,18 +39,18 @@ const publicRoutes: RouteObject[] = [
 ];
 
 const privateRoutes: RouteObject[] = [
-    // {
-    //     path: "/",
-    //     element: <ProtectedRoute>
-    //                  <DefaultLayout />
-    //             </ProtectedRoute>,
-    //     children: [
-    //         { path: "/history", element: <HistoryPage /> },
-    //         { path: "/profile/info", element: <ProfilePage /> },
-    //         { path: "/profile/password", element: <ChangePasswordPage /> },
-    //         { path: "/payment", element: <PaymentPage /> },
-    //     ],
-    // },
+    {
+        path: "/",
+        element: <ProtectedRoute>
+                     <DefaultLayout />
+                </ProtectedRoute>,
+        children: [
+            { path: "/history", element: <OrderHistoryPage /> },
+            { path: "/profile/info", element: <ProfilePage /> },
+            { path: "/profile/password", element: <ChangePasswordPage /> },
+            { path: "/payment", element: <PaymentPage /> },
+        ],
+    },
 ]
 const adminRoutes: RouteObject[] = [
     {
