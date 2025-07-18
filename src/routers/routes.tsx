@@ -10,7 +10,6 @@ import DetailProductPage from "../pages/DetailProductPage";
 import PaymentPage from "../pages/PaymentPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminManamentProductPage from "../pages/admin/AdminManagementProductPage";
@@ -20,6 +19,7 @@ import AdminOrderListPage from "../pages/admin/AdminOrderListPage";
 import AdminDetailOrderPage from "../pages/admin/AdminDetailOrderPage";
 import AdminImportProductPage from "../pages/admin/AdminImportProductPage";
 import ProtectedRoute from "./ProtectedRoute";
+import NotificationPage from "../pages/NotificationPage";
 // import ProtectedRoute from "./ProtectedRoute";
 
 const publicRoutes: RouteObject[] = [
@@ -35,7 +35,6 @@ const publicRoutes: RouteObject[] = [
     },
     { path: "/login", element: <LoginPage /> },
     { path: "/register", element: <RegisterPage /> },
-    { path: "/forgot-password", element: <ForgotPasswordPage /> },
 ];
 
 const privateRoutes: RouteObject[] = [
@@ -49,6 +48,7 @@ const privateRoutes: RouteObject[] = [
             { path: "/profile/info", element: <ProfilePage /> },
             { path: "/profile/password", element: <ChangePasswordPage /> },
             { path: "/payment", element: <PaymentPage /> },
+            { path: "/notification", element: <NotificationPage/>}
         ],
     },
 ]

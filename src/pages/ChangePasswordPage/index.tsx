@@ -1,6 +1,4 @@
-import { Button, Form, Input, Typography } from "antd";
-import styles from "./ChangePasswordPage.module.css";
-
+import { Button, Card, Form, Input, Typography } from "antd";
 interface InfoChangePass {
     oldPass: string;
     newPass: string;
@@ -12,7 +10,7 @@ const ChangePasswordPage = () => {
 
     }
     return (
-        <div className={styles['box_form']}>  
+        <Card style={{ width: "40%", margin:'100px auto'}}>  
             <Typography.Title level={3}>Đổi mật khẩu</Typography.Title>
             <Form layout="vertical" name="Đổi mật khẩu" autoComplete="off" onFinish={handleChangepassWord} >
                 <Form.Item
@@ -64,7 +62,7 @@ const ChangePasswordPage = () => {
                     <Button type="primary" htmlType="submit">Xác nhận</Button>
                 </Form.Item>
             </Form>
-        </div>
+        </Card>
     )
 }
 export default ChangePasswordPage;

@@ -19,6 +19,7 @@ import styles from "./DefaultLayout.module.css";
 import FormSetting from '../../components/FormSetting';
 import type { CartItem } from '../../types/cart';
 import { logout } from '../../services/authenticated';
+import NotificationPopover from '../../components/NotificationPopover';
 
 const { Header, Content, Footer } = Layout;
 
@@ -86,6 +87,7 @@ const DefaultLayout: React.FC = () => {
               <Link to="/login">Đăng nhập</Link>
             </Menu.Item>)}
           </Menu>
+          <NotificationPopover/>
         </Header>
 
         <Content className={styles.content}>
@@ -105,7 +107,6 @@ const DefaultLayout: React.FC = () => {
                 width: "40px",
                 height: "40px",
               }}
-              className="floating-setting-btn"
               onClick={showDrawer}
             />
             <Drawer

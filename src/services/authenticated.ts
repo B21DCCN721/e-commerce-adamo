@@ -23,7 +23,7 @@ const register = async (email: string, password: string) => {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const user = result.user;
     console.log("[Register] Success:", user.email);
-    return { user,};
+    return { user };
   } catch (error: any) {
     console.error("[Register] Failed:", error.code, error.message);
     throw error;

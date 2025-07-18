@@ -1,7 +1,7 @@
-import { Card, Col, Row, Space, Tag, Typography, Image, Button } from "antd"
+import { Card, Col, Row, Space, Tag, Typography, Image, Button, Modal } from "antd"
 import type { Order } from "../../types/order";
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, SyncOutlined } from "@ant-design/icons";
-import ModalReview from "../ModalReview";
+import FormReview from "../FormReview";
 import { useState } from "react";
 
 interface OrderCardProps {
@@ -47,19 +47,25 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                             {order.status === 'pending' && (<>
                                 <>
                                     <Button color="danger" variant="filled" onClick={handleReview}>Đánh giá</Button>
-                                    <ModalReview
-                                        open={showReview}
-                                        onClose={() => setShowReview(false)}
-                                        product={{
-                                            id: item.productId,
-                                            name: item.productName,
-                                            category: item.productCategory,
-                                            image: item.productImage
-                                        }}
-                                        onSubmit={(data) => {
-                                            submitReview(data)
-                                        }}
-                                    />
+                                    <Modal open={showReview}
+                                        onCancel={() => setShowReview(false)}
+                                        footer={null}
+                                        title="Đánh Giá Sản Phẩm"
+                                        centered
+                                        width={650}>
+                                        <FormReview
+                                            onClose={() => setShowReview(false)}
+                                            product={{
+                                                id: item.productId,
+                                                name: item.productName,
+                                                category: item.productCategory,
+                                                image: item.productImage
+                                            }}
+                                            onSubmit={(data) => {
+                                                submitReview(data)
+                                            }}
+                                        />
+                                    </Modal>
                                 </>
                             </>)}
                         </Space>

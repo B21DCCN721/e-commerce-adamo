@@ -5,7 +5,7 @@ import type { AppDispatch, RootState } from "../../store";
 import type { CartItem } from "../../types/cart";
 import { removeFromCart } from "../../features/cart/cartSlice";
 import PaymentCard from "../../components/PaymentCard";
-import PaymentForm from "../../components/PaymentForm";
+import FormPayment from "../../components/FormPayment";
 
 const PaymentPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,7 +45,7 @@ const PaymentPage = () => {
           )}
         </Col>
         <Col xs={24} md={8}>
-          <PaymentForm
+          <FormPayment
             selectedItems={selectedItems}
             totalPrice={totalPrice}
             onSuccess={handleSuccessfulPayment}

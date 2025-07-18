@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { addOrder } from "../../features/order/orderSlice";
 import type { AppDispatch } from "../../store";
 
-interface PaymentFormProps {
+interface FormPaymentProps {
     selectedItems: CartItem[];
     paymentUrl?: string;
     totalPrice: number;
@@ -14,7 +14,7 @@ interface PaymentFormProps {
     onSuccess: () => void;
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, onSuccess, paymentUrl, paymentMethod, setPaymentMethod }) => {
+const FormPayment: React.FC<FormPaymentProps> = ({ selectedItems, totalPrice, onSuccess, paymentUrl, paymentMethod, setPaymentMethod }) => {
     const [form] = Form.useForm();
     const [qrVisible, setQrVisible] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
@@ -183,4 +183,4 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ selectedItems, totalPrice, on
     );
 };
 
-export default PaymentForm;
+export default FormPayment;
