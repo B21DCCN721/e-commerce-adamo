@@ -20,6 +20,8 @@ import AdminDetailOrderPage from "../pages/admin/AdminDetailOrderPage";
 import AdminImportProductPage from "../pages/admin/AdminImportProductPage";
 import ProtectedRoute from "./ProtectedRoute";
 import NotificationPage from "../pages/NotificationPage";
+import AddressPage from "../pages/AddressPage";
+import ProfileLayout from "../layouts/ProfileLayout";
 // import ProtectedRoute from "./ProtectedRoute";
 
 const publicRoutes: RouteObject[] = [
@@ -41,14 +43,21 @@ const privateRoutes: RouteObject[] = [
     {
         path: "/",
         element: <ProtectedRoute>
-                     <DefaultLayout />
-                </ProtectedRoute>,
+            <DefaultLayout />
+        </ProtectedRoute>,
         children: [
             { path: "/history", element: <OrderHistoryPage /> },
-            { path: "/profile/info", element: <ProfilePage /> },
-            { path: "/profile/password", element: <ChangePasswordPage /> },
-            { path: "/payment", element: <PaymentPage /> },
-            { path: "/notification", element: <NotificationPage/>}
+            {
+                path: "/profile",
+                element: <ProfileLayout />,
+                children: [
+                    { path: "info", element: <ProfilePage /> },
+                    { path: "address", element: <AddressPage /> },
+                    { path: "change-password", element: <ChangePasswordPage /> },
+                ]
+            },
+            { path: "payment", element: <PaymentPage /> },
+            { path: "notification", element: <NotificationPage /> }
         ],
     },
 ]
@@ -57,13 +66,13 @@ const adminRoutes: RouteObject[] = [
         path: "/admin",
         element: <AdminLayout />,
         children: [
-            {path: "", element: <IntroPage/>},
-            {path: "dashboard", element: <AdminDashboardPage/>},
-            {path: "management/product", element: <AdminManamentProductPage/>},
-            {path: "management/product/:id", element: <AdminDetailProductPage/>},
-            {path: "management/order", element: <AdminOrderListPage/>},
-            {path: "management/order/:id", element: <AdminDetailOrderPage/>},
-            {path: "management/import", element: <AdminImportProductPage/>},
+            { path: "", element: <IntroPage /> },
+            { path: "dashboard", element: <AdminDashboardPage /> },
+            { path: "management/product", element: <AdminManamentProductPage /> },
+            { path: "management/product/:id", element: <AdminDetailProductPage /> },
+            { path: "management/order", element: <AdminOrderListPage /> },
+            { path: "management/order/:id", element: <AdminDetailOrderPage /> },
+            { path: "management/import", element: <AdminImportProductPage /> },
         ],
     },
 ]

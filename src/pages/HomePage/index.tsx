@@ -1,13 +1,13 @@
-import { Typography, Flex, Carousel, Button, Breadcrumb } from "antd";
+import { Typography, Flex, Carousel, Button, } from "antd";
 import styles from "./HomePage.module.css";
 import thumbNail1 from "../../assets/imgs/thumbNail1.png";
 import thumbNail2 from "../../assets/imgs/thumbNail2.webp";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../../components/ProductCard";
 import { mockClothingProducts } from "./data";
 import imgClothing from "../../assets/imgs/shrit.png"
-import { HomeOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 
 const HomePage = () => {
@@ -32,21 +32,10 @@ const HomePage = () => {
     }
   ])
   const navigate = useNavigate();
+  const { t } = useTranslation('home');
+
   return (
     <>
-      <Breadcrumb
-        style={{marginTop:'8px', marginLeft:'8px'}}
-        items={[
-          {
-            title: (
-              <Link to="/">
-                <HomeOutlined/>
-                <Typography.Text strong>Trang chủ</Typography.Text>
-              </Link>
-            )
-          }
-        ]}
-      />
       <div>
         <Carousel autoplay autoplaySpeed={2000}>
           {dataSlide.map((item) => (
@@ -62,7 +51,7 @@ const HomePage = () => {
           ))}
         </Carousel>
       </div>
-      <Typography.Title level={3}>Danh sách sản phẩm nổi bật</Typography.Title>
+      <Typography.Title level={3}>{t('titleListProduct')}</Typography.Title>
       <div style={{marginLeft:"50px"}}>
         <Flex wrap={true} gap="large">
           {mockClothingProducts.map((item) => (
@@ -82,7 +71,7 @@ const HomePage = () => {
           ))}
         </Flex>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/catogory')}>Xem Thêm</Button></div>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/catogory')}>{t('btnMore')}</Button></div>
     </>
   );
 };

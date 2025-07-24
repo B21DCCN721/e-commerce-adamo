@@ -1,7 +1,8 @@
 // components/NotificationCard.tsx
 import React from 'react';
-import { Card, Typography, Button, Row, Col, Space } from 'antd';
+import { Card, Typography, Button, Row, Col, Space, Badge } from 'antd';
 import type { Notification } from '../../types/notification';
+import styles from './NotificationCard.module.css';
 
 const { Text, Paragraph } = Typography;
 
@@ -40,34 +41,36 @@ const NotificationCard: React.FC<OrderNotificationProps> = ({ item }) => {
       title = "Thông báo mới";
   }
   return (
-    <Card style={{
-      marginBottom: 16, backgroundColor: item.isRead ? '#fff' : '#e6f7ff',
-    }}>
-      <Row gutter={16} align="middle">
-        <Col flex="80px">
-          <img
-            src={item.image}
-            alt="product"
-            style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 4 }}
-          />
-        </Col>
-        <Col flex="auto">
-          <Space direction="vertical" size={4} style={{ width: '100%' }}>
-            <Text strong>{title}</Text>
-            <Paragraph style={{ margin: 0 }}>
-              Mã đơn hàng <Text strong>{item.orderCode}</Text>
-            </Paragraph>
-            <Text>{item.content}</Text>
-            <Text type="secondary" style={{ fontSize: 12 }}>
-              {item.time ? new Date(item.time).toLocaleString() : 'Chưa có thời gian'}
-            </Text>
-          </Space>
-        </Col>
-        <Col>
-          {item.type === 'order' && item.orderStatus === 'delivered' && <Button color="danger" variant="filled">Đánh Giá Sản Phẩm</Button>}
-        </Col>
-      </Row>
-    </Card>
+      <Card style={{
+        marginBottom: 16
+      }}>
+        <Badge dot={!item.isRead} className={styles['ant-badge']}>
+          <Row gutter={16} align="middle">
+            <Col flex="80px">
+              <img
+                src={item.image}
+                alt="product"
+                style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 4 }}
+              />
+            </Col>
+            <Col flex="auto">
+              <Space direction="vertical" size={4} style={{ width: '100%' }}>
+                <Text strong>{title}</Text>
+                <Paragraph style={{ margin: 0 }}>
+                  Mã đơn hàng <Text strong>{item.orderCode}</Text>
+                </Paragraph>
+                <Text>{item.content}</Text>
+                <Text type="secondary" style={{ fontSize: 12 }}>
+                  {item.time ? new Date(item.time).toLocaleString() : 'Chưa có thời gian'}
+                </Text>
+              </Space>
+            </Col>
+            <Col>
+              {item.type === 'order' && item.orderStatus === 'delivered' && <Button color="danger" variant="filled">Đánh Giá Sản Phẩm</Button>}
+            </Col>
+          </Row>
+        </Badge>
+      </Card>
   );
 };
 

@@ -6,12 +6,11 @@ import {
   HistoryOutlined,
   ShoppingCartOutlined,
   EditOutlined,
-  LockOutlined,
   LoginOutlined,
   LogoutOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { useMemo, useState } from 'react';
@@ -29,6 +28,7 @@ const DefaultLayout: React.FC = () => {
     localStorage.getItem("isAuthenticated") === "true" ||
     sessionStorage.getItem("isAuthenticated") === "true";
   const location = useLocation();
+  const navigate = useNavigate();
   const [openSetting, setOpenSetting] = useState(false);
   const showDrawer = () => {
     setOpenSetting(true);
@@ -63,28 +63,26 @@ const DefaultLayout: React.FC = () => {
           <Menu
             theme={darkMode ? 'dark' : 'light'}
             mode="horizontal"
+            defaultSelectedKeys={["/"]}
             selectedKeys={[location.pathname]}
+            onClick={({ key }) => navigate(key)}
           >
-            <Menu.Item key='/' icon={<HomeOutlined />}><Link to='/'>Trang chủ</Link></Menu.Item>
-            <Menu.Item key='/catogory' icon={<UnorderedListOutlined />}><Link to='/catogory'>Danh mục</Link></Menu.Item>
+            <Menu.Item key='/' icon={<HomeOutlined />}>Trang chủ</Menu.Item>
+            <Menu.Item key='/catogory' icon={<UnorderedListOutlined />}>Danh mục</Menu.Item>
             <Menu.Item key='/cart' icon={<ShoppingCartOutlined />}>
-              <Link to='/cart'>Giỏ hàng {quantity}</Link>
+              Giỏ hàng {quantity}
             </Menu.Item>
-            <Menu.Item key='/history' icon={<HistoryOutlined />}><Link to='/history'>Lịch sử đơn hàng</Link></Menu.Item>
-            {/* <Menu.Item key='/login' icon={<LoginOutlined/>}><Link to='/login'>Đăng nhập</Link></Menu.Item> */}
+            <Menu.Item key='/history' icon={<HistoryOutlined />}>Lịch sử đơn hàng</Menu.Item>
             {isAuthenticated && (<Menu.SubMenu key="profile" icon={<UserOutlined />} title="Tài khoản">
               <Menu.Item key="/profile/info" icon={<EditOutlined />}>
-                <Link to="/profile/info">Chỉnh sửa thông tin</Link>
-              </Menu.Item>
-              <Menu.Item key="/profile/password" icon={<LockOutlined />}>
-                <Link to="/profile/password">Đổi mật khẩu</Link>
+                Hồ sơ
               </Menu.Item>
               <Menu.Item key="/logout" icon={<LogoutOutlined />} onClick={handleLogout}>
                 Đăng xuất
               </Menu.Item>
             </Menu.SubMenu>)}
             {!isAuthenticated && (<Menu.Item key="/login" icon={<LoginOutlined />}>
-              <Link to="/login">Đăng nhập</Link>
+              Đăng nhập
             </Menu.Item>)}
           </Menu>
           <NotificationPopover/>
