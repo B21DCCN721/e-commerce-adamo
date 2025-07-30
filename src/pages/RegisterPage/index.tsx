@@ -1,13 +1,32 @@
-import { Form, Input, Button, Card, Row, Col } from 'antd';
+import { Form, Input, Button, Card, Row, Col, message } from 'antd';
 import styles from "./Register.module.css";
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../../services/authenticatedService';
+import { createProfile } from '../../services/userService';
+interface FormRegister {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 const RegisterPage = () => {
   const [form] = Form.useForm();
-
-  const handleRegister = (values: unknown) => {
-    console.log('Đăng ký với:', values);
-    // TODO: Gọi API đăng ký
+  const navigate = useNavigate();
+  const handleRegister = async (values: FormRegister) => {
+    try {
+      const { user } = await register(values.email, values.password);
+      await createProfile(
+        user.uid, {
+        name: values.fullName,
+        email: values.email,
+      });
+      form.resetFields();
+      message.success("Đăng ký thành công");
+      navigate("/login");
+    } catch (error: unknown) {
+      message.error('Đăng ký thất bại');
+      console.error('Đăng ký thất bại:', error);
+    }
   };
 
   return (

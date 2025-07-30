@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Checkbox, InputNumber, Button, Image, Select } from 'antd';
+import { Table, Checkbox, InputNumber, Button, Image, Select, Popconfirm, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { changeQuantityItem, changeSizeItem, removeFromCart, selectItem } from '../../features/cart/cartSlice';
@@ -12,7 +12,6 @@ import type { Size } from '../../types/size';
 interface CartTableProps {
   items: CartItem[];
 }
-
 const CartTable: React.FC<CartTableProps> = ({ items }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -107,7 +106,7 @@ const CartTable: React.FC<CartTableProps> = ({ items }) => {
         />
       )
     },
-     {
+    {
       title: 'Màu sắc',
       key: 'color',
       render: (_value, record) =>
@@ -123,9 +122,20 @@ const CartTable: React.FC<CartTableProps> = ({ items }) => {
       title: 'Thao tác',
       key: 'action',
       render: (_value, record) => (
-        <Button type="text" danger onClick={() => handleRemove(record.id)}>
-          Xóa
-        </Button>
+        <Popconfirm
+          title="Xóa"
+          description="Xóa khỏi giỏ hàng?"
+          onConfirm={() => {
+            handleRemove(record.id)
+            message.success('Xóa thành công')
+          }}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="text" danger>
+            Xóa
+          </Button>
+        </Popconfirm>
       ),
     },
   ];

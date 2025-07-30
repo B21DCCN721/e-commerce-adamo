@@ -17,16 +17,14 @@ import { useMemo, useState } from 'react';
 import styles from "./DefaultLayout.module.css";
 import FormSetting from '../../components/FormSetting';
 import type { CartItem } from '../../types/cart';
-import { logout } from '../../services/authenticated';
+import { logout } from '../../services/authenticatedService';
 import NotificationPopover from '../../components/NotificationPopover';
 
 const { Header, Content, Footer } = Layout;
 
 // ecommerce
 const DefaultLayout: React.FC = () => {
-  const isAuthenticated =
-    localStorage.getItem("isAuthenticated") === "true" ||
-    sessionStorage.getItem("isAuthenticated") === "true";
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const location = useLocation();
   const navigate = useNavigate();
   const [openSetting, setOpenSetting] = useState(false);
@@ -68,7 +66,7 @@ const DefaultLayout: React.FC = () => {
             onClick={({ key }) => navigate(key)}
           >
             <Menu.Item key='/' icon={<HomeOutlined />}>Trang chủ</Menu.Item>
-            <Menu.Item key='/catogory' icon={<UnorderedListOutlined />}>Danh mục</Menu.Item>
+            <Menu.Item key='/category' icon={<UnorderedListOutlined />}>Danh mục</Menu.Item>
             <Menu.Item key='/cart' icon={<ShoppingCartOutlined />}>
               Giỏ hàng {quantity}
             </Menu.Item>

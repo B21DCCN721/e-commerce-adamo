@@ -63,7 +63,7 @@ export const AddressSchema = z.object({
   provinceName: z.string().min(1, "Tỉnh/Thành phố không được để trống"),
   districtName: z.string().min(1, "Quận/Huyện không được để trống"),
   wardName: z.string().min(1, "Phường/Xã không được để trống"),
-  isDefault: z.boolean().optional(),
+  isDefault: z.boolean().default(false),
 });
 
 // TypeScript type tương ứng

@@ -8,10 +8,9 @@ export const ReviewContentSchema = z.object({
 
 // Review schema
 export const ReviewSchema = z.object({
-  id: z.number(),
   productId: z.number(),
   username: z.string().min(1, "Tên người dùng không được để trống"),
-  avatarUrl: z.string().url().optional(),
+  avatarUrl: z.string().optional(),
   rating: z.number().min(0).max(5),
   contents: z.array(ReviewContentSchema).min(1, "Phải có ít nhất một nội dung"),
 });

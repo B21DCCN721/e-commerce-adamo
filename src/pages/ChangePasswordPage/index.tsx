@@ -1,21 +1,27 @@
-import { Button, Card, Form, Input, Typography } from "antd";
+import { Button, Card, Form, Input, message, Typography } from "antd";
+import { changePassword } from "../../services/authenticatedService";
 interface InfoChangePass {
-    oldPass: string;
+    currentPass: string;
     newPass: string;
     confirmPass: string;
 }
 const ChangePasswordPage = () => {
-    const handleChangepassWord = (value: InfoChangePass) => {
-        console.log('change pass', value);
-
+    const handleChangepassWord = async (value: InfoChangePass) => {
+        try {
+            await changePassword(value.currentPass, value.newPass);
+            message.success("Đổi mật khẩu thành công");
+        } catch (error) {
+            console.error('Đổi mật khẩu thất bại:', error);
+            message.error("Đổi mật khẩu thất bại");
+        }
     }
     return (
-        <Card style={{ width: "40%", margin:'100px auto'}}>  
+        <Card style={{ maxWidth: "650px", margin: '100px auto' }}>
             <Typography.Title level={3}>Đổi mật khẩu</Typography.Title>
             <Form layout="vertical" name="Đổi mật khẩu" autoComplete="off" onFinish={handleChangepassWord} >
                 <Form.Item
                     label="Mật khẩu cũ"
-                    name="oldPass"
+                    name="currentPass"
                     rules={[
                         { required: true, message: 'Vui lòng nhập mật khẩu cũ' },
                         {

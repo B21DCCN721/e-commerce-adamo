@@ -2,7 +2,7 @@ import type { RouteObject } from "react-router-dom";
 import DefaultLayout from "../layouts/DefaultLayout";
 import HomePage from "../pages/HomePage";
 import CartPage from "../pages/CartPage";
-import CatogoryPage from "../pages/CatogoryPage";
+import CategoryPage from "../pages/CategoryPage";
 import OrderHistoryPage from "../pages/OrderHistoryPage";
 import ProfilePage from "../pages/ProfilePage";
 import ChangePasswordPage from "../pages/ChangePasswordPage";
@@ -31,7 +31,7 @@ const publicRoutes: RouteObject[] = [
         children: [
             { path: "/", element: <HomePage /> },
             { path: "/cart", element: <CartPage /> },
-            { path: "/catogory", element: <CatogoryPage /> },
+            { path: "/category", element: <CategoryPage /> },
             { path: "/product/detail/:id", element: <DetailProductPage /> },
         ],
     },

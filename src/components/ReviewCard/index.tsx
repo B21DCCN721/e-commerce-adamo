@@ -34,13 +34,15 @@ const ReviewCard:React.FC<ReviewCardProps> = ({ review } ) => {
                 );
               } else if (item.type === "image") {
                 return (
-                  <Image
-                    key={index}
-                    src={item.content}
-                    alt="review-img"
-                    width={120}
-                    style={{ marginRight: 8, borderRadius: 8 }}
-                  />
+                  <div style={{ borderRadius: 8, marginRight: 16, display: 'inline-block' }} >
+                    <Image
+                      key={index}
+                      src={item.content}
+                      alt="review-img"
+                      width={120}
+                      style={{ borderRadius: 8 }}
+                    />
+                  </div>
                 );
               }
               return null;

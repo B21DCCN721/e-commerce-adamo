@@ -1,44 +1,79 @@
-import { Button, Col, Empty, Flex, Row, Tag, Typography } from "antd";
+import { Button, Col, Empty, Flex, Row, Spin, Tag, Typography } from "antd";
 import AddToCart from "../../components/AddToCart";
 import styles from "./DetailProductPage.module.css";
 import type { ProductWithVariants } from "../../types/product";
 import type { Size } from "../../types/size";
 import { StarFilled } from "@ant-design/icons";
-import { useState } from "react";
-import { mockClothingProducts, mockReview } from "./data";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReviewCard from "../../components/ReviewCard";
 import type { Review } from "../../types/review";
+import { getProductById } from "../../services/productService";
+import { getListReviews } from "../../services/reviewService";
 
 const DetailProductPage = () => {
     const { id } = useParams();
-
-    const normalizedProducts: ProductWithVariants[] = mockClothingProducts.map(product => ({
-        ...product,
-        variants: product.variants.map(variant => ({
-            ...variant,
-            sizes: variant.sizes.map(size => ({
-                ...size,
-                size: size.size as Size,
-            }))
-        })),
-    }));
-
-    const normalizedReviews: Review[] = mockReview.map((review) => ({
-        ...review,
-        contents: review.contents.map((content) => ({
-            ...content,
-            type: content.type === "text" || content.type === "image" ? content.type : "text",
-        }))
-    }));
-
-    const product: ProductWithVariants | undefined = normalizedProducts.find((item) => item.id === Number(id ?? -1));
+    const [loading, setLoading] = useState(false);
+    const [product, setProduct] = useState<ProductWithVariants>();
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [quantity, setQuantity] = useState<number>(1);
     const [selectedSize, setSelectedSize] = useState<Size>('S');
     const [selectedColor, setSelectedColor] = useState<string>(product?.variants[0]?.color || "");
-
     const selectedVariant = product?.variants.find(v => v.color === selectedColor);
+    // lấy thông tin sản phẩm
+    useEffect(() => {
+        const fetchProductById = async () => {
+            try {
+                setLoading(true);
+                const productId = Number(id);
+                if (!id || isNaN(productId)) {
+                    console.error("ID không hợp lệ:", id);
+                    return;
+                }
+                const data = await getProductById(productId - 1);
+                if (data) {
+                    setProduct({
+                        ...data,
+                        variants: data.variants.map(variant => ({
+                            ...variant,
+                            sizes: variant.sizes.map(size => ({
+                                ...size,
+                                size: size.size as Size,
+                            }))
+                        })),
+                    });
+                } else {
+                    console.error("Không tìm thấy sản phẩm với ID:", productId);
+                }
+            } catch (error) {
+                console.error("Failed to load products", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
+        fetchProductById();
+    }, [id]);
+    // lấy review
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                setLoading(true);
+                const response = await getListReviews();
+                setReviews(response.filter(review => review.productId === Number(id))
+                    .sort((a, b) => b.rating - a.rating));
+            } catch (error) {
+                console.error("Failed to load reviews", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReviews();
+    }, [id]);
+    if (loading) {
+        return <Flex justify="center"><Spin size="large" /></Flex>;
+    }
     return (
         <>
             {product ? (
@@ -132,10 +167,11 @@ const DetailProductPage = () => {
 
                     <div className={styles['box_review']}>
                         <Typography.Title level={3}>ĐÁNH GIÁ SẢN PHẨM</Typography.Title>
-                        {normalizedReviews.length > 0 ? (
-                            normalizedReviews.map((review) => (
-                                <ReviewCard key={review.id} review={review} />
-                            ))
+                        {reviews.length !== 0 ? (
+                            reviews
+                                .map((review, index) => (
+                                    <ReviewCard key={index} review={review} />
+                                ))
                         ) : (
                             <Typography.Text>Chưa có đánh giá nào.</Typography.Text>
                         )}

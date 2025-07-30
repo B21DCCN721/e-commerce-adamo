@@ -3,9 +3,10 @@ import { z } from "zod";
 // Định nghĩa enum trạng thái đơn hàng
 export const OrderStatusEnum = z.enum([
   "pending",
-  "shipped",
+  "shipping",
   "delivered",
   "canceled",
+  "confirmed",
 ]);
 
 // Thông tin từng sản phẩm trong đơn hàng
@@ -17,6 +18,7 @@ export const OrderItemSchema = z.object({
   quantity: z.number().int().positive(),
   price: z.number().nonnegative(),
   oldPrice: z.number().nonnegative().optional(),
+  isReview: z.boolean().default(false)
 });
 
 // Đơn hàng tổng thể
@@ -28,7 +30,8 @@ export const OrderSchema = z.object({
   customerPhone: z.string(),
   status: OrderStatusEnum,
   isPaid: z.boolean(),
-  deliverySuccessAt: z.string().optional(),
+  createAt: z.string().optional(),
+  updateAt: z.string(),
   totalAmount: z.number().nonnegative(),
   items: z.array(OrderItemSchema),
 });

@@ -18,7 +18,7 @@ const NotificationCard: React.FC<OrderNotificationProps> = ({ item }) => {
         case 'pending':
           title = "Đơn hàng đang chờ xử lý";
           break;
-        case 'shipped':
+        case 'shipping':
           title = "Đơn hàng đang được giao";
           break;
         case 'delivered':

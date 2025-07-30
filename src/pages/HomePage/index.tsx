@@ -1,13 +1,13 @@
-import { Typography, Flex, Carousel, Button, } from "antd";
+import { Typography, Flex, Carousel, Button, Spin, } from "antd";
 import styles from "./HomePage.module.css";
 import thumbNail1 from "../../assets/imgs/thumbNail1.png";
 import thumbNail2 from "../../assets/imgs/thumbNail2.webp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../../components/ProductCard";
-import { mockClothingProducts } from "./data";
 import imgClothing from "../../assets/imgs/shrit.png"
-import { useTranslation } from "react-i18next";
+import { getListProducts } from "../../services/productService";
+import type { Product } from "../../types/product";
 
 
 const HomePage = () => {
@@ -31,8 +31,25 @@ const HomePage = () => {
       description: "Balo học sinh đa năng, có ngăn đựng laptop tiện lợi.",
     }
   ])
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await getListProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to load products", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const navigate = useNavigate();
-  const { t } = useTranslation('home');
 
   return (
     <>
@@ -51,27 +68,33 @@ const HomePage = () => {
           ))}
         </Carousel>
       </div>
-      <Typography.Title level={3}>{t('titleListProduct')}</Typography.Title>
-      <div style={{marginLeft:"50px"}}>
-        <Flex wrap={true} gap="large">
-          {mockClothingProducts.map((item) => (
-            <ProductCard
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              category={item.category}
-              price={item.price}
-              oldPrice={500000}
-              image={imgClothing}
-              inStock={true}
-              rating={4.5}
-              tags={item.tags}
-            />
-  
-          ))}
-        </Flex>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/catogory')}>{t('btnMore')}</Button></div>
+      <Typography.Title level={3}>Danh sách sản phẩm nổi bật</Typography.Title>
+      {loading ? (
+        <Flex justify="center" align="center"><Spin tip="Loading" size="large" ></Spin></Flex>
+      ) : (
+        <>
+          <div style={{ marginLeft: "50px" }}>
+            <Flex wrap={true} gap="large">
+              {products.map((item) => (
+                <ProductCard
+                  key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  category={item.category}
+                  price={item.price}
+                  oldPrice={500000}
+                  image={item.image || imgClothing}
+                  inStock={true}
+                  rating={4.5}
+                  tags={item.tags}
+                />
+
+              ))}
+            </Flex>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/category')}>Xem thêm</Button></div>
+        </>
+      )}
     </>
   );
 };

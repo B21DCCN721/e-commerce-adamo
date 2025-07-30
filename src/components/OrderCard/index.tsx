@@ -1,33 +1,33 @@
 import { Card, Col, Row, Space, Tag, Typography, Image, Button, Modal } from "antd"
 import type { Order } from "../../types/order";
-import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from "@ant-design/icons";
 import FormReview from "../FormReview";
 import { useState } from "react";
+import formatTime from "../../helper/formatTime";
 
 interface OrderCardProps {
     order: Order;
     handleCanceled?: () => void;
-    submitReview?: (value) => void;
+    submitReview?: (value, indexItem, orderId) => void;
 }
 const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }, submitReview = () => { } }) => {
-    const [showReview, setShowReview] = useState(false);
-    const handleReview = () => {
-        setShowReview(true);
-    }
+    const [reviewingIndex, setReviewingIndex] = useState<number | null>(null);
+
     return (
         <Card
             style={{ marginBottom: 24 }}
         >
             <Row justify="start" align="middle" style={{ marginBottom: 16 }}>
                 <Space>
-                    {order.status === 'delivered' && <Tag icon={<CheckCircleOutlined />} color="success">{order.status}</Tag>}
-                    {order.status === 'pending' && <Tag icon={<SyncOutlined spin />} color="processing">{order.status}</Tag>}
-                    {order.status === 'canceled' && <Tag icon={<CloseCircleOutlined />} color="error">{order.status}</Tag>}
-                    {order.status === 'shipped' && <Tag icon={<ClockCircleOutlined />} color="warning">{order.status}</Tag>}
+                    {order.status === 'delivered' && <Tag icon={<CheckCircleOutlined />} color="success">Đã được giao</Tag>}
+                    {order.status === 'pending' && <Tag icon={<SyncOutlined spin />} color="processing">Đang xử lý</Tag>}
+                    {order.status === 'canceled' && <Tag icon={<CloseCircleOutlined />} color="error">Đã hủy</Tag>}
+                    {order.status === 'shipping' && <Tag icon={<ExclamationCircleOutlined />} color="warning">Đang vận chuyển</Tag>}
+                    {order.status === 'confirmed' && <Tag icon={<ClockCircleOutlined />} color="lime">Đã được xác nhận</Tag>}
                 </Space>
             </Row>
 
-            {order.items.map((item) => (
+            {order.items.map((item, index) => (
 
                 <Row gutter={16} key={item.productId} style={{ marginBottom: 12 }}>
                     <Col flex="80px">
@@ -44,17 +44,19 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                     </Col>
                     <Col>
                         <Space direction="vertical" align="end">
-                            {order.status === 'pending' && (<>
+                            {order.status === 'delivered' && (<>
                                 <>
-                                    <Button color="danger" variant="filled" onClick={handleReview}>Đánh giá</Button>
-                                    <Modal open={showReview}
-                                        onCancel={() => setShowReview(false)}
+                                    <Button color="danger" variant="filled" disabled={item.isReview} onClick={() => setReviewingIndex(index)}>Đánh giá</Button>
+                                    <Modal
+                                        open={reviewingIndex === index}
+                                        onCancel={() => setReviewingIndex(null)}
                                         footer={null}
                                         title="Đánh Giá Sản Phẩm"
                                         centered
-                                        width={650}>
+                                        width={650}
+                                    >
                                         <FormReview
-                                            onClose={() => setShowReview(false)}
+                                            onClose={() => setReviewingIndex(null)}
                                             product={{
                                                 id: item.productId,
                                                 name: item.productName,
@@ -62,10 +64,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                                                 image: item.productImage
                                             }}
                                             onSubmit={(data) => {
-                                                submitReview(data)
+                                                submitReview(data, index, order.id);
+                                                setReviewingIndex(null);
                                             }}
                                         />
                                     </Modal>
+
                                 </>
                             </>)}
                         </Space>
@@ -94,6 +98,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                         <Typography.Text >
                             Trạng thái thanh toán: <b>{order.isPaid ? "Đã thanh toán" : "Đợi thanh toán"}</b>
                         </Typography.Text>
+                        <Typography.Text >
+                            {formatTime(order.updateAt)}
+                        </Typography.Text>
                     </Space>
                 </Col>
                 <Col>
@@ -108,7 +115,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                             {order.status === 'pending' && (<>
                                 <Button type="primary" onClick={handleCanceled}>Hủy đơn</Button>
                             </>)}
-                            {order.status === 'shipped' && (<>
+                            {order.status === 'shipping' && (<>
                                 <Button type="primary">Theo dõi</Button>
                             </>)}
                             {order.status === 'canceled' && (<>

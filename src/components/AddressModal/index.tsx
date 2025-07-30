@@ -10,9 +10,10 @@ interface Props {
     visible: boolean;
     onClose: () => void;
     onSubmit: (values: any) => void;
+    defaultValue?: any; // Dữ liệu địa chỉ mặc định nếu có
 }
 
-const AddressModal = ({ visible, onClose, onSubmit }: Props) => {
+const AddressModal = ({ visible, onClose, onSubmit, defaultValue = {} }: Props) => {
     const [form] = Form.useForm();
     const [provinces, setProvinces] = useState<Province[]>([]);
     const [districts, setDistricts] = useState<District[]>([]);
@@ -48,6 +49,11 @@ const AddressModal = ({ visible, onClose, onSubmit }: Props) => {
             form.setFieldsValue({ wardCode: undefined });
         }
     }, [districtCode, form]);
+    useEffect(() => {
+        if (visible && defaultValue) {
+            form.setFieldsValue(defaultValue);
+        }
+    }, [visible, defaultValue, form]);
 
     const onFinish = (values: any) => {
         const province = provinces.find(p => p.code === values.provinceCode);
@@ -61,9 +67,8 @@ const AddressModal = ({ visible, onClose, onSubmit }: Props) => {
             wardName: ward?.name,
         };
 
-        console.log("Full Address:", fullAddress);
+        console.log("Full Address modal address:", fullAddress);
         onSubmit(fullAddress);
-        message.success("Địa chỉ đã được lưu!");
         form.resetFields();
         onClose();
     };
@@ -71,6 +76,7 @@ const AddressModal = ({ visible, onClose, onSubmit }: Props) => {
 
     return (
         <Modal
+            width={600}
             open={visible}
             onCancel={() => {
                 form.resetFields();
@@ -93,7 +99,10 @@ const AddressModal = ({ visible, onClose, onSubmit }: Props) => {
                     label="Số điện thoại"
                     rules={[
                         { required: true, message: "Vui lòng nhập số điện thoại" },
-                        { pattern: /^[0-9]{9,11}$/, message: "Số điện thoại không hợp lệ" },
+                        {
+                            pattern: /^0[1-9]{1}[0-9]{8,9}$/,
+                            message: 'Số điện thoại phải có 10 hoặc 11 chữ số bắt đầu bằng 0',
+                        },
                     ]}
                 >
                     <Input placeholder="Số điện thoại" />

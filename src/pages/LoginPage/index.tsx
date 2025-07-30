@@ -5,10 +5,12 @@ import styles from "./Login.module.css";
 import { GoogleLogin } from '@react-oauth/google';
 import type { CredentialResponse } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../services/authenticated';
+import { login } from '../../services/authenticatedService';
 import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
+import avatar from "../../assets/imgs/avatar.jpg";
 import FormForgotPassword from '../../components/FormForgotPassword';
+import { getProflie } from '../../services/userService';
 interface FormLogin {
   email: string;
   password: string
@@ -22,7 +24,10 @@ const LoginPage = () => {
   };
   const handleLogin = async (values: FormLogin) => {
     try {
-      await login(values.email, values.password);
+      const {user} = await login(values.email, values.password);
+      const profile = await getProflie(user.uid);
+      localStorage.setItem('infoUser', JSON.stringify({ email: profile?.email , name: profile?.name ?? 'user', avatar: avatar }));
+      console.log(user);
       message.success("Đăng nhập thành công");
       navigate("/");
     } catch (error: any) {
@@ -34,7 +39,7 @@ const LoginPage = () => {
     const token = credentialResponse.credential;
     if (token) {
       const decoded: unknown = jwtDecode(token);
-      localStorage.setItem('token', token);
+      localStorage.setItem('accessToken', token);
       localStorage.setItem('isAuthenticated', 'true');
       console.log('Đăng nhập bằng Google:', decoded);
       message.success("Đăng nhập thành công");

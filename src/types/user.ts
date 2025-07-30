@@ -1,13 +1,11 @@
+import type { Dayjs } from "dayjs";
 import { z } from "zod";
 
 export const UserSchema = z.object({
-  id: z.number(),
-  avatar: z.string(),
+  avatar: z.string().optional(),
   name: z.string(),
-  gender: z.string(),
+  gender: z.string().optional(),
   email: z.string(),
-  phone: z.string().min(10).max(11),
-  address: z.string(),
-  birthday: z.date(),
+  birthday: z.custom<Dayjs>().optional(),
 });
 export type User = z.infer<typeof UserSchema>;
