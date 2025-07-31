@@ -11,7 +11,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { addReview } from "../../services/reviewService";
 import type { Review } from "../../types/review";
-import convertToContentArray from "../../helper/convertDataReview";
+import convertToContentArray from "../../utils/convertDataReview";
 const { RangePicker } = DatePicker;
 // const orders: Order[] = [
 //   {
@@ -123,7 +123,7 @@ const OrderHistoryPage = () => {
 
     const matchDate = dateRange
       ? (() => {
-        const createdAt = dayjs(order.updateAt);
+        const createdAt = dayjs(order.updatedAt);
         return createdAt.isAfter(dateRange[0].startOf("day")) &&
           createdAt.isBefore(dateRange[1].endOf("day"));
       })()
@@ -194,7 +194,7 @@ const OrderHistoryPage = () => {
   }
   return (
     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-      <Space direction="horizontal" size="middle" style={{ width: "100%" }}>
+      <Space direction="horizontal" size="middle" wrap style={{ width: "100%" }}>
         <Segmented
           options={["Tất cả", "Đang xử lý", "Đã xác nhận", "Đang vận chuyển", "Đã giao", "Đã hủy"]}
           defaultValue="Tất cả"

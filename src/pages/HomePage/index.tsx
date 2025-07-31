@@ -70,7 +70,7 @@ const HomePage = () => {
       </div>
       <Typography.Title level={3}>Danh sách sản phẩm nổi bật</Typography.Title>
       {loading ? (
-        <Flex justify="center" align="center"><Spin tip="Loading" size="large" ></Spin></Flex>
+        <Flex justify="center" align="center"><Spin size="large" /></Flex>
       ) : (
         <>
           <div style={{ marginLeft: "50px" }}>

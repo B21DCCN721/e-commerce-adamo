@@ -42,6 +42,7 @@ const DetailProductPage = () => {
                             }))
                         })),
                     });
+                    setSelectedColor(data?.variants[0]?.color)
                 } else {
                     console.error("Không tìm thấy sản phẩm với ID:", productId);
                 }
@@ -54,7 +55,7 @@ const DetailProductPage = () => {
 
         fetchProductById();
     }, [id]);
-    // lấy review
+    // lấy thông tin review
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -143,16 +144,12 @@ const DetailProductPage = () => {
 
                             <AddToCart
                                 item={{
+                                    ...product,
                                     id: Math.random(),
                                     productId: product.id,
                                     selected: false,
-                                    name: product.name,
-                                    price: product.price,
-                                    oldPrice: product.oldPrice,
-                                    category: product.category,
                                     quantity: quantity,
                                     image: product.image,
-                                    description: product.description,
                                     size: selectedSize,
                                     color: selectedColor,
                                 }}

@@ -1,12 +1,13 @@
 import anhNen from "../../assets/imgs/nenProfile.png";
-import silverWolf from "../../assets/imgs/silverwolf.gif";
-import { Flex, Avatar, Button, Typography, Row, Col, Form, Input, DatePicker, Upload, type UploadProps, type GetProp, Radio, message, Spin, Image, } from "antd";
+// import silverWolf from "../../assets/imgs/silverwolf.gif";
+import { Flex, Avatar, Button, Typography, Row, Col, Form, Input, DatePicker, Upload,
+        type UploadProps, type GetProp, Radio, message, Spin, } from "antd";
 import { AntDesignOutlined, EditOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import avatar from "../../assets/imgs/avatar.jpg";
 import { useEffect, useState } from "react";
 import type { User } from "../../types/user";
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-import { getBase64, beforeUpload } from "../../helper/handleUploadImg";
+import { getBase64, beforeUpload } from "../../utils/handleUploadImg";
 import { getProflie, updateProfile } from "../../services/userService";
 import dayjs from "dayjs";
 const ProfilePage = () => {
@@ -158,9 +159,9 @@ const ProfilePage = () => {
               <Input />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          {/* <Col span={12}>
             <Image src={silverWolf} alt="demo cho do trong" style={{ borderRadius: '10px' }} />
-          </Col>
+          </Col> */}
         </Row>
         <Form.Item name='btnsubmit'>
           <Button type="primary" htmlType="submit">

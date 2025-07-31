@@ -11,14 +11,12 @@ const login = async (email: string, password: string) => {
     localStorage.setItem('accessToken', token);
     localStorage.setItem('userId', user.uid);
     localStorage.setItem('isAuthenticated', 'true');
-    console.log("[Login] Success:", user.uid);
     return { user, token };
   } catch (error: any) {
     console.error("[Login] Failed:", error.code, error.message);
     throw error;
   }
 };
-
 const register = async (email: string, password: string) => {
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);

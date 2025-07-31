@@ -1,14 +1,20 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { FloatButton } from "antd";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
+  // Auto scroll khi chuyển trang
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
 
-  return null;
+  return (
+    <>
+      <FloatButton.BackTop />
+    </>
+  );
 };
 
 export default ScrollToTop;

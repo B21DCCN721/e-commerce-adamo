@@ -3,7 +3,7 @@ import type { Order } from "../../types/order";
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from "@ant-design/icons";
 import FormReview from "../FormReview";
 import { useState } from "react";
-import formatTime from "../../helper/formatTime";
+import formatTime from "../../utils/formatTime";
 
 interface OrderCardProps {
     order: Order;
@@ -29,7 +29,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
 
             {order.items.map((item, index) => (
 
-                <Row gutter={16} key={item.productId} style={{ marginBottom: 12 }}>
+                <Row gutter={16} key={index} style={{ marginBottom: 12 }}>
                     <Col flex="80px">
                         <Image src={item.productImage} width={80} height={80} style={{ objectFit: "cover" }} />
                     </Col>
@@ -99,7 +99,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                             Trạng thái thanh toán: <b>{order.isPaid ? "Đã thanh toán" : "Đợi thanh toán"}</b>
                         </Typography.Text>
                         <Typography.Text >
-                            {formatTime(order.updateAt)}
+                            {formatTime(order.updatedAt)}
                         </Typography.Text>
                     </Space>
                 </Col>

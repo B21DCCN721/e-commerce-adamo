@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { Badge, Button, Layout, Menu, Typography } from "antd";
+import {  Layout, Menu, Typography } from "antd";
 import {
   DashboardOutlined,
   AreaChartOutlined,
-  BellOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Notification from "../../components/admin/Notification";
 
 const { Header, Sider, Content } = Layout;
 
@@ -15,12 +13,6 @@ const AdminLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
 
   const menuItems = [
     {
@@ -70,22 +62,7 @@ const AdminLayout: React.FC = () => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: "#fff", textAlign: "right", paddingRight: 20 }}>
-          <Notification content={content}>
-            <Badge count={5}>
-              <Button
-                shape="circle"
-                icon={<BellOutlined style={{ fontSize: "20px" }} />}
-                size="large"
-                style={{
-                  transition: 'transform 0.3s ease',
-                  width: "40px",
-                  height: "40px",
-                }}
-                className="floating-setting-btn"
-                onClick={() => console.log("click bell")}
-              />
-            </Badge>
-          </Notification>
+
         </Header>
         <Content style={{ margin: "16px", padding: 24, background: "#fff" }}>
           <Outlet />

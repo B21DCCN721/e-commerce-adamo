@@ -1,11 +1,12 @@
-import { Button, InputNumber, Typography, Space, Row, Col, Divider, Flex } from 'antd';
+import { Button, InputNumber, Typography, Space, Row, Col, Divider, Flex, message } from 'antd';
 import type { Size } from '../../types/size';
 import { ShoppingCartOutlined, ShoppingOutlined } from '@ant-design/icons';
 import type { CartItem } from '../../types/cart';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../features/cart/cartSlice';
-import type { AppDispatch } from '../../store';
+import type { AppDispatch, RootState } from '../../store';
 import { useNavigate } from 'react-router-dom';
+import { addItemsToCartServer } from '../../services/cartService';
 
 interface AddToCartProps {
     item: CartItem;
@@ -18,9 +19,24 @@ interface AddToCartProps {
 const AddToCart: React.FC<AddToCartProps> = ({ item, defaultQuantity, selectedSize, setSelectedSize, setQuantity, quantityForSize }) => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const handleAddToCart = (): void => {
-        dispatch(addToCart(item));
-        console.log('thêm vào giỏ hàng thành công', item);
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const listLocalProducts: CartItem[] = useSelector((state: RootState) => state.cart.items);
+    const userId = localStorage.getItem('userId') ?? '';
+    const handleAddToCart = async () => {
+        if (!isAuthenticated) {
+            dispatch(addToCart(item));
+            message.success('Thêm vào giỏ hàng thành công')
+            console.log('thêm vào giỏ hàng thành công', item);
+        } else {
+            try {
+                await addItemsToCartServer(userId, [...listLocalProducts, item])
+                dispatch(addToCart(item));
+                message.success('Thêm vào giỏ hàng thành công.')
+            } catch (error) {
+                console.error('Đẩy dữ liệu giỏ hàng lên server', error)
+                message.error("Thêm vào giỏ hàng thất bại.")
+            }
+        }
     }
     const handleBuyNow = (): void => {
         dispatch(addToCart({

@@ -71,7 +71,7 @@ const DefaultLayout: React.FC = () => {
               Giỏ hàng {quantity}
             </Menu.Item>
             <Menu.Item key='/history' icon={<HistoryOutlined />}>Lịch sử đơn hàng</Menu.Item>
-            {isAuthenticated && (<Menu.SubMenu key="profile" icon={<UserOutlined />} title="Tài khoản">
+            {isAuthenticated && (<Menu.SubMenu key="/profile" icon={<UserOutlined />} title="Tài khoản">
               <Menu.Item key="/profile/info" icon={<EditOutlined />}>
                 Hồ sơ
               </Menu.Item>
@@ -96,7 +96,7 @@ const DefaultLayout: React.FC = () => {
               size="large"
               style={{
                 position: 'fixed',
-                right: 30,
+                right: 25,
                 bottom: 100,
                 zIndex: 1000,
                 transition: 'transform 0.3s ease',

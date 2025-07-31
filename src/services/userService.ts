@@ -1,8 +1,8 @@
 import axiosClient from "../configs/axiosClient";
-import filterValidItems from "../helper/filterValidItems";
-import validateObject from "../helper/validateObject";
-import { AddressSchema } from "../types/address";
-import { UserSchema } from "../types/user";
+import filterValidItems from "../utils/filterValidItems";
+import validateObject from "../utils/validateObject";
+import { AddressSchema, type Address } from "../types/address";
+import { UserSchema, type User } from "../types/user";
 
 const getProflie = async (userId: string) => {
   try {
@@ -13,7 +13,7 @@ const getProflie = async (userId: string) => {
     throw error;
   }
 }
-const updateProfile = async (userId: string, data: unknown) => {
+const updateProfile = async (userId: string, data: User) => {
   try {
     const response = await axiosClient.put(`/users/${userId}.json`, data);
     return validateObject(UserSchema, response.data, 'Update user profile');
@@ -22,7 +22,7 @@ const updateProfile = async (userId: string, data: unknown) => {
     throw error;
   }
 }
-const createProfile = async (userId: string, data: unknown) => {
+const createProfile = async (userId: string, data: User) => {
   try {
     const response = await axiosClient.put(`/users/${userId}.json`, data);
     return validateObject(UserSchema, response.data, 'Create user profile');
@@ -31,7 +31,7 @@ const createProfile = async (userId: string, data: unknown) => {
     throw error;
   }
 }
-const addAdress = async (userId: string, data: unknown) => {
+const addAdress = async (userId: string, data: Address[]) => {
   try {
     const response = await axiosClient.put(`/addresses/${userId}.json`, data);
     return filterValidItems(AddressSchema, response.data, 'Create user address');
@@ -49,7 +49,7 @@ const getAddressByUserId = async (userId: string) => {
     throw error;
   }
 }
-const updateAddress = async (userId: string, data: unknown) => {
+const updateAddress = async (userId: string, data: Address[]) => {
   try {
     const response = await axiosClient.put(`/addresses/${userId}.json`, data);
     return filterValidItems(AddressSchema, response.data, 'Update user address');

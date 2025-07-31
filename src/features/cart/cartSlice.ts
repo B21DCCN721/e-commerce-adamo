@@ -14,6 +14,9 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart: (state, action: PayloadAction<CartItem[]>) => {
+      state.items = action.payload;
+    },
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const item = state.items.find((i) => i.id === action.payload.id);
       if (item) {
@@ -84,6 +87,7 @@ export const {
   reduceQuantityItem,
   selectItem,
   changeQuantityItem,
-  changeSizeItem
+  changeSizeItem,
+  setCart
 } = cartSlice.actions;
 export default cartSlice.reducer;

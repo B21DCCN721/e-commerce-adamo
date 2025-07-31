@@ -11,6 +11,11 @@ import { useState } from 'react';
 import avatar from "../../assets/imgs/avatar.jpg";
 import FormForgotPassword from '../../components/FormForgotPassword';
 import { getProflie } from '../../services/userService';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../../store';
+import { mergeCarts } from '../../utils/cartMerge';
+import { addItemsToCartServer, getCartByUserId } from '../../services/cartService';
+import { setCart } from '../../features/cart/cartSlice';
 interface FormLogin {
   email: string;
   password: string
@@ -22,20 +27,25 @@ const LoginPage = () => {
   const showModal = () => {
     setIsOpenModalForgotPassword(true);
   };
+  const localCartItems = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useDispatch<AppDispatch>();
   const handleLogin = async (values: FormLogin) => {
     try {
       const {user} = await login(values.email, values.password);
       const profile = await getProflie(user.uid);
       localStorage.setItem('infoUser', JSON.stringify({ email: profile?.email , name: profile?.name ?? 'user', avatar: avatar }));
-      console.log(user);
+      const serverCartItems = await getCartByUserId(user.uid);
+      const mergeCart = mergeCarts(localCartItems, serverCartItems);
+      await addItemsToCartServer(user.uid, mergeCart);
+      dispatch(setCart(mergeCart))
       message.success("Đăng nhập thành công");
       navigate("/");
     } catch (error: any) {
       message.error("Đăng nhập thất bại");
-      console.error('Đăng nhập thất bại:', error.message);
+      console.error('Đăng nhập thất bại:', error);
     }
   };
-  const handleGoogleLoginSuccess = (credentialResponse: CredentialResponse) => {
+  const handleGoogleLogin = (credentialResponse: CredentialResponse) => {
     const token = credentialResponse.credential;
     if (token) {
       const decoded: unknown = jwtDecode(token);
@@ -75,7 +85,7 @@ const LoginPage = () => {
                 label="Mật khẩu"
                 name="password"
                 rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }, {
-                  pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                  pattern: /^(?=.*[A-Za-z])(?=.*\d).{6,}$/,
                   message: 'Ít nhất 6 ký tự, gồm chữ và số',
                 },]}
               >
@@ -95,7 +105,7 @@ const LoginPage = () => {
             <Divider>Hoặc</Divider>
 
             <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
+              onSuccess={handleGoogleLogin}
               onError={() => {
                 console.log('Đăng nhập Google thất bại');
               }}

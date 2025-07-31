@@ -36,8 +36,10 @@ const FormPayment: React.FC<FormPaymentProps> = ({ selectedItems, totalPrice, on
                     productCategory: item.category,
                     quantity: item.quantity,
                     price: item.price,
-                    oldPrice: 1000000,
+                    oldPrice: 10000,
+                    isReview: false,
                 })),
+                updatedAt: new Date().toISOString()
             }));
         },
         [dispatch, form, paymentMethod, selectedItems, totalPrice]

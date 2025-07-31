@@ -30,8 +30,8 @@ export const OrderSchema = z.object({
   customerPhone: z.string(),
   status: OrderStatusEnum,
   isPaid: z.boolean(),
-  createAt: z.string().optional(),
-  updateAt: z.string(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string(),
   totalAmount: z.number().nonnegative(),
   items: z.array(OrderItemSchema),
 });
