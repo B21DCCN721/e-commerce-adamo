@@ -18,26 +18,26 @@ const CartTable: React.FC<CartTableProps> = ({ items }) => {
 
   const isAllSelected = items.length > 0 && items.every((item) => item.selected);
 
-  const handleSelectAll = (e: CheckboxChangeEvent) => {
+  const handleSelectAll = async (e: CheckboxChangeEvent) => {
     const checked = e.target.checked;
     dispatch(selectItem({ checked, selectAll: true }));
   };
 
-  const handleSelectItem = (id: number) => {
+  const handleSelectItem = async (id: number) => {
     const cartItem = items.find((item) => item.id === id);
     dispatch(selectItem({ id, checked: !(cartItem?.selected ?? false), selectAll: false }));
   };
 
-  const handleQuantityChange = (id: number, value: number | null) => {
+  const handleQuantityChange = async (id: number, value: number | null) => {
     if (value === null || value < 1) return;
     dispatch(changeQuantityItem({ id, quantity: value }))
   };
-  const handleSizeChange = (id: number, value: Size | null) => {
+  const handleSizeChange = async (id: number, value: Size | null) => {
     if (value === null) return;
     dispatch(changeSizeItem({ id, size: value }))
   };
 
-  const handleRemove = (id: number) => {
+  const handleRemove = async (id: number) => {
     dispatch(removeFromCart(id));
   };
 
@@ -94,7 +94,7 @@ const CartTable: React.FC<CartTableProps> = ({ items }) => {
       key: 'size',
       render: (_value, record) => (
         <Select
-          defaultValue={record.size}
+          value={record.size}
           style={{ width: 120 }}
           onChange={(value) => handleSizeChange(record.id, value)}
           options={[

@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Order, OrderStatus } from "../../types/order";
 
-type OrderSate = {
+type OrderState = {
   items: Order[];
 };
 
-const initialState: OrderSate = {
+const initialState: OrderState = {
   items: [],
 };
 
@@ -13,6 +13,9 @@ export const orderSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setOrder: (state, action: PayloadAction<Order[]>) => {
+          state.items = action.payload;
+        },
     addOrder: (state, action: PayloadAction<Order>) => {
       state.items.push(action.payload);
     },
@@ -37,5 +40,5 @@ export const orderSlice = createSlice({
   },
 });
 
-export const { addOrder, changeStatus, changeIsPaid } = orderSlice.actions;
+export const { addOrder, changeStatus, changeIsPaid, setOrder } = orderSlice.actions;
 export default orderSlice.reducer;

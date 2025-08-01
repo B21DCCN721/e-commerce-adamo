@@ -1,9 +1,9 @@
 import axiosClient from "../configs/axiosClient";
 import filterValidItems from "../utils/filterValidItems.ts";
 import { OrderSchema, type Order } from "../types/order.ts";
-const getListOrders = async (params: Record<string, unknown> = {}) => {
+const getListOrdersByUid = async (uid:string, params: Record<string, unknown> = {}) => {
   try {
-    const response = await axiosClient.get('/orders.json', { params });
+    const response = await axiosClient.get(`/orders/${uid}.json`, { params });
     const returnedData = response.data ?? [];
     return filterValidItems(OrderSchema, returnedData, 'Order List');
   } catch (error) {
@@ -11,12 +11,14 @@ const getListOrders = async (params: Record<string, unknown> = {}) => {
     throw error;
   }
 };
-const updatedOrder = async (data: Order[]) => {
+const updatedOrder = async (uid:string, data: Order[]) => {
   try {
-    await axiosClient.put(`/orders.json`, data);
+    const response = await axiosClient.put(`/orders/${uid}.json`, data);
+    const returnedData = response.data ?? [];
+    return filterValidItems(OrderSchema, returnedData, 'update Order List');
   } catch (error) {
     console.error('Error fetching updated order:', error);
     throw error;
   }
 }
-export { getListOrders, updatedOrder };
+export { getListOrdersByUid, updatedOrder };

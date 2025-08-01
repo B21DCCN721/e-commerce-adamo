@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../store";
 import { changeStatus } from "../../features/order/orderSlice";
-import { getListOrders, updatedOrder } from "../../services/orderService";
+import { getListOrdersByUid, updatedOrder } from "../../services/orderService";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { addReview } from "../../services/reviewService";
@@ -116,6 +116,7 @@ const OrderHistoryPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const user = localStorage.getItem('infoUser') ?? '';
+  const userId = localStorage.getItem('userId') ?? '';
   // lọc đơn hàng theo trạng thái và thời gian 
   const filteredOrders = orders.filter((order) => {
     const statusFilter = statusMap[selectedStatus];
@@ -136,7 +137,7 @@ const OrderHistoryPage = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const response = await getListOrders();
+        const response = await getListOrdersByUid(userId);
         setOrders(response);
       } catch (error) {
         console.error("Failed to load orders", error);
@@ -145,7 +146,7 @@ const OrderHistoryPage = () => {
       }
     }
     fetchOrders();
-  }, []);
+  }, [userId]);
   // xử lý hủy đơn hàng
   const dispatch = useDispatch<AppDispatch>();
   const handleCanceled = (id: number) => {
@@ -154,7 +155,7 @@ const OrderHistoryPage = () => {
   // xử lý đánh giá sản phẩm
   const handleReviewProduct = async (data: any, indexItem, orderId) => {
     console.log('review-indexItem-orderId', data, indexItem, orderId);
-    const payload: Review = {
+    const payloadReview: Review = {
       avatarUrl: JSON.parse(user).avatar,
       username: JSON.parse(user).name,
       productId: data.productId,
@@ -181,8 +182,9 @@ const OrderHistoryPage = () => {
     });
 
     try {
-      await addReview(payload);
-      await updatedOrder(updatedOrders);
+      await addReview(payloadReview);
+      const response = await updatedOrder(userId, updatedOrders);
+      setOrders(response)
       message.success("Cảm ơn bạn đã đánh giá sản phẩm!");
     } catch (error) {
       console.error('Failed to add review', error);

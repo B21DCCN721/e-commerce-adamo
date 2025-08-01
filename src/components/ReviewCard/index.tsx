@@ -20,7 +20,7 @@ const ReviewCard:React.FC<ReviewCardProps> = ({ review } ) => {
             <div>
               <Typography.Text strong>{review.username}</Typography.Text>
               <br />
-              <Rate disabled defaultValue={review.rating} />
+              <Rate disabled value={review.rating} />
             </div>
           </Space>
     

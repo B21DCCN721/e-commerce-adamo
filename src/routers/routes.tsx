@@ -14,6 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import NotificationPage from "../pages/NotificationPage";
 import AddressPage from "../pages/AddressPage";
 import ProfileLayout from "../layouts/ProfileLayout";
+import VoucherPage from "../pages/VoucherPage";
 // import ProtectedRoute from "./ProtectedRoute";
 
 const publicRoutes: RouteObject[] = [
@@ -46,6 +47,7 @@ const privateRoutes: RouteObject[] = [
                     { path: "info", element: <ProfilePage /> },
                     { path: "address", element: <AddressPage /> },
                     { path: "change-password", element: <ChangePasswordPage /> },
+                    { path: "voucher", element: <VoucherPage /> },
                 ]
             },
             { path: "payment", element: <PaymentPage /> },

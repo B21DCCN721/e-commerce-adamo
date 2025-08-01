@@ -1,20 +1,20 @@
-import { Typography, Space, Modal, Button, Flex, Spin, } from "antd";
+import { Typography, Space, Modal, Button, Flex, Spin, Divider, } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, setCart } from "../../features/cart/cartSlice";
 import type { AppDispatch, RootState } from "../../store";
 import CartTable from "../../components/CartTable";
 import type { CartItem } from "../../types/cart";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { addItemsToCartServer, getCartByUserId } from "../../services/cartService";
 
 
 const CartPage = () => {
   const listLocalProducts: CartItem[] = useSelector((state: RootState) => state.cart.items);
-  const [listServerProducts, setListServerProducts] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
   const userId = localStorage.getItem('userId') ?? '';
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
   const dispatch = useDispatch<AppDispatch>();
+  const firstRender = useRef(true);
   const handleClearCart = useCallback(() => {
     Modal.confirm({
       title: 'Bạn có chắc muốn xóa?',
@@ -42,7 +42,6 @@ const CartPage = () => {
       setLoading(true);
       try {
         const response = await getCartByUserId(userId);
-        setListServerProducts(response);
         dispatch(setCart(response))
       } catch (error) {
         console.log('Failed to fecth cart item ', error);
@@ -50,8 +49,28 @@ const CartPage = () => {
         setLoading(false);
       }
     }
-    fetchCartItems();
-  }, [userId, handleClearCart, dispatch]);
+    if(isAuthenticated){
+      fetchCartItems();
+    }
+  }, [userId, handleClearCart, dispatch, isAuthenticated]);
+  // cập nhật giỏ hàng
+  useEffect(() => {
+    const syncCart = async () => {
+      if (firstRender.current) {
+        firstRender.current = false;
+        return;
+      }
+      if (isAuthenticated) {
+        try {
+          await addItemsToCartServer(userId, listLocalProducts);
+        } catch (error) {
+          console.error('Failed to update cart', error);
+        }
+      }
+    };
+  
+    syncCart();
+  }, [listLocalProducts, isAuthenticated, userId]);
   if (loading) {
     return <Flex justify="center"><Spin size="large" /></Flex>
   }
@@ -66,6 +85,10 @@ const CartPage = () => {
         </Button>
       </Space>
       <CartTable items={listLocalProducts} />
+      <Divider/>
+      <Typography.Title level={3}>
+          Có thể bạn cũng thích
+        </Typography.Title>
     </>
   );
 };

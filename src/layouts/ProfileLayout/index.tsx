@@ -1,4 +1,4 @@
-import { EnvironmentOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { BookOutlined, EnvironmentOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
@@ -20,6 +20,7 @@ const ProfileLayout: React.FC = () => {
                 >
                     <Menu.Item key="/profile/info" icon={<UserOutlined />}>Thông tin cá nhân</Menu.Item>
                     <Menu.Item key="/profile/address" icon={<EnvironmentOutlined />}>Địa chỉ</Menu.Item>
+                    <Menu.Item key="/profile/voucher" icon={<BookOutlined />}>Kho voucher</Menu.Item>
                     <Menu.Item key="/profile/change-password" icon={<LockOutlined />}>Đổi mật khẩu</Menu.Item>
                 </Menu>
             </Sider>

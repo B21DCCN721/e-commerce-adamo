@@ -38,11 +38,21 @@ const AddToCart: React.FC<AddToCartProps> = ({ item, defaultQuantity, selectedSi
             }
         }
     }
-    const handleBuyNow = (): void => {
-        dispatch(addToCart({
-            ...item,
-            selected: true
-        }))
+    const handleBuyNow = async () => {
+        if (!isAuthenticated) {
+            dispatch(addToCart({...item, selected: true}));
+            message.success('Thêm vào giỏ hàng thành công')
+            console.log('thêm vào giỏ hàng thành công', item);
+        } else {
+            try {
+                await addItemsToCartServer(userId, [...listLocalProducts, {...item, selected: true}])
+                dispatch(addToCart({...item, selected: true}));
+                message.success('Thêm vào giỏ hàng thành công.')
+            } catch (error) {
+                console.error('Đẩy dữ liệu giỏ hàng lên server', error)
+                message.error("Thêm vào giỏ hàng thất bại.")
+            }
+        }
         navigate("/cart")
     }
 

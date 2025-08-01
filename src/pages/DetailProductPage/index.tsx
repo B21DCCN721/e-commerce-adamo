@@ -1,4 +1,4 @@
-import { Button, Col, Empty, Flex, Row, Spin, Tag, Typography } from "antd";
+import { Button, Col, Empty, Flex, Rate, Row, Spin, Tag, Typography } from "antd";
 import AddToCart from "../../components/AddToCart";
 import styles from "./DetailProductPage.module.css";
 import type { ProductWithVariants } from "../../types/product";
@@ -20,6 +20,8 @@ const DetailProductPage = () => {
     const [selectedSize, setSelectedSize] = useState<Size>('S');
     const [selectedColor, setSelectedColor] = useState<string>(product?.variants[0]?.color || "");
     const selectedVariant = product?.variants.find(v => v.color === selectedColor);
+    const [selectedFilter, setSelectedFilter] = useState<number | 'all' | 'hasImage'>('all');
+
     // lấy thông tin sản phẩm
     useEffect(() => {
         const fetchProductById = async () => {
@@ -72,6 +74,27 @@ const DetailProductPage = () => {
 
         fetchReviews();
     }, [id]);
+    // bộ lọc cho review
+    const ratingSummary = {
+        average: reviews.length > 0
+            ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+            : '0.0',
+        total: reviews.length,
+        byStar: [5, 4, 3, 2, 1].map(star => ({
+            star,
+            count: reviews.filter(r => r.rating === star).length
+        })),
+        imageCount: reviews.filter(r =>
+            r.contents.some(c => c.type === 'image')
+        ).length,
+    };
+
+    const filteredReviews = reviews.filter(r => {
+        if (selectedFilter === 'all') return true;
+        if (selectedFilter === 'hasImage') return r.contents.some(c => c.type === 'image');
+        return r.rating === selectedFilter;
+    });
+
     if (loading) {
         return <Flex justify="center"><Spin size="large" /></Flex>;
     }
@@ -138,7 +161,7 @@ const DetailProductPage = () => {
 
                                 <p>
                                     <Typography.Title level={5}>Đánh giá: </Typography.Title>
-                                    {product.rating} <StarFilled style={{ color: "#FAAD14" }} />
+                                    {product.rating} <StarFilled style={{ color: "#fadb14" }} />
                                 </p>
                             </div>
 
@@ -164,15 +187,58 @@ const DetailProductPage = () => {
 
                     <div className={styles['box_review']}>
                         <Typography.Title level={3}>ĐÁNH GIÁ SẢN PHẨM</Typography.Title>
-                        {reviews.length !== 0 ? (
-                            reviews
-                                .map((review, index) => (
-                                    <ReviewCard key={index} review={review} />
-                                ))
+
+                        {reviews.length > 0 && (
+                            <div style={{ marginBottom: 16 }}>
+                                <Flex align="center" gap={20} style={{ marginBottom: 16 }}>
+                                    <Typography.Title level={2} style={{ color: 'red', margin: 0 }}>
+                                        {ratingSummary.average} <small>trên 5</small>
+                                    </Typography.Title>
+                                    <Flex vertical>
+                                        <Rate allowHalf value={Number(ratingSummary.average)}/>
+                                        <Typography.Text>
+                                            {ratingSummary.total} đánh giá
+                                        </Typography.Text>
+                                    </Flex>
+                                </Flex>
+
+                                <Flex gap={8} wrap>
+                                    <Button
+                                        type={selectedFilter === 'all' ? 'primary' : 'default'}
+                                        onClick={() => setSelectedFilter('all')}
+                                    >
+                                        Tất Cả
+                                    </Button>
+
+                                    {ratingSummary.byStar.map(item => (
+                                        <Button
+                                            key={item.star}
+                                            type={selectedFilter === item.star ? 'primary' : 'default'}
+                                            onClick={() => setSelectedFilter(item.star)}
+                                        >
+                                            {item.star} Sao ({item.count})
+                                        </Button>
+                                    ))}
+
+                                    <Button
+                                        type={selectedFilter === 'hasImage' ? 'primary' : 'default'}
+                                        onClick={() => setSelectedFilter('hasImage')}
+                                    >
+                                        Có Hình Ảnh ({ratingSummary.imageCount})
+                                    </Button>
+                                </Flex>
+                            </div>
+                        )}
+
+                        {filteredReviews.length > 0 ? (
+                            filteredReviews.map((review, index) => (
+                                <ReviewCard key={index} review={review} />
+                            ))
                         ) : (
                             <Typography.Text>Chưa có đánh giá nào.</Typography.Text>
                         )}
                     </div>
+
                 </>
             ) : (
                 <Empty />

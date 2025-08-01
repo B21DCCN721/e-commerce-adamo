@@ -25,14 +25,18 @@ export const OrderItemSchema = z.object({
 export const OrderSchema = z.object({
   id: z.number(),
   customerId: z.number(),
-  paymentMethod: z.string(),
+  paymentMethod: z.string().default('cash'),
   customerAddress: z.string(),
-  customerPhone: z.string(),
+  customerPhone: z
+    .string()
+    .min(9, "Số điện thoại phải có ít nhất 9 chữ số")
+    .max(11, "Số điện thoại không được vượt quá 11 chữ số")
+    .regex(/^[0-9]+$/, "Số điện thoại chỉ chứa số"),
   status: OrderStatusEnum,
-  isPaid: z.boolean(),
+  isPaid: z.boolean().default(false),
   createdAt: z.string().optional(),
   updatedAt: z.string(),
-  totalAmount: z.number().nonnegative(),
+  totalAmount: z.number().nonnegative('Tổng giá trị phải là số không âm'),
   items: z.array(OrderItemSchema),
 });
 export type OrderStatus = z.infer<typeof OrderStatusEnum>;
