@@ -1,9 +1,9 @@
 import axiosClient from "../configs/axiosClient";
 import filterValidItems from "../utils/filterValidItems.ts";
 import { ReviewSchema, type Review } from "../types/review.ts";
-const getListReviews = async (params: Record<string, unknown> = {}) => {
+const getListReviews = async (productId: string, params: Record<string, unknown> = {}) => {
   try {
-    const response = await axiosClient.get('/reviews.json', { params });
+    const response = await axiosClient.get(`/reviews/${productId}.json`, { params });
     const returnedData = Object.values(response.data) ?? [];
     return filterValidItems(ReviewSchema, returnedData, 'Review List');
   } catch (error) {
@@ -11,9 +11,9 @@ const getListReviews = async (params: Record<string, unknown> = {}) => {
     throw error;
   }
 };
-const addReview = async (data: Review) => {
+const addReview = async (productId: string, data: Review) => {
   try {
-    await axiosClient.post('/reviews.json', data);
+    await axiosClient.post(`/reviews/${productId}.json`, data);
   } catch (error) {
     console.error('Error add review:', error)
     throw error

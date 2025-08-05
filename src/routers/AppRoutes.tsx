@@ -1,7 +1,8 @@
 import { useRoutes } from "react-router-dom";
-import { publicRoutes, privateRoutes } from "./routes"
+import { publicRoutes, privateRoutes, adminRoutes } from "./routes"
+import NotFoundPage from "../components/NotFoundPage";
 const AppRoutes = () => {
-    const routes = useRoutes([...publicRoutes, ...privateRoutes ]);
+    const routes = useRoutes([...publicRoutes, ...privateRoutes, ...adminRoutes, { path: "*", element: <NotFoundPage /> }, ]);
     return routes;
 }
 export default AppRoutes;

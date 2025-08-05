@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SizeEnum } from "./size";
 
 // Định nghĩa enum trạng thái đơn hàng
 export const OrderStatusEnum = z.enum([
@@ -18,7 +19,10 @@ export const OrderItemSchema = z.object({
   quantity: z.number().int().positive(),
   price: z.number().nonnegative(),
   oldPrice: z.number().nonnegative().optional(),
-  isReview: z.boolean().default(false)
+  isReview: z.boolean().default(false),
+  productColor: z.string(),
+  description: z.string(),
+  size: SizeEnum,
 });
 
 // Đơn hàng tổng thể

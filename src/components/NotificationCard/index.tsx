@@ -1,6 +1,6 @@
 // components/NotificationCard.tsx
 import React from 'react';
-import { Card, Typography, Button, Row, Col, Space, Badge } from 'antd';
+import { Card, Typography, Row, Col, Space, Badge } from 'antd';
 import type { Notification } from '../../types/notification';
 import styles from './NotificationCard.module.css';
 
@@ -50,7 +50,7 @@ const NotificationCard: React.FC<OrderNotificationProps> = ({ item }) => {
               <img
                 src={item.image}
                 alt="product"
-                style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 4 }}
+                style={{ maxWidth: 80, height: 80, objectFit: 'cover', borderRadius: 4 }}
               />
             </Col>
             <Col flex="auto">
@@ -64,9 +64,6 @@ const NotificationCard: React.FC<OrderNotificationProps> = ({ item }) => {
                   {item.time ? new Date(item.time).toLocaleString() : 'Chưa có thời gian'}
                 </Text>
               </Space>
-            </Col>
-            <Col>
-              {item.type === 'order' && item.orderStatus === 'delivered' && <Button color="danger" variant="filled">Đánh Giá Sản Phẩm</Button>}
             </Col>
           </Row>
         </Badge>

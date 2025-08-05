@@ -8,7 +8,7 @@ export const ReviewContentSchema = z.object({
 
 // Review schema
 export const ReviewSchema = z.object({
-  productId: z.number(),
+  userId: z.string(),
   username: z.string().min(1, "Tên người dùng không được để trống"),
   avatarUrl: z.string().optional(),
   rating: z.number().min(0).max(5),

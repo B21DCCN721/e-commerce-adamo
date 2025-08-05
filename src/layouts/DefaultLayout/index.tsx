@@ -80,7 +80,7 @@ const DefaultLayout: React.FC = () => {
               </Menu.Item>
             </Menu.SubMenu>)}
             {!isAuthenticated && (<Menu.Item key="/login" icon={<LoginOutlined />}>
-              Đăng nhập
+              Đăng nhập / Đăng ký
             </Menu.Item>)}
           </Menu>
           <NotificationPopover/>

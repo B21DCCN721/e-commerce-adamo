@@ -1,6 +1,5 @@
-// components/VoucherCard.tsx
 import React from "react";
-import { Card, Button, Typography } from "antd";
+import { Card, Typography } from "antd";
 import formatTime from "../../utils/formatTime";
 import type { Voucher } from "../../types/voucher";
 
@@ -8,11 +7,12 @@ const { Title, Text } = Typography;
 
 interface VoucherCardProps {
   voucher: Voucher;
-  onApply?: (voucher: Voucher) => void;
+  selected?: boolean;
+  onClick?: () => void;
 }
 
-const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, onApply }) => {
-  const { description, discountPercent, discountAmount, expireAt } = voucher;
+const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, selected, onClick }) => {
+  const { description, discountPercent, discountAmount, expireAt, code } = voucher;
 
   const discountText = discountPercent
     ? `${discountPercent}%`
@@ -22,26 +22,27 @@ const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, onApply }) => {
 
   return (
     <Card
+      hoverable
+      onClick={onClick}
       style={{
         borderStyle: "dashed",
-        borderColor: "#f5222d",
+        borderColor: selected ? "#52c41a" : "#f5222d",
         borderRadius: 12,
+        backgroundColor: selected ? "#f6ffed" : undefined,
+        cursor: "pointer",
+        transition: "0.2s",
       }}
-      hoverable
     >
       <Title level={4} style={{ color: "#f5222d" }}>
         {discountText} OFF
       </Title>
+      <Text strong>Mã giảm giá: {code}</Text>
+      <br/>
       <Text>{description}</Text>
       <br />
       <Text type="secondary">
         HSD: {formatTime(expireAt)}
       </Text>
-      <div style={{ marginTop: 12 }}>
-        <Button type="primary" danger onClick={() => onApply?.(voucher)}>
-          Áp dụng
-        </Button>
-      </div>
     </Card>
   );
 };

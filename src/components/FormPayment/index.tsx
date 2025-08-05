@@ -1,8 +1,27 @@
-import {Button,Card,Divider,Flex,Form,Input,message,Modal,QRCode,Select,Space,Typography,} from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Flex,
+  Form,
+  Input,
+  message,
+  Modal,
+  QRCode,
+  Row,
+  Select,
+  Space,
+  Typography,
+} from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import type { CartItem } from "../../types/cart";
 import type { Address } from "../../types/address";
 import type { Order } from "../../types/order";
+import type { Voucher } from "../../types/voucher";
+import VoucherSelectModal from "../VoucherSelectModal";
+import { useNavigate } from "react-router-dom";
+
 
 interface FormPaymentProps {
   selectedItems: CartItem[];
@@ -10,23 +29,37 @@ interface FormPaymentProps {
   totalPrice: number;
   paymentMethod: string;
   addresses: Address[];
+  vouchers: Voucher[];
   setPaymentMethod: (value: string) => void;
-  onSuccess: () => void;
   onCreateOrder: (order: Order) => void;
 }
 
 const FormPayment: React.FC<FormPaymentProps> = ({
   selectedItems,
   totalPrice,
-  onSuccess,
   paymentUrl,
   paymentMethod,
   addresses,
+  vouchers,
   setPaymentMethod,
   onCreateOrder,
 }) => {
   const [form] = Form.useForm();
   const [qrVisible, setQrVisible] = useState(false);
+  const navigate = useNavigate();
+  // Voucher state
+  const [voucherModalOpen, setVoucherModalOpen] = useState(false);
+  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
+
+  // Tính tổng tiền sau giảm giá
+  const discountedTotal = selectedVoucher
+    ? selectedVoucher.discountPercent
+      ? Math.max(
+        0,
+        totalPrice - (totalPrice * selectedVoucher.discountPercent) / 100
+      )
+      : Math.max(0, totalPrice - (selectedVoucher.discountAmount || 0))
+    : totalPrice;
 
   // Select address options
   const addressOptions = addresses.map((addr) => ({
@@ -56,9 +89,9 @@ const FormPayment: React.FC<FormPaymentProps> = ({
       customerPhone: address.phone,
       status: "pending",
       isPaid,
-      totalAmount: totalPrice,
+      totalAmount: discountedTotal, // đã trừ voucher
       items: selectedItems.map((item) => ({
-        productId: item.id,
+        productId: item.productId,
         productName: item.name,
         productImage: item.image ?? "",
         productCategory: item.category,
@@ -66,10 +99,13 @@ const FormPayment: React.FC<FormPaymentProps> = ({
         price: item.price,
         oldPrice: item.oldPrice,
         isReview: false,
+        productColor: item.color,
+        description: item.description,
+        size: item.size
       })),
       updatedAt: new Date().toISOString(),
     }),
-    [paymentMethod, selectedItems, totalPrice]
+    [paymentMethod, selectedItems, discountedTotal]
   );
 
   const handleFinish = () => {
@@ -85,8 +121,8 @@ const FormPayment: React.FC<FormPaymentProps> = ({
       const newOrder = createOrder(false, selectedAddress);
       onCreateOrder(newOrder);
       message.success("Đặt hàng thành công!");
-      onSuccess();
       form.resetFields();
+      setSelectedVoucher(null);
     } else {
       setQrVisible(true);
     }
@@ -105,15 +141,15 @@ const FormPayment: React.FC<FormPaymentProps> = ({
     onCreateOrder(newOrder);
     message.success("Thanh toán thành công!");
     setQrVisible(false);
-    onSuccess();
     form.resetFields();
+    setSelectedVoucher(null);
   };
 
   return (
     <>
       <Card title="Tóm tắt đơn hàng">
         <Form form={form} layout="vertical" onFinish={handleFinish}>
-          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+          <Space direction="vertical" size="small" style={{ width: "100%" }}>
             <div>
               <strong>Số sản phẩm:</strong> {selectedItems.length}
             </div>
@@ -148,22 +184,61 @@ const FormPayment: React.FC<FormPaymentProps> = ({
               <Input placeholder="Nhập số điện thoại" />
             </Form.Item>
 
-            <Form.Item
-              label="Địa chỉ nhận hàng"
-              name="address"
-              rules={[{ required: true, message: "Vui lòng chọn địa chỉ" }]}
-            >
-              <Select
-                placeholder="Chọn địa chỉ nhận hàng"
-                options={addressOptions}
-              />
-            </Form.Item>
+            <Row align='middle'>
+              <Col span={21}>
+                <Form.Item
+                  label="Địa chỉ nhận hàng"
+                  name="address"
+                  rules={[{ required: true, message: "Vui lòng chọn địa chỉ" }]}
+                >
+                    <Select
+                      placeholder="Chọn địa chỉ nhận hàng"
+                      options={addressOptions}
+                    />
+                </Form.Item>
+              </Col>
+              <Col span={3}><Button type="link" onClick={() => navigate('/profile/address')}>Thêm</Button></Col>
+            </Row>
+            {/* --- Voucher --- */}
+            <div>
+              <strong>Voucher:</strong>{" "}
+              {selectedVoucher ? (
+                <>
+                  {selectedVoucher.code} -{" "}
+                  {selectedVoucher.discountPercent
+                    ? `${selectedVoucher.discountPercent}%`
+                    : `${selectedVoucher.discountAmount?.toLocaleString()}₫`}
+                </>
+              ) : (
+                <Typography.Text type="secondary">Chưa chọn</Typography.Text>
+              )}
+              <Button
+                type="link"
+                onClick={() => setVoucherModalOpen(true)}
+                style={{ paddingLeft: 8 }}
+              >
+                Chọn voucher
+              </Button>
+            </div>
+
+            <Divider />
 
             <div>
               <strong>Tổng tiền:</strong>{" "}
-              <Typography.Text type="danger" strong>
-                {totalPrice.toLocaleString()} VNĐ
-              </Typography.Text>
+              {selectedVoucher ? (
+                <>
+                  <Typography.Text delete type="secondary" style={{ marginRight: 8 }}>
+                    {totalPrice.toLocaleString()} VNĐ
+                  </Typography.Text>
+                  <Typography.Text type="danger" strong>
+                    {discountedTotal.toLocaleString()} VNĐ
+                  </Typography.Text>
+                </>
+              ) : (
+                <Typography.Text type="danger" strong>
+                  {totalPrice.toLocaleString()} VNĐ
+                </Typography.Text>
+              )}
             </div>
 
             <Divider />
@@ -179,10 +254,12 @@ const FormPayment: React.FC<FormPaymentProps> = ({
                 {paymentMethod === "cash" ? "Đặt hàng" : "Thanh toán"}
               </Button>
             </Form.Item>
+
           </Space>
         </Form>
       </Card>
 
+      {/* Modal QR Thanh toán */}
       <Modal
         title="Quét mã QR để thanh toán"
         open={qrVisible}
@@ -204,6 +281,14 @@ const FormPayment: React.FC<FormPaymentProps> = ({
           </p>
         </Flex>
       </Modal>
+
+      {/* Modal chọn voucher */}
+      <VoucherSelectModal
+        open={voucherModalOpen}
+        vouchers={vouchers}
+        onSelect={setSelectedVoucher}
+        onClose={() => setVoucherModalOpen(false)}
+      />
     </>
   );
 };

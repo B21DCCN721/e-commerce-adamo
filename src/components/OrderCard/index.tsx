@@ -7,10 +7,11 @@ import formatTime from "../../utils/formatTime";
 
 interface OrderCardProps {
     order: Order;
-    handleCanceled?: () => void;
+    handleCancel?: () => void;
+    handleRepurchase?: () => void;
     submitReview?: (value, indexItem, orderId) => void;
 }
-const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }, submitReview = () => { } }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order, handleCancel = () => { }, handleRepurchase = () => {}, submitReview = () => { } }) => {
     const [reviewingIndex, setReviewingIndex] = useState<number | null>(null);
 
     return (
@@ -110,16 +111,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCanceled = () => { }
                         </Typography.Text>
                         <Space>
                             {order.status === 'delivered' && (<>
-                                <Button type="primary">Mua lại</Button>
+                                <Button type="primary" onClick={handleRepurchase}>Mua lại</Button>
                             </>)}
                             {order.status === 'pending' && (<>
-                                <Button type="primary" onClick={handleCanceled}>Hủy đơn</Button>
+                                <Button type="primary" onClick={handleCancel}>Hủy đơn</Button>
                             </>)}
                             {order.status === 'shipping' && (<>
                                 <Button type="primary">Theo dõi</Button>
                             </>)}
                             {order.status === 'canceled' && (<>
-                                <Button type="primary">Đặt lại</Button>
+                                <Button type="primary" onClick={handleRepurchase}>Đặt lại</Button>
                             </>)}
                         </Space>
                     </Space>
