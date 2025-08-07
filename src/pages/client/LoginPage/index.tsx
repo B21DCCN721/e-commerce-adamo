@@ -16,6 +16,7 @@ import type { AppDispatch, RootState } from '../../../store';
 import { mergeCarts } from '../../../utils/cartMerge';
 import { addItemsToCartServer, getCartByUserId } from '../../../services/cartService';
 import { setCart } from '../../../features/cart/cartSlice';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 interface FormLogin {
   email: string;
   password: string
@@ -90,7 +91,7 @@ const LoginPage = () => {
                   { type: 'email', message: 'Email không hợp lệ' },
                 ]}
               >
-                <Input placeholder="Nhập email" />
+                <Input placeholder="Nhập email" prefix={<MailOutlined/>} />
               </Form.Item>
 
               <Form.Item
@@ -101,7 +102,7 @@ const LoginPage = () => {
                   message: 'Ít nhất 6 ký tự, gồm chữ và số',
                 },]}
               >
-                <Input.Password placeholder="Nhập mật khẩu" />
+                <Input.Password placeholder="Nhập mật khẩu" prefix={<LockOutlined/>} />
               </Form.Item>
 
               <Form.Item>

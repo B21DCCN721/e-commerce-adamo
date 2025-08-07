@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const AdminLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -25,9 +25,9 @@ const AdminLayout: React.FC = () => {
       icon: <AppstoreOutlined />,
       label: "Quản lý",
       children: [
-        {key:"/admin/management/product", label: "Thêm sản phẩm"},
-        {key:"/admin/management/import", label: "Nhập sản phẩm"},
+        {key:"/admin/management/product", label: "Sản phẩm"},
         {key:"/admin/management/order", label:"Đơn hàng"},
+        {key:"/admin/management/user", label:"Tài khoản"},
       ]
     },
     {
@@ -35,7 +35,6 @@ const AdminLayout: React.FC = () => {
       icon: <AreaChartOutlined />,
       label: "Thống kê",
       children: [
-        { key: "/admin/statistics/overview", label: "Tổng quan" },// Tổng doanh thu, đơn hàng, khách hàng, sản phẩm...
         { key: "/admin/statistics/revenue", label: "Doanh thu" },// Doanh thu theo ngày / tháng / năm; Biểu đồ tăng trưởng;Doanh thu theo phương thức thanh toán
         { key: "/admin/statistics/orders", label: "Đơn hàng" },// Bán chạy nhất; Tồn kho thấp; Được xem nhiều nhất
         { key: "/admin/statistics/products", label: "Sản phẩm" },// Tổng số đơn; Tỷ lệ hủy đơn; Trạng thái đơn hàng; Trung bình giá trị đơn
@@ -61,9 +60,6 @@ const AdminLayout: React.FC = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: "#fff", textAlign: "right", paddingRight: 20 }}>
-
-        </Header>
         <Content style={{ margin: "16px", padding: 24, background: "#fff" }}>
           <Outlet />
         </Content>

@@ -18,6 +18,10 @@ import VoucherPage from "../pages/client/VoucherPage";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminProductPage from "../pages/admin/AdminProductPage";
+import AdminOrderPage from "../pages/admin/AdminOrderPage";
+import AdminUserPage from "../pages/admin/AdminUserPage";
+import AdminRevenuePage from "../pages/admin/AdminRevenue";
+import SupportPage from "../pages/client/SupportPage";
 
 const publicRoutes: RouteObject[] = [
     {
@@ -32,6 +36,7 @@ const publicRoutes: RouteObject[] = [
     },
     { path: "/login", element: <LoginPage /> },
     { path: "/register", element: <RegisterPage /> },
+    { path: "/support", element: <SupportPage /> },
 ];
 
 const privateRoutes: RouteObject[] = [
@@ -63,7 +68,10 @@ const adminRoutes: RouteObject[] = [
         element: <AdminLayout />,
         children: [
             {path: "dashboard", element: <AdminDashboardPage/>},
-            {path: "manager-product", element: <AdminProductPage/>},
+            {path: "management/product", element: <AdminProductPage/>},
+            {path: "management/order", element: <AdminOrderPage/>},
+            {path: "management/user", element: <AdminUserPage/>},
+            {path: "statistics/revenue", element: <AdminRevenuePage/>}
         ],
     },
 ]

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-function filterValidItems<T extends z.ZodTypeAny>(
+function validateArray<T extends z.ZodTypeAny>(
   schema: T,
   data: unknown[],
   label?: string
@@ -24,4 +24,4 @@ function filterValidItems<T extends z.ZodTypeAny>(
     .map((r) => r.data);
 }
 
-export default filterValidItems;
+export default validateArray;

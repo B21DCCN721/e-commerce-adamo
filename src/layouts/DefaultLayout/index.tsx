@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Drawer, Layout, Menu, theme as antdTheme, message } from 'antd';
+import { ConfigProvider, FloatButton, Layout, Menu, theme as antdTheme, message } from 'antd';
 import {
   HomeOutlined,
   UnorderedListOutlined,
@@ -8,14 +8,14 @@ import {
   EditOutlined,
   LoginOutlined,
   LogoutOutlined,
-  SettingOutlined,
+  QuestionCircleOutlined,
+  SunOutlined,
 } from '@ant-design/icons';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { useMemo, useState } from 'react';
 import styles from "./DefaultLayout.module.css";
-import FormSetting from '../../components/FormSetting';
 import type { CartItem } from '../../types/cart';
 import { logout } from '../../services/authenticatedService';
 import NotificationPopover from '../../components/NotificationPopover';
@@ -27,26 +27,24 @@ const DefaultLayout: React.FC = () => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const location = useLocation();
   const navigate = useNavigate();
-  const [openSetting, setOpenSetting] = useState(false);
-  const showDrawer = () => {
-    setOpenSetting(true);
-  };
-  const onClose = () => {
-    setOpenSetting(false);
-  };
-  const darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'false');
   const { token } = antdTheme.useToken();
   const cart: CartItem[] = useSelector((state: RootState) => state.cart.items);
   const quantity: number = useMemo(() => cart.reduce((sum, value) => sum += value.quantity, 0), [cart]);
   const handleLogout = async () => {
     try {
-        await logout();
-        message.success("Đăng xuất thành công");
+      await logout();
+      message.success("Đăng xuất thành công");
     } catch (error) {
       message.error("Đăng xuất thất bại");
       console.log(error)
     }
   }
+  const [darkMode, setDarkMode] = useState<boolean>(JSON.parse(localStorage.getItem('darkMode') ?? 'false'));
+  
+    const handleChangeMode = () => {
+      setDarkMode(!darkMode)
+      localStorage.setItem('darkMode', JSON.stringify(!darkMode));
+    }
   return (
     <ConfigProvider
       theme={{
@@ -83,36 +81,33 @@ const DefaultLayout: React.FC = () => {
               Đăng nhập / Đăng ký
             </Menu.Item>)}
           </Menu>
-          <NotificationPopover/>
+          <NotificationPopover />
         </Header>
 
         <Content className={styles.content}>
           <div style={{ minHeight: '100vh', padding: "16px", position: 'relative' }}>
             <Outlet />
-            <Button
-              type="primary"
-              shape="circle"
-              icon={<SettingOutlined style={{ fontSize: "20px" }} />}
-              size="large"
-              style={{
-                position: 'fixed',
-                right: 25,
-                bottom: 100,
-                zIndex: 1000,
-                transition: 'transform 0.3s ease',
-                width: "40px",
-                height: "40px",
+            <FloatButton.Group shape="circle">
+              <FloatButton icon={<QuestionCircleOutlined />} tooltip={{
+                title: 'Trợ giúp',
+                color: 'black',
+                placement: 'left',
               }}
-              onClick={showDrawer}
-            />
-            <Drawer
-              title="Cài đặt"
-              closable={{ 'aria-label': 'Close Button' }}
-              onClose={onClose}
-              open={openSetting}
-            >
-              <FormSetting closeDrawer={onClose} />
-            </Drawer>
+              onClick={() => navigate("/support")}
+               />
+              <FloatButton icon={<SunOutlined />} tooltip={{
+                title: 'Nền',
+                color: 'black',
+                placement: 'left',
+              }}
+              onClick={handleChangeMode}
+               />
+              <FloatButton.BackTop visibilityHeight={400} tooltip={{
+                title: 'Về đầu trang',
+                color: 'black',
+                placement: 'left',
+              }} />
+            </FloatButton.Group>
           </div>
         </Content>
 

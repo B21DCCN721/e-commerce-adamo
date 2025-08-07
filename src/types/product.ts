@@ -18,7 +18,7 @@ export const ProductSchema = z.object({
 // ProductWithVariants schema
 export const ProductWithVariantsSchema = ProductSchema.extend({
   variants: z.array(z.object({
-    color: z.string(), // có thể là tên hoặc mã hex (#fff)
+    color: z.string(), 
     sizes: z.array(z.object({
       size: SizeEnum,
       quantity: z.number().int().nonnegative(),

@@ -1,5 +1,4 @@
 import anhNen from "../../../assets/imgs/nenProfile.png";
-// import silverWolf from "../../assets/imgs/silverwolf.gif";
 import { Flex, Avatar, Button, Typography, Row, Col, Form, Input, DatePicker, Upload,
         type UploadProps, type GetProp, Radio, message, Spin, } from "antd";
 import { AntDesignOutlined, EditOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -128,7 +127,7 @@ const ProfilePage = () => {
           </Upload>
         </Form.Item>
 
-        <Row gutter={32}>
+        <Row gutter={32} >
           <Col span={12}>
             <Form.Item name='name' label='Họ và tên' rules={[
               { required: true, message: 'Vui lòng nhập tên của bạn' },
@@ -147,7 +146,9 @@ const ProfilePage = () => {
                 <Radio value="other">Khác</Radio>
               </Radio.Group>
             </Form.Item>
-            <Form.Item name='birthday' label='Ngày sinh' rules={[
+          </Col>
+          <Col span={12}>
+          <Form.Item name='birthday' label='Ngày sinh' rules={[
               { required: true, message: 'Vui lòng nhập ngày sinh của bạn' },
               { type: 'date', message: 'Ngày sinh không hợp lệ!' }
             ]}>
@@ -160,9 +161,6 @@ const ProfilePage = () => {
               <Input />
             </Form.Item>
           </Col>
-          {/* <Col span={12}>
-            <Image src={silverWolf} alt="demo cho do trong" style={{ borderRadius: '10px' }} />
-          </Col> */}
         </Row>
         <Form.Item name='btnsubmit'>
           <Button type="primary" htmlType="submit">

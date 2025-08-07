@@ -1,11 +1,11 @@
 import axiosClient from "../configs/axiosClient";
-import filterValidItems from "../utils/filterValidItems.ts";
+import validateArray from "../utils/validateArray.ts";
 import { ReviewSchema, type Review } from "../types/review.ts";
 const getListReviews = async (productId: string, params: Record<string, unknown> = {}) => {
   try {
     const response = await axiosClient.get(`/reviews/${productId}.json`, { params });
     const returnedData = Object.values(response.data) ?? [];
-    return filterValidItems(ReviewSchema, returnedData, 'Review List');
+    return validateArray(ReviewSchema, returnedData, 'Review List');
   } catch (error) {
     console.error('Error fetching product list:', error);
     throw error;

@@ -28,7 +28,7 @@ export const OrderItemSchema = z.object({
 // Đơn hàng tổng thể
 export const OrderSchema = z.object({
   id: z.number(),
-  customerId: z.number(),
+  customerId: z.string(),
   paymentMethod: z.string().default('cash'),
   customerAddress: z.string(),
   customerPhone: z

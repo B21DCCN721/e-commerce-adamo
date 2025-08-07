@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { FloatButton } from "antd";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -12,7 +11,6 @@ const ScrollToTop = () => {
 
   return (
     <>
-      <FloatButton.BackTop />
     </>
   );
 };

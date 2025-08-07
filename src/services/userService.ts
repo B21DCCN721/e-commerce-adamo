@@ -1,5 +1,5 @@
 import axiosClient from "../configs/axiosClient";
-import filterValidItems from "../utils/filterValidItems";
+import validateArray from "../utils/validateArray";
 import validateObject from "../utils/validateObject";
 import { AddressSchema, type Address } from "../types/address";
 import { UserSchema, type User } from "../types/user";
@@ -34,7 +34,7 @@ const createProfile = async (uid: string, data: User) => {
 const addAdress = async (uid: string, data: Address[]) => {
   try {
     const response = await axiosClient.put(`/addresses/${uid}.json`, data);
-    return filterValidItems(AddressSchema, response.data, 'Create user address');
+    return validateArray(AddressSchema, response.data, 'Create user address');
   } catch (error) {
     console.error("Failed to create user address", error);
     throw error;
@@ -43,7 +43,7 @@ const addAdress = async (uid: string, data: Address[]) => {
 const getAddressByUserId = async (uid: string) => {
   try {
     const response = await axiosClient.get(`/addresses/${uid}.json`);
-    return response.data===null? []: filterValidItems(AddressSchema, response.data, 'Get user address');
+    return response.data===null? []: validateArray(AddressSchema, response.data, 'Get user address');
   } catch (error) {
     console.error("Failed to fetch user address", error);
     throw error;
@@ -52,7 +52,7 @@ const getAddressByUserId = async (uid: string) => {
 const updateAddress = async (uid: string, data: Address[]) => {
   try {
     const response = await axiosClient.put(`/addresses/${uid}.json`, data);
-    return filterValidItems(AddressSchema, response.data, 'Update user address');
+    return validateArray(AddressSchema, response.data, 'Update user address');
   } catch (error) {
     console.error("Failed to update user address", error);
     throw error;

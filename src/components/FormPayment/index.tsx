@@ -47,6 +47,7 @@ const FormPayment: React.FC<FormPaymentProps> = ({
   const [form] = Form.useForm();
   const [qrVisible, setQrVisible] = useState(false);
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId') ?? '';
   // Voucher state
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
@@ -83,7 +84,7 @@ const FormPayment: React.FC<FormPaymentProps> = ({
   const createOrder = useCallback(
     (isPaid: boolean, address: Address): Order => ({
       id: Math.random(),
-      customerId: 1,
+      customerId: userId,
       paymentMethod,
       customerAddress: `${address.addressDetail}, ${address.wardName}, ${address.districtName}, ${address.provinceName}`,
       customerPhone: address.phone,
@@ -105,7 +106,7 @@ const FormPayment: React.FC<FormPaymentProps> = ({
       })),
       updatedAt: new Date().toISOString(),
     }),
-    [paymentMethod, selectedItems, discountedTotal]
+    [paymentMethod, selectedItems, discountedTotal, userId]
   );
 
   const handleFinish = () => {

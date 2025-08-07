@@ -12,6 +12,7 @@ import type { Order } from "../../../types/order";
 import { getListOrdersByUid, updatedOrder } from "../../../services/orderService";
 import { addItemsToCartServer } from "../../../services/cartService";
 import type { Voucher } from "../../../types/voucher";
+import { useNavigate } from "react-router-dom";
 const vouchers: Voucher[] = [
   {
     id: 1,
@@ -57,6 +58,7 @@ const PaymentPage = () => {
   const [paymentUrl, setPaymentUrl] = useState("");
   const userId: string = localStorage.getItem('userId') ?? '';
   const [addresses, setAddresses] = useState<Address[]>([]);
+  const navigate = useNavigate();
 
   const selectedItems = useMemo(() => {
     return cartItems.filter(item => item.selected);
@@ -108,6 +110,7 @@ const PaymentPage = () => {
       await updatedOrder(userId, [...orderItems, newOrder]);
       await addItemsToCartServer(userId, unselectedItems);
       selectedItems.forEach((item) => dispatch(removeFromCart(item.id)));
+      navigate('/history')
       message.success("Đặt hành thành công.")
     } catch (error) {
       message.error('Đăt hàng thất bại vui lòng thử lại sau.')

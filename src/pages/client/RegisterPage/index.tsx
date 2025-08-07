@@ -3,6 +3,7 @@ import styles from "./Register.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../../services/authenticatedService';
 import { createProfile } from '../../../services/userService';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 interface FormRegister {
   fullName: string;
   email: string;
@@ -41,7 +42,7 @@ const RegisterPage = () => {
               name="fullName"
               rules={[{ required: true, message: 'Vui lòng nhập họ tên' }]}
             >
-              <Input placeholder="Nhập họ và tên" />
+              <Input placeholder="Nhập họ và tên" prefix={<UserOutlined/>} />
             </Form.Item>
 
             <Form.Item
@@ -52,7 +53,7 @@ const RegisterPage = () => {
                 { type: 'email', message: 'Email không hợp lệ' },
               ]}
             >
-              <Input placeholder="Nhập email" />
+              <Input placeholder="Nhập email" prefix={<MailOutlined/>} />
             </Form.Item>
 
             <Form.Item
@@ -66,7 +67,7 @@ const RegisterPage = () => {
                 },
               ]}
             >
-              <Input.Password placeholder="Nhập mật khẩu" />
+              <Input.Password placeholder="Nhập mật khẩu" prefix={<LockOutlined/>} />
             </Form.Item>
 
             <Form.Item
@@ -85,7 +86,7 @@ const RegisterPage = () => {
                 }),
               ]}
             >
-              <Input.Password placeholder="Xác nhận mật khẩu" />
+              <Input.Password placeholder="Xác nhận mật khẩu" prefix={<LockOutlined/>} />
             </Form.Item>
 
             <Form.Item>
