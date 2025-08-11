@@ -3,9 +3,9 @@ import {
   Typography, Empty, Menu, Layout, Flex, Pagination, Input, 
   Space, Spin, Checkbox, Divider, Rate, Slider, Button 
 } from "antd";
-import type { Product } from "../../../types/product";
+import type { ProductWithVariants } from "../../../types/product";
 import ProductCard from "../../../components/ProductCard";
-import { getListProducts } from "../../../services/productService";
+import { getListProductWithVariants } from "../../../services/productService";
 import { useSearchParams } from "react-router-dom";
 
 const { Sider, Content } = Layout;
@@ -15,7 +15,7 @@ const CategoryPage = () => {
 
   const [activeKey, setActiveKey] = useState<string>(searchParams.get("category") || "Áo");
   const [categories] = useState<string[]>(["Áo", "Quần", "Giày"]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductWithVariants[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Filters
@@ -41,7 +41,7 @@ const CategoryPage = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await getListProducts();
+        const data = await getListProductWithVariants();
         setProducts(data);
       } catch (error) {
         console.error("Failed to load products", error);

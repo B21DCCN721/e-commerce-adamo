@@ -52,6 +52,7 @@ const AdminProductsPage: React.FC = () => {
     if (product) {
       setEditingProduct(product);
       form.setFieldsValue(product);
+      setImageUrl(product.image)
     } else {
       setEditingProduct(null);
       form.resetFields();
@@ -73,7 +74,6 @@ const AdminProductsPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-
   const handleDelete = async (id: number) => {
     try {
       await deleteProduct(id);
@@ -83,17 +83,40 @@ const AdminProductsPage: React.FC = () => {
       message.error("Lỗi khi xóa sản phẩm");
     }
   };
-
+  // thêm product
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields();
-      if (editingProduct) {
-        console.log('thong tin san pham admin product page', values);
-        message.success("Cập nhật sản phẩm thành công");
-      } else {
-        console.log('thong tin san pham admin product page', values);
-        message.success("Thêm sản phẩm thành công");
+      const values = await form.getFieldsValue();
+      console.log('value validate', values);
+      
+      // Kiểm tra phải có ít nhất 1 biến thể
+      if (!values.variants || values.variants.length === 0) {
+        message.warning("Sản phẩm phải có ít nhất 1 biến thể");
+        return;
       }
+
+      // Kiểm tra từng biến thể phải có ít nhất 1 size hợp lệ
+      const invalidVariant = values.variants.some(v => {
+        if (!v.color || !v.sizes || v.sizes.length === 0) return true;
+        return v.sizes.some(s => !s.size || s.quantity === undefined);
+      });
+
+      if (invalidVariant) {
+        message.warning("Mỗi biến thể phải có màu và ít nhất 1 size hợp lệ");
+        return;
+      }
+
+      // Nếu pass hết validate thì gọi API
+      if (editingProduct) {
+        console.log("Cập nhật:", values);
+        message.success("Cập nhật sản phẩm thành công");
+        setImageUrl('');
+      } else {
+        console.log("Thêm mới:", values);
+        message.success("Thêm sản phẩm thành công");
+        setImageUrl('');
+      }
+
       setIsModalOpen(false);
       fetchProducts();
     } catch (error) {
@@ -101,6 +124,7 @@ const AdminProductsPage: React.FC = () => {
     }
   };
 
+  
   const columns: ColumnsType<ProductWithVariants> = [
     { title: "ID", dataIndex: "id", key: "id", width: 60 },
     {
@@ -363,7 +387,7 @@ const AdminProductsPage: React.FC = () => {
                           label="Màu"
                           rules={[{ required: true, message: "Nhập màu" }]}
                         >
-                          <Input placeholder="VD: Đỏ hoặc #FF0000" />
+                          <Input placeholder="VD: Đỏ" />
                         </Form.Item>
                       </Col>
                       <Col span={2}>

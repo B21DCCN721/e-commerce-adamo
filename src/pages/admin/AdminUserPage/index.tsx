@@ -1,55 +1,20 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Table,
-  Modal,
-  Form,
   Input,
-  DatePicker,
-  Select,
   Avatar,
   Switch,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { z } from "zod";
 import dayjs, { type Dayjs } from "dayjs";
+import { getAllUsers } from "../../../services/userService";
+import type { User } from "../../../types/user";
 
-const { Option } = Select;
 
-export const UserSchema = z.object({
-  avatar: z.string().optional(),
-  name: z.string(),
-  gender: z.string().optional(),
-  email: z.string(),
-  birthday: z.custom<Dayjs>().optional(),
-  isActive: z.boolean().optional().default(true),
-});
-export type User = z.infer<typeof UserSchema>;
-
-const dummyUsers: User[] = [
-  {
-    name: "Nguyễn Văn A",
-    email: "a@example.com",
-    gender: "Nam",
-    avatar: "",
-    birthday: dayjs("1990-01-01"),
-    isActive: true,
-  },
-  {
-    name: "Trần Thị B",
-    email: "b@example.com",
-    gender: "Nữ",
-    avatar: "",
-    birthday: dayjs("1995-06-15"),
-    isActive: false,
-  },
-];
 
 const AdminUserPage = () => {
-  const [users, setUsers] = useState<User[]>(dummyUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [searchText, setSearchText] = useState("");
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form] = Form.useForm<User>();
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) =>
@@ -57,16 +22,6 @@ const AdminUserPage = () => {
     );
   }, [users, searchText]);
 
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      const updated = users.map((u) =>
-        u.email === selectedUser?.email ? { ...u, ...values } : u
-      );
-      setUsers(updated);
-      setIsModalOpen(false);
-      setSelectedUser(null);
-    });
-  };
 
   const toggleActive = (email: string) => {
     const updated = users.map((u) =>
@@ -101,6 +56,9 @@ const AdminUserPage = () => {
       dataIndex: "gender",
       key: "gender",
       width: 100,
+       render: (_, record) => (
+        <p>{record.gender === 'male' ? 'Nam' : (record.gender === 'female' ? 'Nữ' : 'Khác')}</p>
+      ),
     },
     {
       title: "Ngày sinh",
@@ -125,7 +83,18 @@ const AdminUserPage = () => {
       width: 120,
     },
   ];
-
+  // lấy danh sách user
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getAllUsers();
+        setUsers(response);
+      } catch (error) {
+        console.log('Lỗi lấy danh sách users', error);
+      }
+    }
+    fetchUsers();
+  }, []);
   return (
     <div>
       <h2>Quản lý người dùng</h2>
@@ -133,6 +102,7 @@ const AdminUserPage = () => {
       <Input.Search
         placeholder="Tìm theo tên hoặc email..."
         allowClear
+        value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         style={{ marginBottom: 16, maxWidth: 300 }}
       />
@@ -143,36 +113,6 @@ const AdminUserPage = () => {
         rowKey="email"
         pagination={{ pageSize: 5 }}
       />
-
-      <Modal
-        title="Chỉnh sửa người dùng"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        onOk={handleSave}
-        width={600}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item name="avatar" label="Ảnh đại diện">
-            <Input placeholder="Dán URL ảnh..." />
-          </Form.Item>
-          <Form.Item name="name" label="Họ tên" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-            <Input disabled />
-          </Form.Item>
-          <Form.Item name="gender" label="Giới tính">
-            <Select placeholder="Chọn giới tính">
-              <Option value="Nam">Nam</Option>
-              <Option value="Nữ">Nữ</Option>
-              <Option value="Khác">Khác</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="birthday" label="Ngày sinh">
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };

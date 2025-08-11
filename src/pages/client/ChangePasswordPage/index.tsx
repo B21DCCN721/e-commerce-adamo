@@ -1,14 +1,17 @@
 import { Button, Card, Form, Input, message, Typography } from "antd";
 import { changePassword } from "../../../services/authenticatedService";
+import { useForm } from "antd/es/form/Form";
 interface InfoChangePass {
     currentPass: string;
     newPass: string;
     confirmPass: string;
 }
 const ChangePasswordPage = () => {
+    const [form] = useForm();
     const handleChangepassWord = async (value: InfoChangePass) => {
         try {
             await changePassword(value.currentPass, value.newPass);
+            form.resetFields();
             message.success("Đổi mật khẩu thành công");
         } catch (error) {
             console.error('Đổi mật khẩu thất bại:', error);
@@ -18,7 +21,7 @@ const ChangePasswordPage = () => {
     return (
         <Card style={{ maxWidth: "650px", margin: '100px auto' }}>
             <Typography.Title level={3}>Đổi mật khẩu</Typography.Title>
-            <Form layout="vertical" name="Đổi mật khẩu" autoComplete="off" onFinish={handleChangepassWord} >
+            <Form layout="vertical" form={form} name="Đổi mật khẩu" autoComplete="off" onFinish={handleChangepassWord} >
                 <Form.Item
                     label="Mật khẩu cũ"
                     name="currentPass"

@@ -20,6 +20,7 @@ const RegisterPage = () => {
         user.uid, {
         name: values.fullName,
         email: values.email,
+        isActive: true,
       });
       form.resetFields();
       message.success("Đăng ký thành công");
@@ -95,7 +96,7 @@ const RegisterPage = () => {
               </Button>
             </Form.Item>
           </Form>
-          <Link to="/login">Đã có tài khoản? Đăng nhập ngay</Link>
+          <Link to="/login">Đăng nhập.</Link>
         </Card>
       </Col>
     </Row>

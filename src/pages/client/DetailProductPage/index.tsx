@@ -1,5 +1,5 @@
 import { 
-    Button, Col, Empty, Flex, Rate, Row, Spin, Tag, Typography 
+    Button, Col, Divider, Empty, Flex, Rate, Row, Spin, Tag, Typography 
 } from "antd";
 import AddToCart from "../../../components/AddToCart";
 import styles from "./DetailProductPage.module.css";
@@ -266,7 +266,7 @@ const DetailProductPage = () => {
                                 </Flex>
                             </div>
                         )}
-
+                        <Divider/>
                         {filteredReviews.length > 0 ? (
                             filteredReviews.map((review, index) => (
                                 <ReviewCard key={index} review={review} />

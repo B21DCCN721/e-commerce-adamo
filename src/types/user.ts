@@ -7,5 +7,6 @@ export const UserSchema = z.object({
   gender: z.string().optional(),
   email: z.string(),
   birthday: z.custom<Dayjs>().optional(),
+  isActive: z.boolean().default(true),
 });
 export type User = z.infer<typeof UserSchema>;

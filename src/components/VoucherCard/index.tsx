@@ -22,28 +22,35 @@ const VoucherCard: React.FC<VoucherCardProps> = ({ voucher, selected, onClick })
 
   return (
     <Card
-      hoverable
-      onClick={onClick}
-      style={{
-        borderStyle: "dashed",
-        borderColor: selected ? "#52c41a" : "#f5222d",
-        borderRadius: 12,
-        backgroundColor: selected ? "#f6ffed" : undefined,
-        cursor: "pointer",
-        transition: "0.2s",
-      }}
-    >
-      <Title level={4} style={{ color: "#f5222d" }}>
-        {discountText} OFF
-      </Title>
-      <Text strong>Mã giảm giá: {code}</Text>
-      <br/>
-      <Text>{description}</Text>
-      <br />
-      <Text type="secondary">
-        HSD: {formatTime(expireAt)}
-      </Text>
-    </Card>
+  hoverable
+  onClick={onClick}
+  style={{
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderColor: selected ? "#52c41a" : "#e994ddff",
+    borderRadius: 16,
+    background: selected
+      ? "linear-gradient(135deg, #f6ffed, #d9f7be)"
+      : "linear-gradient(135deg, #F7CAC9, #92A8D1)",
+    cursor: "pointer",
+    transition: "0.3s",
+    boxShadow: selected
+      ? "0 4px 12px rgba(82, 196, 26, 0.3)"
+      : "0 4px 12px rgba(0, 0, 0, 0.1)",
+  }}
+>
+  <Title level={4} style={{ color: "#d4380d" }}>
+    {discountText} OFF
+  </Title>
+  <Text strong style={{ color: "#262626" }}>
+    Mã giảm giá: {code}
+  </Text>
+  <br />
+  <Text style={{ color: "#434343" }}>{description}</Text>
+  <br />
+  <Text type="secondary">HSD: {formatTime(expireAt)}</Text>
+</Card>
+
   );
 };
 

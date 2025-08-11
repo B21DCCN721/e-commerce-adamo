@@ -80,7 +80,7 @@ const CartPage = () => {
         <Typography.Title level={3}>
           Danh sách sản phẩm trong giỏ hàng
         </Typography.Title>
-        <Button onClick={handleClearCart} danger disabled={listLocalProducts.length === 0}>
+        <Button onClick={handleClearCart} color="danger" variant="solid" disabled={listLocalProducts.length === 0}>
           Xóa toàn bộ
         </Button>
       </Space>

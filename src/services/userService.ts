@@ -66,4 +66,14 @@ const deleteAddress = async (uid: string, addressId: number) => {
     throw error;
   } 
 }
-export { getProflie, updateProfile, createProfile, addAdress, getAddressByUserId, deleteAddress, updateAddress };
+const getAllUsers = async () => {
+  try {
+    const response = await axiosClient.get('users.json');
+    const returnedData = Object.values(response.data) ?? [];
+    return validateArray(UserSchema, returnedData, 'Get all users');
+  } catch (error) {
+    console.error("Failed to get all user", error);
+    throw error;
+  }
+}
+export { getProflie, updateProfile, createProfile, addAdress, getAddressByUserId, deleteAddress, updateAddress, getAllUsers };

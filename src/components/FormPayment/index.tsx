@@ -121,7 +121,6 @@ const FormPayment: React.FC<FormPaymentProps> = ({
     if (paymentMethod === "cash") {
       const newOrder = createOrder(false, selectedAddress);
       onCreateOrder(newOrder);
-      message.success("Đặt hàng thành công!");
       form.resetFields();
       setSelectedVoucher(null);
     } else {

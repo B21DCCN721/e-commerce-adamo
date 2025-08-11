@@ -55,6 +55,7 @@ const LoginPage = () => {
         name: decoded.family_name,
         email: decoded.email,
         avatar: decoded.picture,
+        isActive: true,
       });
       const serverCartItems = await getCartByUserId(decoded.sub);
       const mergeCart = mergeCarts(localCartItems, serverCartItems);

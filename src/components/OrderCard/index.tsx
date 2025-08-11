@@ -116,9 +116,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, handleCancel = () => { }, 
                             {order.status === 'pending' && (<>
                                 <Button type="primary" onClick={handleCancel}>Hủy đơn</Button>
                             </>)}
-                            {order.status === 'shipping' && (<>
-                                <Button type="primary">Theo dõi</Button>
-                            </>)}
                             {order.status === 'canceled' && (<>
                                 <Button type="primary" onClick={handleRepurchase}>Đặt lại</Button>
                             </>)}

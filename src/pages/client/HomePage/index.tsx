@@ -2,12 +2,13 @@ import { Typography, Flex, Carousel, Button, Spin, } from "antd";
 import styles from "./HomePage.module.css";
 import thumbNail1 from "../../../assets/imgs/thumbNail1.png";
 import thumbNail2 from "../../../assets/imgs/thumbNail2.webp";
+import thumbNail3 from "../../../assets/imgs/thumbNail3.jpg";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../../../components/ProductCard";
 import imgClothing from "../../../assets/imgs/shrit.png"
-import { getListProducts } from "../../../services/productService";
-import type { Product } from "../../../types/product";
+import { getListProductWithVariants } from "../../../services/productService";
+import type { ProductWithVariants } from "../../../types/product";
 
 
 const HomePage = () => {
@@ -27,17 +28,17 @@ const HomePage = () => {
     {
       id: 3,
       name: "Balo học sinh",
-      image: thumbNail2,
+      image: thumbNail3,
       description: "Balo học sinh đa năng, có ngăn đựng laptop tiện lợi.",
     }
   ])
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductWithVariants[]>([]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await getListProducts();
+        const data = await getListProductWithVariants();
         setProducts(data);
       } catch (error) {
         console.error("Failed to load products", error);

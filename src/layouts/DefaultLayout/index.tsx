@@ -10,6 +10,7 @@ import {
   LogoutOutlined,
   QuestionCircleOutlined,
   SunOutlined,
+  MoonOutlined,
 } from '@ant-design/icons';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store';
@@ -95,7 +96,7 @@ const DefaultLayout: React.FC = () => {
               }}
               onClick={() => navigate("/support")}
                />
-              <FloatButton icon={<SunOutlined />} tooltip={{
+              <FloatButton icon={darkMode? <MoonOutlined /> : <SunOutlined />} tooltip={{
                 title: 'Nền',
                 color: 'black',
                 placement: 'left',

@@ -21,12 +21,11 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: "root", // Khóa lưu trữ trong localStorage ['persist:root']
-  version: 1, // Phiên bản của cấu hình lưu trữ
-  storage,    // Dùng localStorage (trình duyệt) để lưu
+  version: 1,
+  storage,   
   whitelist: ["cart", "order"],
 };
 // Tạo persistedReducer từ rootReducer và persistConfig
-// persistedReducer sẽ tự động lưu trạng thái của cart và order vào localStorage
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Tạo store với persistedReducer
 export const store = configureStore({

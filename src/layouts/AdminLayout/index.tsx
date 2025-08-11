@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {  Layout, Menu, Typography } from "antd";
 import {
-  DashboardOutlined,
   AreaChartOutlined,
   AppstoreOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const AdminLayout: React.FC = () => {
   const menuItems = [
     {
       key: "/admin/dashboard",
-      icon: <DashboardOutlined />,
+      icon: <HomeOutlined />,
       label: "Dashboard",
     },
     {

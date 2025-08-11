@@ -17,6 +17,7 @@ const ProfilePage = () => {
     name: JSON.parse(user).name,
     email: JSON.parse(user).email,
     avatar: JSON.parse(user).avatar,
+    isActive: true
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [canEdit, setCanEdit] = useState<boolean>(false);
