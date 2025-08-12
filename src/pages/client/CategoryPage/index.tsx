@@ -9,7 +9,6 @@ import { getListProductWithVariants } from "../../../services/productService";
 import { useSearchParams } from "react-router-dom";
 
 const { Sider, Content } = Layout;
-
 const CategoryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from "react";
-import { Card, Col, Row, Select, DatePicker, Space } from "antd";
+import { Card, Col, Row, Select, DatePicker, Space, Typography } from "antd";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import dayjs, { Dayjs } from "dayjs";
+import StatisticCard from "../../../components/StatisticCard";
 
 type Order = {
   id: string;
-  date: string; // ISO string
+  date: string;
   total: number;
   paymentMethod: "cash" | "banking";
 };
@@ -45,17 +46,6 @@ const AdminRevenuePage: React.FC = () => {
     });
   }, [filterType, customRange]);
 
-  // ===== Tính doanh thu theo phương thức =====
-  const revenueByPayment = useMemo(() => {
-    return filteredOrders.reduce(
-      (acc, order) => {
-        acc[order.paymentMethod] = (acc[order.paymentMethod] || 0) + order.total;
-        return acc;
-      },
-      {} as Record<string, number>
-    );
-  }, [filteredOrders]);
-
   // ===== Biểu đồ doanh thu theo tháng =====
   const revenueByMonth = useMemo(() => {
     const result: Record<string, number> = {};
@@ -69,50 +59,46 @@ const AdminRevenuePage: React.FC = () => {
   }, [filteredOrders]);
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2 style={{ marginBottom: 24 }}>Thống kê doanh thu</h2>
-
-      {/* Bộ lọc */}
-      <Space style={{ marginBottom: 16 }}>
-        <Select value={filterType} onChange={(v) => setFilterType(v)} style={{ width: 150 }}>
-          <Option value="week">Tuần này</Option>
-          <Option value="month">Tháng này</Option>
-          <Option value="year">Năm nay</Option>
-          <Option value="custom">Tùy chọn</Option>
-        </Select>
-        {filterType === "custom" && (
-          <RangePicker
-            value={customRange as any}
-            onChange={(v) => setCustomRange(v as [Dayjs, Dayjs])}
-            format="YYYY-MM-DD"
-          />
-        )}
-      </Space>
-
+    <>
+      <Typography.Title level={4}>Doanh thu</Typography.Title>
       <Row gutter={16}>
-        {/* Doanh thu theo phương thức */}
-        <Col span={12}>
-          <Card title="Doanh thu theo phương thức thanh toán">
-            <p>💵 Tiền mặt: {revenueByPayment["cash"]?.toLocaleString("vi-VN") || 0} VND</p>
-            <p>🏦 Chuyển khoản: {revenueByPayment["banking"]?.toLocaleString("vi-VN") || 0} VND</p>
-          </Card>
-        </Col>
-
-        {/* Biểu đồ */}
-        <Col span={12}>
-          <Card title="Biểu đồ tăng trưởng doanh thu">
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={revenueByMonth}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value: number) => value.toLocaleString("vi-VN") + " VND"} />
-                <Line type="monotone" dataKey="total" stroke="#1890ff" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
-        </Col>
+        <Col span={8}><StatisticCard title="Tổng doanh thu tuần" content="100000" /></Col>
+        <Col span={8}><StatisticCard title="Tổng doanh thu tháng" content="10000000" /></Col>
+        <Col span={8}><StatisticCard title="Tổng doanh năm" content="5555" /></Col>
       </Row>
-    </div>
+     <Space align="center"  style={{ margin: "24px 0px" }}>
+        <Typography.Title level={4} style={{ margin: "0px" }}>Thống kê doanh thu</Typography.Title>
+        {/* Bộ lọc */}
+        <Space>
+          <Select value={filterType} onChange={(v) => setFilterType(v)} style={{ width: 150 }}>
+            <Option value="week">Tuần này</Option>
+            <Option value="month">Tháng này</Option>
+            <Option value="year">Năm nay</Option>
+            <Option value="custom">Tùy chọn</Option>
+          </Select>
+          {filterType === "custom" && (
+            <RangePicker
+              value={customRange as any}
+              onChange={(v) => setCustomRange(v as [Dayjs, Dayjs])}
+              format="YYYY-MM-DD"
+            />
+          )}
+        </Space>
+     </Space>
+
+
+      <Card title="Biểu đồ tăng trưởng doanh thu">
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={revenueByMonth}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip formatter={(value: number) => value.toLocaleString("vi-VN") + " VND"} />
+            <Line type="monotone" dataKey="total" stroke="#1890ff" strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
+      </Card>
+
+    </>
   );
 };
 

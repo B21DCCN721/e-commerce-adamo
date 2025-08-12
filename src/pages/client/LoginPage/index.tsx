@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Button, Card, Row, Col, Divider, Flex, message, Modal } from 'antd';
-import imgLogin from "../../../assets/imgs/imgLogin.jpg";
+import { Form, Input, Button, Card, Divider, Flex, message, Modal, Col, Row, Image, Typography } from 'antd';
 import styles from "./Login.module.css";
 import { GoogleLogin } from '@react-oauth/google';
 import type { CredentialResponse } from '@react-oauth/google';
@@ -17,6 +16,7 @@ import { mergeCarts } from '../../../utils/cartMerge';
 import { addItemsToCartServer, getCartByUserId } from '../../../services/cartService';
 import { setCart } from '../../../features/cart/cartSlice';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import decorLogin from '../../../assets/imgs/decorLogin.png';
 interface FormLogin {
   email: string;
   password: string
@@ -73,15 +73,9 @@ const LoginPage = () => {
     }
   };
   return (
-    <>
-      <Row style={{ height: '100vh' }}>
-        <Col span={12} className={styles['box_decor']}>
-          <img src={imgLogin} alt='ảnh nền login' className={styles['box_decor-img']} />
-        </Col>
-        <Col
-          span={12}
-          className={styles['box_form']}
-        >
+    <div className={styles['box']}>
+      <Row className={styles['box_form']}>
+        <Col>
           <Card title="Đăng nhập" className={styles['box_form-card']}>
             <Form form={form} onFinish={handleLogin} layout="vertical">
               <Form.Item
@@ -92,7 +86,7 @@ const LoginPage = () => {
                   { type: 'email', message: 'Email không hợp lệ' },
                 ]}
               >
-                <Input placeholder="Nhập email" prefix={<MailOutlined/>} />
+                <Input placeholder="Nhập email" prefix={<MailOutlined />} />
               </Form.Item>
 
               <Form.Item
@@ -103,19 +97,17 @@ const LoginPage = () => {
                   message: 'Ít nhất 6 ký tự, gồm chữ và số',
                 },]}
               >
-                <Input.Password placeholder="Nhập mật khẩu" prefix={<LockOutlined/>} />
+                <Input.Password placeholder="Nhập mật khẩu" prefix={<LockOutlined />} />
               </Form.Item>
-
+              <Flex justify='end' style={{marginBottom: "16px"}}>
+                <Button type='link' onClick={showModal}>Quên mật khẩu?</Button>
+              </Flex>
               <Form.Item>
                 <Button type="primary" htmlType="submit" block>
                   Đăng nhập
                 </Button>
               </Form.Item>
             </Form>
-            <Flex justify='space-between'>
-              <Button type='link' onClick={showModal}>Quên mật khẩu?</Button>
-              <Button type='link'><Link to="/register">Đăng ký tài khoản mới</Link></Button>
-            </Flex>
             <Divider>Hoặc</Divider>
 
             <GoogleLogin
@@ -124,7 +116,15 @@ const LoginPage = () => {
                 console.log('Đăng nhập Google thất bại');
               }}
             />
+           <Flex justify='center' style={{marginTop: "16px"}}>
+              <Typography.Text>Chưa có tài khoản? 
+                <Link to="/register"> Đăng ký ngay.</Link>
+              </Typography.Text>
+           </Flex>
           </Card>
+        </Col>
+        <Col>
+          <Image src={decorLogin} preview={false} width={560} height={495} />
         </Col>
       </Row>
       <Modal
@@ -137,7 +137,7 @@ const LoginPage = () => {
       >
         <FormForgotPassword />
       </Modal>
-    </>
+    </div>
   );
 };
 

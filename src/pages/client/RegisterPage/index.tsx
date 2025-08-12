@@ -1,4 +1,4 @@
-import { Form, Input, Button, Card, Row, Col, message } from 'antd';
+import { Form, Input, Button, Card, message, Typography, Flex } from 'antd';
 import styles from "./Register.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../../services/authenticatedService';
@@ -32,10 +32,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <Row style={{ height: '100vh' }}>
-      <Col span={12} className={styles['box_decor']}>
-      </Col>
-      <Col span={12} className={styles['box_form']}>
+    <div className={styles['box']}>
         <Card title="Đăng ký tài khoản" className={styles['box_form-card']}>
           <Form form={form} onFinish={handleRegister} layout="vertical">
             <Form.Item
@@ -96,10 +93,9 @@ const RegisterPage = () => {
               </Button>
             </Form.Item>
           </Form>
-          <Link to="/login">Đăng nhập.</Link>
+          <Flex justify='center'><Typography.Text>Đã có tài khoản? <Link to="/login">Đăng nhập.</Link></Typography.Text></Flex>
         </Card>
-      </Col>
-    </Row>
+    </div>
   );
 };
 

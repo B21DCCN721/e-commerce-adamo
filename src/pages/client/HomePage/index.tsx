@@ -1,4 +1,4 @@
-import { Typography, Flex, Carousel, Button, Spin, } from "antd";
+import { Typography, Flex, Carousel, Button, Spin, Image, Space, } from "antd";
 import styles from "./HomePage.module.css";
 import thumbNail1 from "../../../assets/imgs/thumbNail1.png";
 import thumbNail2 from "../../../assets/imgs/thumbNail2.webp";
@@ -9,8 +9,57 @@ import ProductCard from "../../../components/ProductCard";
 import imgClothing from "../../../assets/imgs/shrit.png"
 import { getListProductWithVariants } from "../../../services/productService";
 import type { ProductWithVariants } from "../../../types/product";
-
-
+import bgSubscribe from '../../../assets/imgs/bgSubscribe.png';
+import { SignatureOutlined } from "@ant-design/icons";
+import iconQuality from '../../../assets/imgs/iconQuality.png';
+import iconDelivery from '../../../assets/imgs/iconDelivery.png';
+import iconReplace from '../../../assets/imgs/iconReplace.png';
+import decorSubscribe from '../../../assets/imgs/decorSubscribe.png';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import PreviewReviewCard from "../../../components/PreviewReviewCard";
+const reviews = [
+  {
+    name: "John Smith",
+    date: "08 August 2023",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    rating: 5,
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.",
+  },
+  {
+    name: "Sarah Johnson",
+    date: "10 August 2023",
+    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+    rating: 4,
+    content:
+      "Pellentesque habitant morbi tristique senectus et netus et malesuada fames.",
+  },
+  {
+    name: "Michael Brown",
+    date: "12 August 2023",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+    rating: 5,
+    content:
+      "Fusce nec tellus sed augue semper porta. Mauris massa.",
+  },
+  {
+    name: "Michael Brown",
+    date: "12 August 2023",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    rating: 5,
+    content:
+      "Fusce nec tellus sed augue semper porta. Mauris massa.",
+  },
+  {
+    name: "Michael Brown",
+    date: "12 August 2023",
+    avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+    rating: 5,
+    content:
+      "Fusce nec tellus sed augue semper porta. Mauris massa.",
+  },
+];
 const HomePage = () => {
   const [dataSlide] = useState([
     {
@@ -34,6 +83,8 @@ const HomePage = () => {
   ])
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<ProductWithVariants[]>([]);
+  const navigate = useNavigate();
+  const isAuthenticated = localStorage.getItem('isAuthenticated') ?? false;
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -50,8 +101,6 @@ const HomePage = () => {
     fetchProducts();
   }, []);
 
-  const navigate = useNavigate();
-
   return (
     <>
       <div>
@@ -65,12 +114,12 @@ const HomePage = () => {
           ))}
         </Carousel>
       </div>
-      <Typography.Title level={3}>Danh sách sản phẩm nổi bật</Typography.Title>
+      <Typography.Title level={3}>Sản phẩm nổi bật</Typography.Title>
       {loading ? (
         <Flex justify="center" align="center"><Spin size="large" /></Flex>
       ) : (
         <>
-          <div style={{ marginLeft: "50px" }}>
+          <div style={{ marginLeft: "32px" }}>
             <Flex wrap={true} gap="large">
               {products.slice(0, 10).map((item) => (
                 <ProductCard
@@ -89,7 +138,66 @@ const HomePage = () => {
               ))}
             </Flex>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}><Button type="primary" onClick={() => navigate('/category')}>Xem thêm</Button></div>
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0px' }}>
+            <Button type="primary" onClick={() => navigate('/category')}>Xem thêm</Button>
+          </div>
+          {!isAuthenticated && (<Flex style={{ width: "100%", backgroundColor: "#F5F7FA" }}>
+            <Image src={bgSubscribe} width={430} height={300} preview={false} />
+            <Space size={"large"}>
+              <Space direction="vertical" align="start" style={{ margin: "64px" }}>
+                <Typography.Text>20% giảm giá</Typography.Text>
+                <Typography.Title level={3}>Nhận phiếu giảm giá cho lần đầu đăng ký</Typography.Title>
+                <Typography.Text>Tìm kiếm giảm giá cho đơn hàng của bạn?</Typography.Text>
+                <Button variant="solid" color="red" icon={<SignatureOutlined />} iconPosition="end" onClick={() => navigate('/register')}>
+                  Đăng ký ngay
+                </Button>
+                <Typography.Text>Lần đầu đăng ký tài khoản bạn sẽ nhận được phiếu giảm giá 20% giá trị đơn hàng.</Typography.Text>
+              </Space>
+              <Image src={decorSubscribe} preview={false} width={80} height={80} style={{ marginLeft: "64px" }} />
+            </Space>
+          </Flex>)}
+          <div className={styles['boxPreviewReview']}>
+            <Typography.Title level={4}>Đánh giá từ khách hàng</Typography.Title>
+            <div style={{ flex: 1, width: "70%", marginTop: "16px" }}>
+              <Swiper
+                modules={[Navigation, Pagination]}
+                spaceBetween={10}
+                slidesPerView='auto'
+                // centeredSlides={true}
+                navigation
+              // pagination={{ clickable: true }}
+              >
+                {reviews.map((item, i) => (
+                  <SwiperSlide key={i} style={{ width: "280px" }}>
+                    <PreviewReviewCard {...item} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+          <Flex align="center" justify="center" gap={16} style={{ margin: '32px 0px', width: "100%" }}>
+            <Space>
+              <Image src={iconReplace} preview={false} />
+              <Space direction="vertical">
+                <Typography.Text strong>Dễ dàng đổi trả</Typography.Text>
+                <Typography.Text>Hoàn trả trong vòng 7 ngày nếu sản phẩm hư hỏng</Typography.Text>
+              </Space>
+            </Space>
+            <Space>
+              <Image src={iconDelivery} preview={false} />
+              <Space direction="vertical">
+                <Typography.Text strong>Miễn phí vận chuyển</Typography.Text>
+                <Typography.Text>Các đơn hàng được miễn phí vận chuyển trong 1km</Typography.Text>
+              </Space>
+            </Space>
+            <Space>
+              <Image src={iconQuality} preview={false} />
+              <Space direction="vertical">
+                <Typography.Text strong>Đảm bảo chất lượng</Typography.Text>
+                <Typography.Text>Mọi sản phẩm đều được đảm bảo chất lượng</Typography.Text>
+              </Space>
+            </Space>
+          </Flex>
         </>
       )}
     </>

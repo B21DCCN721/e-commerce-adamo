@@ -16,3 +16,12 @@
     top: 50px;
     left: 80px;
 }
+.boxPreviewReview{
+    background-image: url(../../../assets/imgs/bgReviewHome.png);
+    height: 500px;
+    padding: 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

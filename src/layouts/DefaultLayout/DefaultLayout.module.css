@@ -7,3 +7,20 @@
 .content{
     margin:64px 16px 16px;
 }
+.footer-dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.footer-dark a {
+  color: #fff !important; /* bắt link thành trắng */
+}
+
+.footer-dark a:hover {
+  color: #f0c040 !important; /* hover vàng */
+}
+
+.whiteText {
+  color: #fff !important;
+}
+

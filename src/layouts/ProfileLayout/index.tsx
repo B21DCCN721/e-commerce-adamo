@@ -10,8 +10,8 @@ const ProfileLayout: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     return (
-        <Layout style={{ minHeight: '100vh' }}>
-            <Sider width={220} theme='light' style={{ position: 'fixed', height: '100vh', left: 0, top: 64 }}>
+        <Layout>
+            <Sider width={220} theme='light' style={{position: 'relative', left:'-32px', top:'-16px', height:"100vh"}}>
                 <Menu
                     mode="inline"
                     defaultSelectedKeys={["/profile/info"]}
@@ -25,7 +25,7 @@ const ProfileLayout: React.FC = () => {
                 </Menu>
             </Sider>
 
-            <Content style={{ padding: '0px 24px 24px', marginLeft: 220,}}>
+            <Content style={{ padding: '0px 24px 24px'}}>
                 <Outlet />
             </Content>
         </Layout>

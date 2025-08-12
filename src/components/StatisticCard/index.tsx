@@ -1,11 +1,12 @@
 import { Card, Flex, Image, Typography } from "antd"
-import React from "react"
+import React from "react";
+import silverWolf from '../../assets/imgs/logoSilverWolf.png';
 interface StatisticCardProps {
     icon?: string,
     title: string,
     content: string,
 }
-const StatisticCard:React.FC<StatisticCardProps> = ({icon, title, content}) => {
+const StatisticCard:React.FC<StatisticCardProps> = ({icon = silverWolf, title, content}) => {
     return(
         <Card hoverable style={{
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",

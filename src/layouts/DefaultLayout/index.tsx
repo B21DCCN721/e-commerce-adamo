@@ -1,4 +1,4 @@
-import { ConfigProvider, FloatButton, Layout, Menu, theme as antdTheme, message } from 'antd';
+import { Col, ConfigProvider, Divider, Flex, FloatButton, Layout, Menu, Row, Space, Typography, theme as antdTheme, message } from 'antd';
 import {
   HomeOutlined,
   UnorderedListOutlined,
@@ -11,8 +11,13 @@ import {
   QuestionCircleOutlined,
   SunOutlined,
   MoonOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  InstagramOutlined,
+  FacebookOutlined,
+  XOutlined,
 } from '@ant-design/icons';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { useMemo, useState } from 'react';
@@ -41,11 +46,11 @@ const DefaultLayout: React.FC = () => {
     }
   }
   const [darkMode, setDarkMode] = useState<boolean>(JSON.parse(localStorage.getItem('darkMode') ?? 'false'));
-  
-    const handleChangeMode = () => {
-      setDarkMode(!darkMode)
-      localStorage.setItem('darkMode', JSON.stringify(!darkMode));
-    }
+
+  const handleChangeMode = () => {
+    setDarkMode(!darkMode)
+    localStorage.setItem('darkMode', JSON.stringify(!darkMode));
+  }
   return (
     <ConfigProvider
       theme={{
@@ -67,14 +72,14 @@ const DefaultLayout: React.FC = () => {
             <Menu.Item key='/' icon={<HomeOutlined />}>Trang chủ</Menu.Item>
             <Menu.Item key='/category' icon={<UnorderedListOutlined />}>Danh mục</Menu.Item>
             <Menu.Item key='/cart' icon={<ShoppingCartOutlined />}>
-              Giỏ hàng {quantity}
+              Giỏ hàng <span style={{ fontWeight: "bold", color: "red" }}>{quantity}</span>
             </Menu.Item>
             <Menu.Item key='/history' icon={<HistoryOutlined />}>Đơn hàng</Menu.Item>
             {isAuthenticated && (<Menu.SubMenu key="/profile" icon={<UserOutlined />} title="Tài khoản">
               <Menu.Item key="/profile/info" icon={<EditOutlined />}>
                 Hồ sơ
               </Menu.Item>
-              <Menu.Item key="/logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+              <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
                 Đăng xuất
               </Menu.Item>
             </Menu.SubMenu>)}
@@ -94,15 +99,15 @@ const DefaultLayout: React.FC = () => {
                 color: 'black',
                 placement: 'left',
               }}
-              onClick={() => navigate("/support")}
-               />
-              <FloatButton icon={darkMode? <MoonOutlined /> : <SunOutlined />} tooltip={{
+                onClick={() => navigate("/support")}
+              />
+              <FloatButton icon={darkMode ? <MoonOutlined /> : <SunOutlined />} tooltip={{
                 title: 'Nền',
                 color: 'black',
                 placement: 'left',
               }}
-              onClick={handleChangeMode}
-               />
+                onClick={handleChangeMode}
+              />
               <FloatButton.BackTop visibilityHeight={400} tooltip={{
                 title: 'Về đầu trang',
                 color: 'black',
@@ -111,8 +116,65 @@ const DefaultLayout: React.FC = () => {
             </FloatButton.Group>
           </div>
         </Content>
-
-        <Footer style={{ textAlign: 'center' }}>© 2025 E-COMMERCE</Footer>
+        <Divider />
+        <Footer className={`${styles["footer-dark"]} ${styles["ant-typography"]}`}>
+          <Row gutter={32}>
+            <Col span={6}>
+              <Typography.Title level={5} className={styles.whiteText}>CLOTHING STORE</Typography.Title>
+              <Space direction='vertical' size={'middle'} align='start'>
+                <Typography.Paragraph className={styles.whiteText}>CLOTHING STORE là cửa hàng bán trang phục trực tuyến cho phép người dùng mua sắm dễ dàng, thuận tiện.</Typography.Paragraph>
+                <Link to="#">Chính sách riêng tư</Link>
+                <Link to="#">Điều khoản và dịch vụ</Link>
+              </Space>
+            </Col>
+            <Col span={6}>
+              <Typography.Title level={5} className={styles.whiteText}>THÔNG TIN</Typography.Title>
+              <Space direction='vertical' size={'middle'} align='start'>
+                <Link to="#">Về CLOTHING STORE</Link>
+                <Link to="#">Về chúng tôi</Link>
+                <Link to="#">Thanh toán</Link>
+              </Space>
+            </Col>
+            <Col span={6}>
+              <Typography.Title level={5} className={styles.whiteText}>TRỢ GIÚP</Typography.Title>
+              <Space direction='vertical' size={'middle'} align='start'>
+                <Link to="#">Tài khoản</Link>
+                <Link to="#">Vận chuyển đơn hàng</Link>
+                <Link to="#">Trạng thái đơn hàng</Link>
+                <Link to="#">Trả hàng và hoàn tiền</Link>
+              </Space>
+            </Col>
+            <Col span={6}>
+              <Typography.Title level={5} className={styles.whiteText}>LIÊN HỆ</Typography.Title>
+              <Space direction='vertical'>
+                <Space style={{cursor:"pointer"}}>
+                  <InstagramOutlined />
+                  <FacebookOutlined />
+                  <XOutlined />
+                </Space>
+                <Typography.Text className={styles.whiteText}>
+                  <PhoneOutlined style={{color:"#F94D1C"}}/>
+                  <span style={{marginLeft:"16px"}}>1900 1234</span>
+                </Typography.Text>
+                <Typography.Text className={styles.whiteText}>
+                  <MailOutlined style={{color:"#F94D1C"}}/>
+                  <span style={{marginLeft:"16px"}}>covocuc@gmail.com</span>
+                </Typography.Text>
+              </Space>
+            </Col>
+          </Row>
+          <Divider />
+          <Flex justify='space-between' align='center'>
+            <Space>
+              <Typography.Title level={5} className={styles.whiteText}>Danh mục sản phẩm</Typography.Title>
+              <Divider type='vertical'/>
+              <Typography.Title level={5} className={styles.whiteText}>Áo</Typography.Title>
+              <Typography.Title level={5} className={styles.whiteText}>Quần</Typography.Title>
+              <Typography.Title level={5} className={styles.whiteText}>Giày</Typography.Title>
+            </Space>
+            <Typography.Title level={5} className={styles.whiteText}>© 2025 CLOTHING STORE</Typography.Title>
+          </Flex>
+        </Footer>
       </Layout>
     </ConfigProvider>
 

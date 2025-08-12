@@ -1,5 +1,4 @@
 import './App.css'
-import 'antd/dist/reset.css'; // dùng với antd >= v5
 import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routers/AppRoutes';
 import { Provider } from 'react-redux';

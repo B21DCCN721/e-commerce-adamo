@@ -1,18 +1,17 @@
-.box_form {
+.box {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    background-image: url(../../../assets/imgs/bgRegister.png);
+    background-repeat: no-repeat;
 }
 
 .box_form-card {
-    min-width: 50%;
-}
-
-.box_decor {
-    background: linear-gradient(135deg,
-            #a1c4fd,
-            #c2e9fb,
-            #fbc2eb,
-            #fcb69f);
-
+    width: 500px;
+    border-radius: 20px;
+    /* background: linear-gradient(to right,
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0)
+        ); */
 }
