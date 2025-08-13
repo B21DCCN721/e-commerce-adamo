@@ -6,7 +6,11 @@ import CartTable from "../../../components/CartTable";
 import type { CartItem } from "../../../types/cart";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { addItemsToCartServer, getCartByUserId } from "../../../services/cartService";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import ProductCard from "../../../components/ProductCard";
+import { getListProductWithVariants } from "../../../services/productService";
+import type { ProductWithVariants } from "../../../types/product";
 
 const CartPage = () => {
   const listLocalProducts: CartItem[] = useSelector((state: RootState) => state.cart.items);
@@ -15,6 +19,7 @@ const CartPage = () => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
   const dispatch = useDispatch<AppDispatch>();
   const firstRender = useRef(true);
+  const [recommendProducts, setRecommendProducts] = useState<ProductWithVariants[]>([]);
   const handleClearCart = useCallback(() => {
     Modal.confirm({
       title: 'Bạn có chắc muốn xóa?',
@@ -71,6 +76,18 @@ const CartPage = () => {
   
     syncCart();
   }, [listLocalProducts, isAuthenticated, userId]);
+  // sản phẩm đề xuất
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const data = await getListProductWithVariants();
+          setRecommendProducts(data);
+        } catch (error) {
+          console.error("Failed to load products", error);
+        }
+      };
+      fetchProducts();
+    }, []);
   if (loading) {
     return <Flex justify="center"><Spin size="large" /></Flex>
   }
@@ -86,9 +103,40 @@ const CartPage = () => {
       </Space>
       <CartTable items={listLocalProducts} />
       <Divider/>
-      <Typography.Title level={3}>
-          Có thể bạn cũng thích
+      {isAuthenticated && (
+        <>
+        <Typography.Title level={3}>
+            CÓ THỂ BẠN CŨNG THÍCH
         </Typography.Title>
+        <div>
+          <Swiper
+                  modules={[Navigation, Pagination]}
+                  spaceBetween={10}
+                  slidesPerView='auto'
+                  // centeredSlides={true}
+                  navigation
+                // pagination={{ clickable: true }}
+                >
+                  {recommendProducts.map((item, i) => (
+                    <SwiperSlide key={i} style={{ width: "280px" }}>
+                      <ProductCard
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      category={item.category}
+                      price={item.price}
+                      oldPrice={item.oldPrice}
+                      image={item.image}
+                      inStock={true}
+                      rating={item.rating}
+                      tags={item.tags}
+                    />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+        </div>
+      </>
+      )}
     </>
   );
 };

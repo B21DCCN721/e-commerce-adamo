@@ -30,6 +30,7 @@ const CustomLineChart: React.FC<LineChartProps> = ({ data, lineColor = "#1890ff"
         <Line
           type="monotone"
           dataKey="value"
+          name="Doanh thu (VND)"
           stroke={lineColor}
           strokeWidth={2}
           dot={{ r: 4 }}

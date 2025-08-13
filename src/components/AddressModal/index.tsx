@@ -1,40 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select, Modal, Button, message, Row, Col } from "antd";
+import { Form, Input, Select, Modal, Button, Row, Col } from "antd";
 import { useEffect, useState } from "react";
-import { getProvinces, getDistricts, getWards } from "../../services/addressApi";
-import type { Province, District, Ward } from "../../types/address";
-
+import { provinces as provincesData, districts as districtsData, wards as wardsData } from "./data";
 const { Option } = Select;
 
 interface Props {
     visible: boolean;
     onClose: () => void;
     onSubmit: (values: any) => void;
-    defaultValue?: any; // Dữ liệu địa chỉ mặc định nếu có
+    defaultValue?: any;
 }
-
+interface LocationItem {
+    code: string;
+    name: string;
+    [key: string]: any;
+}
 const AddressModal = ({ visible, onClose, onSubmit, defaultValue = {} }: Props) => {
     const [form] = Form.useForm();
-    const [provinces, setProvinces] = useState<Province[]>([]);
-    const [districts, setDistricts] = useState<District[]>([]);
-    const [wards, setWards] = useState<Ward[]>([]);
+
+    const [provinces, setProvinces] = useState<LocationItem[]>([]);
+    const [districts, setDistricts] = useState<LocationItem[]>([]);
+    const [wards, setWards] = useState<LocationItem[]>([]);
 
     const provinceCode = Form.useWatch("provinceCode", form);
     const districtCode = Form.useWatch("districtCode", form);
 
-    // Load tỉnh/thành phố
+    // Load tỉnh/thành phố từ mock
     useEffect(() => {
-        getProvinces()
-            .then((data) => setProvinces(data))
-            .catch(() => message.error("Không thể tải danh sách tỉnh/thành phố"));
+        setProvinces(provincesData);
     }, []);
 
     // Load quận/huyện khi chọn tỉnh
     useEffect(() => {
         if (provinceCode) {
-            getDistricts(String(provinceCode))
-                .then(setDistricts)
-                .catch(() => message.error("Không thể tải quận/huyện"));
+            setDistricts(districtsData.filter(d => d.provinceCode === provinceCode));
             form.setFieldsValue({ districtCode: undefined, wardCode: undefined });
             setWards([]);
         }
@@ -43,12 +42,12 @@ const AddressModal = ({ visible, onClose, onSubmit, defaultValue = {} }: Props) 
     // Load phường/xã khi chọn huyện
     useEffect(() => {
         if (districtCode) {
-            getWards(String(districtCode))
-                .then(setWards)
-                .catch(() => message.error("Không thể tải phường/xã"));
+            setWards(wardsData.filter(w => w.districtCode === districtCode));
             form.setFieldsValue({ wardCode: undefined });
         }
     }, [districtCode, form]);
+
+    // Set giá trị mặc định nếu có
     useEffect(() => {
         if (visible && defaultValue) {
             form.setFieldsValue(defaultValue);
@@ -72,7 +71,6 @@ const AddressModal = ({ visible, onClose, onSubmit, defaultValue = {} }: Props) 
         form.resetFields();
         onClose();
     };
-
 
     return (
         <Modal
@@ -108,7 +106,7 @@ const AddressModal = ({ visible, onClose, onSubmit, defaultValue = {} }: Props) 
                     <Input placeholder="Số điện thoại" />
                 </Form.Item>
 
-                <Row style={{ width: "100%" }} gutter={16}>
+                <Row gutter={16}>
                     <Col span={8}>
                         <Form.Item
                             name="provinceCode"
@@ -165,20 +163,6 @@ const AddressModal = ({ visible, onClose, onSubmit, defaultValue = {} }: Props) 
                 >
                     <Input placeholder="Số nhà, tên đường..." />
                 </Form.Item>
-
-                {/* <Form.Item label="Thêm vị trí">
-                    <LocationPicker
-                        onSelect={(lat, lng) => {
-                            form.setFieldsValue({ latitude: lat, longitude: lng });
-                        }}
-                    />
-                </Form.Item>
-                <Form.Item name="lat" hidden>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="lng" hidden>
-                    <Input />
-                </Form.Item> */}
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block>

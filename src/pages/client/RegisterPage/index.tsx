@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../../services/authenticatedService';
 import { createProfile } from '../../../services/userService';
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 interface FormRegister {
   fullName: string;
   email: string;
@@ -13,8 +14,10 @@ interface FormRegister {
 const RegisterPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const handleRegister = async (values: FormRegister) => {
     try {
+      setLoading(true);
       const { user } = await register(values.email, values.password);
       await createProfile(
         user.uid, {
@@ -28,6 +31,8 @@ const RegisterPage = () => {
     } catch (error: unknown) {
       message.error('Đăng ký thất bại');
       console.error('Đăng ký thất bại:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,7 +93,7 @@ const RegisterPage = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" block>
+              <Button type="primary" htmlType="submit" block loading={loading}>
                 Đăng ký
               </Button>
             </Form.Item>

@@ -20,8 +20,9 @@ import AdminDashboardPage from "../pages/admin/AdminDashboardPage";
 import AdminProductPage from "../pages/admin/AdminProductPage";
 import AdminOrderPage from "../pages/admin/AdminOrderPage";
 import AdminUserPage from "../pages/admin/AdminUserPage";
-import AdminRevenuePage from "../pages/admin/AdminRevenue";
+import AdminRevenuePage from "../pages/admin/AdminRevenuePage";
 import SupportPage from "../pages/client/SupportPage";
+import AdminLoginPage from "../pages/admin/AdminLoginPage";
 
 const publicRoutes: RouteObject[] = [
     {
@@ -37,6 +38,7 @@ const publicRoutes: RouteObject[] = [
     { path: "/login", element: <LoginPage /> },
     { path: "/register", element: <RegisterPage /> },
     { path: "/support", element: <SupportPage /> },
+    { path: "admin/login", element: <AdminLoginPage/>}
 ];
 
 const privateRoutes: RouteObject[] = [
@@ -71,7 +73,7 @@ const adminRoutes: RouteObject[] = [
             {path: "management/product", element: <AdminProductPage/>},
             {path: "management/order", element: <AdminOrderPage/>},
             {path: "management/user", element: <AdminUserPage/>},
-            {path: "statistics/revenue", element: <AdminRevenuePage/>}
+            {path: "statistics/revenue", element: <AdminRevenuePage/>},
         ],
     },
 ]

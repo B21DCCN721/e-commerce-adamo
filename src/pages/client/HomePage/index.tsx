@@ -1,4 +1,4 @@
-import { Typography, Flex, Carousel, Button, Spin, Image, Space, } from "antd";
+import { Typography, Flex, Carousel, Button, Spin, Image, Space, Row, Col, } from "antd";
 import styles from "./HomePage.module.css";
 import thumbNail1 from "../../../assets/imgs/thumbNail1.png";
 import thumbNail2 from "../../../assets/imgs/thumbNail2.webp";
@@ -21,43 +21,43 @@ import PreviewReviewCard from "../../../components/PreviewReviewCard";
 const reviews = [
   {
     name: "John Smith",
-    date: "08 August 2023",
+    date: "01/01/1999",
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     rating: 5,
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.",
+      "Sản phẩm đẹp đúng với mô tả.",
   },
   {
     name: "Sarah Johnson",
-    date: "10 August 2023",
+    date: "12/12/1234",
     avatar: "https://randomuser.me/api/portraits/women/2.jpg",
     rating: 4,
     content:
-      "Pellentesque habitant morbi tristique senectus et netus et malesuada fames.",
+      "Giao hàng nhanh, đóng gói cẩn thận.",
   },
   {
     name: "Michael Brown",
-    date: "12 August 2023",
+    date: "01/03/1478",
     avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     rating: 5,
     content:
-      "Fusce nec tellus sed augue semper porta. Mauris massa.",
+      "Tuyệt vời.",
   },
   {
     name: "Michael Brown",
-    date: "12 August 2023",
+    date: "13/06/2025",
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
     rating: 5,
     content:
-      "Fusce nec tellus sed augue semper porta. Mauris massa.",
+      "Tôi hài lòng với sản phẩm.",
   },
   {
     name: "Michael Brown",
-    date: "12 August 2023",
+    date: "13/08/2025",
     avatar: "https://randomuser.me/api/portraits/men/5.jpg",
     rating: 5,
     content:
-      "Fusce nec tellus sed augue semper porta. Mauris massa.",
+      "Sản phẩm chất lượng tốt.",
   },
 ];
 const HomePage = () => {
@@ -119,25 +119,25 @@ const HomePage = () => {
         <Flex justify="center" align="center"><Spin size="large" /></Flex>
       ) : (
         <>
-          <div style={{ marginLeft: "32px" }}>
-            <Flex wrap={true} gap="large">
+            <Row gutter={[16, 16]} align={"middle"} justify={"space-between"}>
               {products.slice(0, 10).map((item) => (
-                <ProductCard
-                  key={item.id}
-                  id={item.id}
-                  name={item.name}
-                  category={item.category}
-                  price={item.price}
-                  oldPrice={500000}
-                  image={item.image || imgClothing}
-                  inStock={true}
-                  rating={4.5}
-                  tags={item.tags}
-                />
+                <Col span={4.8}>
+                  <ProductCard
+                    key={item.id}
+                    id={item.id}
+                    name={item.name}
+                    category={item.category}
+                    price={item.price}
+                    oldPrice={item.oldPrice}
+                    image={item.image || imgClothing}
+                    inStock={true}
+                    rating={item.rating}
+                    tags={item.tags}
+                  />
+                </Col>
 
               ))}
-            </Flex>
-          </div>
+            </Row>
           <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0px' }}>
             <Button type="primary" onClick={() => navigate('/category')}>Xem thêm</Button>
           </div>

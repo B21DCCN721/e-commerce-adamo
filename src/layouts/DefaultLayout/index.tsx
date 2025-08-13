@@ -1,4 +1,4 @@
-import { Col, ConfigProvider, Divider, Flex, FloatButton, Layout, Menu, Row, Space, Typography, theme as antdTheme, message } from 'antd';
+import { Col, ConfigProvider, Divider, Flex, FloatButton, Layout, Menu, Row, Space, Typography, theme as antdTheme, message, Image } from 'antd';
 import {
   HomeOutlined,
   UnorderedListOutlined,
@@ -25,6 +25,7 @@ import styles from "./DefaultLayout.module.css";
 import type { CartItem } from '../../types/cart';
 import { logout } from '../../services/authenticatedService';
 import NotificationPopover from '../../components/NotificationPopover';
+import logoWeb from '../../assets/imgs/logoSilverWolf.png';
 
 const { Header, Content, Footer } = Layout;
 
@@ -120,7 +121,7 @@ const DefaultLayout: React.FC = () => {
         <Footer className={`${styles["footer-dark"]} ${styles["ant-typography"]}`}>
           <Row gutter={32}>
             <Col span={6}>
-              <Typography.Title level={5} className={styles.whiteText}>CLOTHING STORE</Typography.Title>
+              <Typography.Title level={5} className={styles.whiteText}>CLOTHING STORE <span><Image src={logoWeb} preview={false} width={40} height={40}/></span></Typography.Title>
               <Space direction='vertical' size={'middle'} align='start'>
                 <Typography.Paragraph className={styles.whiteText}>CLOTHING STORE là cửa hàng bán trang phục trực tuyến cho phép người dùng mua sắm dễ dàng, thuận tiện.</Typography.Paragraph>
                 <Link to="#">Chính sách riêng tư</Link>

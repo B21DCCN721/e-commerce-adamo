@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { 
   Typography, Empty, Menu, Layout, Flex, Pagination, Input, 
-  Space, Spin, Checkbox, Divider, Rate, Slider, Button 
+  Space, Spin, Checkbox, Divider, Rate, Slider, Button, 
+  Row,
+  Col
 } from "antd";
 import type { ProductWithVariants } from "../../../types/product";
 import ProductCard from "../../../components/ProductCard";
@@ -105,26 +107,28 @@ const CategoryPage = () => {
   };
 
   const renderProducts = () => (
-    <Flex wrap={true} gap="large">
+    <Row gutter={[16, 16]} justify={"space-between"}>
       {paginatedProducts.length > 0 ? (
         paginatedProducts.map((item) => (
-          <ProductCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            category={item.category}
-            price={item.price}
-            oldPrice={item.oldPrice}
-            image={item.image}
-            inStock={item.inStock}
-            rating={item.rating}
-            tags={item.tags}
-          />
+          <Col span={6}>
+            <ProductCard
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              category={item.category}
+              price={item.price}
+              oldPrice={item.oldPrice}
+              image={item.image}
+              inStock={item.inStock}
+              rating={item.rating}
+              tags={item.tags}
+            />
+          </Col>
         ))
       ) : (
         <Flex flex={1} justify="center"><Empty /></Flex>
       )}
-    </Flex>
+    </Row>
   );
 
   return (

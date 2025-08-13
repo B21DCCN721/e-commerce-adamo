@@ -30,8 +30,10 @@ const LoginPage = () => {
   };
   const localCartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (values: FormLogin) => {
     try {
+      setLoading(true);
       const { user } = await login(values.email, values.password);
       const profile = await getProflie(user.uid);
       localStorage.setItem('infoUser', JSON.stringify({ email: profile?.email, name: profile?.name ?? 'user', avatar: avatar }));
@@ -44,6 +46,8 @@ const LoginPage = () => {
     } catch (error: any) {
       message.error("Đăng nhập thất bại");
       console.error('Đăng nhập thất bại:', error);
+    } finally{
+      setLoading(false);
     }
   };
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
@@ -72,6 +76,13 @@ const LoginPage = () => {
       message.error("Đăng nhập thất bại");
     }
   };
+  const handleChangePassword = (values) => {
+    console.log('Đổi mật khẩu', values);
+    setIsOpenModalForgotPassword(false)
+  }
+  const hanldeSendOtp = (email) => {
+    console.log('email', email);
+  }
   return (
     <div className={styles['box']}>
       <Row className={styles['box_form']}>
@@ -103,7 +114,7 @@ const LoginPage = () => {
                 <Button type='link' onClick={showModal}>Quên mật khẩu?</Button>
               </Flex>
               <Form.Item>
-                <Button type="primary" htmlType="submit" block>
+                <Button type="primary" htmlType="submit" block loading={loading}>
                   Đăng nhập
                 </Button>
               </Form.Item>
@@ -135,7 +146,7 @@ const LoginPage = () => {
         footer={null}
         centered
       >
-        <FormForgotPassword />
+        <FormForgotPassword sendOtp={hanldeSendOtp} changePassword={handleChangePassword} />
       </Modal>
     </div>
   );

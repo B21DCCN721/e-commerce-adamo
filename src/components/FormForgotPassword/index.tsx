@@ -1,5 +1,5 @@
 import { Button, Form, Input, Space, message } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface InfoForgotPass {
     email: string;
@@ -7,8 +7,11 @@ interface InfoForgotPass {
     newPass: string;
     confirmPass: string;
 }
-
-const FormForgotPassword = () => {
+interface FormForgotPasswordProps {
+    sendOtp: (mail: string) => void;
+    changePassword: (value: InfoForgotPass) => void;
+}
+const FormForgotPassword:React.FC<FormForgotPasswordProps> = ({sendOtp, changePassword}) => {
     const [form] = Form.useForm();
     const [otpSent, setOtpSent] = useState(false);
 
@@ -18,16 +21,13 @@ const FormForgotPassword = () => {
             message.warning("Vui lòng nhập email trước khi gửi OTP");
             return;
         }
+        sendOtp(email);
         message.success("Đã gửi OTP tới email của bạn");
         setOtpSent(true);
     };
 
     const handleChangePassword = (values: InfoForgotPass) => {
-        if (values.newPass !== values.confirmPass) {
-            message.error("Mật khẩu xác nhận không khớp");
-            return;
-        }
-        console.log("Đổi mật khẩu:", values);
+        changePassword(values);
         message.success("Đổi mật khẩu thành công!");
         form.resetFields();
         setOtpSent(false);

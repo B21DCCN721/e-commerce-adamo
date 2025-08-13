@@ -4,7 +4,8 @@ import { ReviewSchema, type Review } from "../types/review.ts";
 const getListReviews = async (productId: string, params: Record<string, unknown> = {}) => {
   try {
     const response = await axiosClient.get(`/reviews/${productId}.json`, { params });
-    const returnedData = Object.values(response.data) ?? [];
+    const rawData = response.data ?? {};
+    const returnedData = Object.values(rawData);
     return validateArray(ReviewSchema, returnedData, 'Review List');
   } catch (error) {
     console.error('Error fetching product list:', error);

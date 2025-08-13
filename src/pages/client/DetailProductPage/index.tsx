@@ -1,5 +1,5 @@
-import { 
-    Button, Col, Divider, Empty, Flex, Rate, Row, Spin, Tag, Typography 
+import {
+    Button, Col, Divider, Empty, Flex, Rate, Row, Spin, Tag, Typography
 } from "antd";
 import AddToCart from "../../../components/AddToCart";
 import styles from "./DetailProductPage.module.css";
@@ -10,26 +10,27 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import ReviewCard from "../../../components/ReviewCard";
 import type { Review } from "../../../types/review";
-import { getProductById } from "../../../services/productService";
+import { getListProductWithVariants, getProductById } from "../../../services/productService";
 import { getListReviews } from "../../../services/reviewService";
+import ProductCard from "../../../components/ProductCard";
 
 const DetailProductPage = () => {
     const { id } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
-
     const [loading, setLoading] = useState(false);
     const [product, setProduct] = useState<ProductWithVariants>();
     const [reviews, setReviews] = useState<Review[]>([]);
     const [quantity, setQuantity] = useState<number>(1);
     const [selectedSize, setSelectedSize] = useState<Size>('S');
     const [selectedColor, setSelectedColor] = useState<string>("");
+    const [sameProducts, setSameProducts] = useState<ProductWithVariants[]>([]);
 
     // Đọc filter từ URL
     const initialFilter = (searchParams.get("filter") as 'all' | 'hasImage' | string) || 'all';
     const [selectedFilter, setSelectedFilter] = useState<number | 'all' | 'hasImage'>(
-        initialFilter === 'hasImage' || initialFilter === 'all' 
-        ? initialFilter 
-        : Number(initialFilter)
+        initialFilter === 'hasImage' || initialFilter === 'all'
+            ? initialFilter
+            : Number(initialFilter)
     );
 
     const selectedVariant = useMemo(
@@ -73,6 +74,22 @@ const DetailProductPage = () => {
         fetchProductById();
     }, [id]);
 
+    // lấy danh sách sản phẩm tương tự
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                setLoading(true);
+                const data = await getListProductWithVariants();
+                setSameProducts(data.filter((item) => item.category === product?.category && item.id !== product?.id));
+            } catch (error) {
+                console.error("Failed to load products", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, [product]);
     // lấy thông tin review
     useEffect(() => {
         const fetchReviews = async () => {
@@ -221,9 +238,15 @@ const DetailProductPage = () => {
                             />
                         </Col>
                     </Row>
+                    <Typography.Title level={4} style={{marginTop: "16px"}}>SẢN PHẨM TƯƠNG TỰ</Typography.Title>
+                    <Row gutter={[16, 16]} align={"middle"} justify={"space-between"}>
+                        {sameProducts.slice(0, 5).map((item, index) => (
+                            <ProductCard key={index} {...item} />
+                        ))}
+                    </Row>
 
                     <div className={styles['box_review']}>
-                        <Typography.Title level={3}>ĐÁNH GIÁ SẢN PHẨM</Typography.Title>
+                        <Typography.Title level={4}>ĐÁNH GIÁ SẢN PHẨM</Typography.Title>
 
                         {reviews.length > 0 && (
                             <div style={{ marginBottom: 16 }}>
@@ -232,7 +255,7 @@ const DetailProductPage = () => {
                                         {ratingSummary.average} <small>trên 5</small>
                                     </Typography.Title>
                                     <Flex vertical>
-                                        <Rate allowHalf value={Number(ratingSummary.average)}/>
+                                        <Rate allowHalf value={Number(ratingSummary.average)} />
                                         <Typography.Text>
                                             {ratingSummary.total} đánh giá
                                         </Typography.Text>
@@ -266,7 +289,7 @@ const DetailProductPage = () => {
                                 </Flex>
                             </div>
                         )}
-                        <Divider/>
+                        <Divider />
                         {filteredReviews.length > 0 ? (
                             filteredReviews.map((review, index) => (
                                 <ReviewCard key={index} review={review} />
